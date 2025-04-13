@@ -14,8 +14,9 @@ spec:
         app: api-gateway
     spec:
       serviceAccountName: api-gateway-sa
-      nodeSelector:
-        service: api-gateway
+      # Commenting out nodeSelector for local Kind deployment
+      # nodeSelector:
+      #   service: api-gateway
       containers:
       - name: api-gateway
         image: api-gateway:latest

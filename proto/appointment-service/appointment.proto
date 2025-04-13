@@ -9,6 +9,22 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/empty.proto";
 // Potentially import staff types if needed, but prefer opaque IDs
 // import "staff-service/staff.proto";
+// Add imports for annotations
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// Add OpenAPI definition options for the Appointment Service
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Appointment Service API";
+    version: "1.0";
+    description: "API for managing appointments.";
+  };
+  schemes: [HTTP, HTTPS];
+  consumes: ["application/json"];
+  produces: ["application/json"];
+  // No global security defined for this internal service example
+};
 
 // --- Enums ---
 
@@ -24,87 +40,260 @@ enum AppointmentStatus {
 // --- Messages representing Entities ---
 
 message Appointment {
-    string id = 1; // UUID as string
-    string patient_id = 2; // UUID as string
-    string doctor_id = 3; // UUID as string
-    google.protobuf.Timestamp appointment_time = 4;
-    google.protobuf.Duration duration = 5;
-    string reason = 6;
-    AppointmentStatus status = 7;
-    string notes = 8;
-    google.protobuf.Timestamp created_at = 9;
-    google.protobuf.Timestamp updated_at = 10;
-    string place = 11; // Added: Location/Place of the appointment
-    // Optional: Include patient/doctor details if needed, but often avoided in list views
-    // patientservice.Patient patient = 11;
-    // staffservice.Staff doctor = 12;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Appointment";
+      description: "Represents a scheduled appointment.";
+      required: ["id", "patient_id", "doctor_id", "appointment_time", "duration", "status", "created_at", "updated_at"];
+    }
+  };
+    string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Unique identifier for the appointment (UUID format).";
+      example: "\"apt-a1b2c3d4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    string patient_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Identifier of the patient (UUID format).";
+      example: "\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    string doctor_id = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Identifier of the doctor/staff (UUID format).";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    google.protobuf.Timestamp appointment_time = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Scheduled date and time of the appointment (RFC3339 UTC format).";
+      example: "\"2023-04-01T10:00:00Z\"";
+    }];
+    google.protobuf.Duration duration = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Duration of the appointment (e.g., \"3600s\" for 1 hour).";
+      example: "\"1800s\""; // 30 minutes
+    }];
+    string reason = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Reason for the appointment (optional).";
+      example: "\"Annual Checkup\"";
+    }];
+    AppointmentStatus status = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Current status of the appointment.";
+      example: "\"SCHEDULED\""; // Example of enum as string
+    }];
+    string notes = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Additional notes about the appointment (optional).";
+      example: "\"Patient requested morning slot.\"";
+    }];
+    google.protobuf.Timestamp created_at = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Timestamp when the appointment was created (RFC3339 UTC format).";
+      example: "\"2023-03-20T15:00:00Z\"";
+    }];
+    google.protobuf.Timestamp updated_at = 10 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Timestamp when the appointment was last updated (RFC3339 UTC format).";
+      example: "\"2023-03-21T09:30:00Z\"";
+    }];
+    string place = 11 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Location/Place of the appointment (e.g., Room number, Clinic name) (optional).";
+      example: "\"Clinic Room 3\"";
+    }];
 }
 
 // --- Request/Response Messages for Service Methods ---
 
 message ScheduleAppointmentRequest {
-    string patient_id = 1; // UUID as string
-    string doctor_id = 2; // UUID as string
-    string reason = 3;
-    google.protobuf.Timestamp appointment_time = 4;
-    google.protobuf.Duration duration = 5;
-    string place = 6; // Added: Location/Place for the new appointment
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Schedule Appointment Request";
+      description: "Data required to schedule a new appointment.";
+      required: ["patient_id", "doctor_id", "appointment_time", "duration"];
+    }
+  };
+    string patient_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the patient.";
+      example: "\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    string doctor_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the doctor/staff.";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    string reason = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Reason for the appointment (optional).";
+      example: "\"Follow-up consultation\"";
+    }];
+    google.protobuf.Timestamp appointment_time = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Desired date and time for the appointment (RFC3339 UTC format).";
+      example: "\"2023-04-10T14:00:00Z\"";
+    }];
+    google.protobuf.Duration duration = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Desired duration for the appointment (e.g., \"900s\" for 15 mins).";
+      example: "\"900s\"";
+    }];
+    string place = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Location/Place for the new appointment (optional).";
+      example: "\"Consultation Room A\"";
+    }];
 }
 
 message ScheduleAppointmentResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Schedule Appointment Response";
+      description: "Contains the details of the newly scheduled appointment.";
+    }
+  };
     Appointment appointment = 1;
 }
 
 message GetAppointmentDetailsRequest {
-    string appointment_id = 1; // UUID as string
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Appointment Details Request";
+      description: "Specifies the ID of the appointment to retrieve.";
+    }
+  };
+    string appointment_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the appointment.";
+      example: "\"apt-a1b2c3d4-e5f6-7890-1234-567890abcdef\"";
+    }];
 }
 
 message GetAppointmentDetailsResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Appointment Details Response";
+      description: "Contains the details of the requested appointment.";
+    }
+  };
     Appointment appointment = 1;
 }
 
 message UpdateAppointmentStatusRequest {
-    string appointment_id = 1; // UUID as string
-    AppointmentStatus status = 2;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Update Appointment Status Request";
+      description: "Specifies the ID of the appointment and the new status.";
+      required: ["appointment_id", "status"];
+    }
+  };
+    string appointment_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the appointment to update.";
+      example: "\"apt-a1b2c3d4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    AppointmentStatus status = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The new status for the appointment.";
+      example: "\"CONFIRMED\"";
+    }];
 }
 
 message UpdateAppointmentStatusResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Update Appointment Status Response";
+      description: "Contains the appointment details after the status update.";
+    }
+  };
     Appointment appointment = 1;
 }
 
 message RescheduleAppointmentRequest {
-    string appointment_id = 1; // UUID as string
-    google.protobuf.Timestamp new_time = 2;
-    google.protobuf.Duration new_duration = 3; // Optional, use field mask or presence check
-    string place = 4; // Optional: New Location/Place for the rescheduled appointment
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Reschedule Appointment Request";
+      description: "Specifies the ID and new details for rescheduling an appointment.";
+      required: ["appointment_id", "new_time"];
+    }
+  };
+    string appointment_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the appointment to reschedule.";
+      example: "\"apt-a1b2c3d4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    google.protobuf.Timestamp new_time = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The new date and time for the appointment (RFC3339 UTC format).";
+      example: "\"2023-04-11T11:00:00Z\"";
+    }];
+    google.protobuf.Duration new_duration = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Optional new duration for the appointment (e.g., \"1800s\" for 30 mins).";
+      example: "\"1800s\"";
+    }];
+    string place = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Optional new Location/Place for the rescheduled appointment.";
+      example: "\"Online Meeting\"";
+    }];
 }
 
 message RescheduleAppointmentResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Reschedule Appointment Response";
+      description: "Contains the appointment details after rescheduling.";
+    }
+  };
     Appointment appointment = 1;
 }
 
 message CancelAppointmentRequest {
-    string appointment_id = 1; // UUID as string
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Cancel Appointment Request";
+      description: "Specifies the ID of the appointment to cancel.";
+    }
+  };
+    string appointment_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the appointment to cancel.";
+      example: "\"apt-a1b2c3d4-e5f6-7890-1234-567890abcdef\"";
+    }];
 }
 
 // CancelAppointmentResponse is Empty
 
 message GetAppointmentsForPatientRequest {
-    string patient_id = 1; // UUID as string
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Appointments For Patient Request";
+      description: "Specifies the ID of the patient whose appointments are needed.";
+    }
+  };
+    string patient_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the patient.";
+      example: "\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
     // Optional: Add time range filters?
 }
 
 message GetAppointmentsForPatientResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Appointments For Patient Response";
+      description: "Contains a list of appointments for the specified patient.";
+    }
+  };
     repeated Appointment appointments = 1;
 }
 
 message GetAppointmentsForDoctorRequest {
-    string doctor_id = 1; // UUID as string
-    google.protobuf.Timestamp start_time = 2;
-    google.protobuf.Timestamp end_time = 3;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Appointments For Doctor Request";
+      description: "Specifies the ID of the doctor and a time range to retrieve appointments.";
+      required: ["doctor_id", "start_time", "end_time"];
+    }
+  };
+    string doctor_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the doctor/staff.";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    google.protobuf.Timestamp start_time = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Start of the time range (RFC3339 UTC format).";
+      example: "\"2023-04-01T00:00:00Z\"";
+    }];
+    google.protobuf.Timestamp end_time = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "End of the time range (RFC3339 UTC format).";
+      example: "\"2023-04-30T23:59:59Z\"";
+    }];
 }
 
 message GetAppointmentsForDoctorResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Appointments For Doctor Response";
+      description: "Contains a list of appointments for the specified doctor within the time range.";
+    }
+  };
     repeated Appointment appointments = 1;
 }
 
@@ -117,12 +306,88 @@ message GetAppointmentsForDoctorResponse {
 // --- Service Definition ---
 
 service AppointmentService {
-    rpc ScheduleAppointment(ScheduleAppointmentRequest) returns (ScheduleAppointmentResponse);
-    rpc GetAppointmentDetails(GetAppointmentDetailsRequest) returns (GetAppointmentDetailsResponse);
-    rpc UpdateAppointmentStatus(UpdateAppointmentStatusRequest) returns (UpdateAppointmentStatusResponse);
-    rpc RescheduleAppointment(RescheduleAppointmentRequest) returns (RescheduleAppointmentResponse);
-    rpc CancelAppointment(CancelAppointmentRequest) returns (google.protobuf.Empty);
-    rpc GetAppointmentsForPatient(GetAppointmentsForPatientRequest) returns (GetAppointmentsForPatientResponse);
-    rpc GetAppointmentsForDoctor(GetAppointmentsForDoctorRequest) returns (GetAppointmentsForDoctorResponse);
-    // rpc CheckDoctorAvailability(CheckDoctorAvailabilityRequest) returns (CheckDoctorAvailabilityResponse); // Optional
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
+    description: "Manage patient appointments";
+  };
+
+    rpc ScheduleAppointment(ScheduleAppointmentRequest) returns (ScheduleAppointmentResponse) {
+      option (google.api.http) = {
+        post: "/api/v1/appointments";
+        body: "*";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Schedule Appointment";
+        description: "Schedules a new appointment.";
+        tags: ["Appointments"];
+      };
+    }
+    rpc GetAppointmentDetails(GetAppointmentDetailsRequest) returns (GetAppointmentDetailsResponse) {
+       option (google.api.http) = {
+        get: "/api/v1/appointments/{appointment_id}";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Get Appointment Details";
+        description: "Retrieves details for a specific appointment by its ID.";
+        tags: ["Appointments"];
+      };
+    }
+    rpc UpdateAppointmentStatus(UpdateAppointmentStatusRequest) returns (UpdateAppointmentStatusResponse) {
+       option (google.api.http) = {
+        patch: "/api/v1/appointments/{appointment_id}/status";
+        body: "*"; // Body contains only the new status
+         additional_bindings {
+           put: "/api/v1/appointments/{appointment_id}/status"; // Allow PUT as well
+           body: "*";
+         }
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Update Appointment Status";
+        description: "Updates the status of an existing appointment.";
+        tags: ["Appointments"];
+      };
+    }
+    rpc RescheduleAppointment(RescheduleAppointmentRequest) returns (RescheduleAppointmentResponse) {
+      option (google.api.http) = {
+        patch: "/api/v1/appointments/{appointment_id}/reschedule";
+        body: "*";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Reschedule Appointment";
+        description: "Reschedules an existing appointment to a new time, and optionally updates duration or place.";
+        tags: ["Appointments"];
+      };
+    }
+    rpc CancelAppointment(CancelAppointmentRequest) returns (google.protobuf.Empty) {
+      option (google.api.http) = {
+        post: "/api/v1/appointments/{appointment_id}/cancel"; // Use POST for action
+        body: "*"; // Empty body expected
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Cancel Appointment";
+        description: "Cancels an existing appointment.";
+        tags: ["Appointments"];
+      };
+    }
+    rpc GetAppointmentsForPatient(GetAppointmentsForPatientRequest) returns (GetAppointmentsForPatientResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/patients/{patient_id}/appointments";
+        // Query parameters for filtering can be added here if needed
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Get Patient Appointments";
+        description: "Retrieves a list of appointments for a specific patient.";
+        tags: ["Appointments", "Patients"];
+      };
+    }
+    rpc GetAppointmentsForDoctor(GetAppointmentsForDoctorRequest) returns (GetAppointmentsForDoctorResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/doctors/{doctor_id}/appointments";
+        // start_time and end_time will be query parameters
+      };
+       option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Get Doctor Appointments";
+        description: "Retrieves a list of appointments for a specific doctor within a given time range.";
+        tags: ["Appointments", "Doctors"];
+      };
+    }
 } 

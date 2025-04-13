@@ -6,6 +6,21 @@ option go_package = "golang-microservices-boilerplate/proto/staff-service";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// Add OpenAPI definition options for the Staff Service
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Staff Service API";
+    version: "1.0";
+    description: "API for managing hospital staff, their roles, statuses, schedules, and tasks.";
+  };
+  schemes: [HTTP, HTTPS];
+  consumes: ["application/json"];
+  produces: ["application/json"];
+  // No global security defined for this internal service example
+};
 
 // --- Enums ---
 // StaffType enum removed, using role_id string instead.
@@ -13,18 +28,57 @@ import "google/protobuf/empty.proto";
 // --- Messages representing Lookup Entities ---
 
 message StaffRoleProto {
-    string name = 1;        // Primary Key
-    string description = 2;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Staff Role";
+      description: "Represents a role a staff member can have (e.g., Doctor, Nurse).";
+      required: ["name"];
+    }
+  };
+    string name = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Unique name for the role (Primary Key).";
+      example: "\"Doctor\"";
+    }];
+    string description = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Optional description of the role.";
+      example: "\"Medical doctor responsible for patient diagnosis and treatment.\"";
+    }];
 }
 
 message StaffStatusProto {
-    string name = 1;        // Primary Key
-    string description = 2;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Staff Status";
+      description: "Represents the employment status of a staff member (e.g., Active, OnLeave).";
+      required: ["name"];
+    }
+  };
+    string name = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Unique name for the status (Primary Key).";
+      example: "\"Active\"";
+    }];
+    string description = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Optional description of the status.";
+      example: "\"Currently employed and working.\"";
+    }];
 }
 
 message TaskStatusProto {
-    string name = 1;        // Primary Key
-    string description = 2;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Task Status";
+      description: "Represents the status of an assigned task (e.g., Pending, Completed).";
+      required: ["name"];
+    }
+  };
+    string name = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Unique name for the task status (Primary Key).";
+      example: "\"Pending\"";
+    }];
+    string description = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Optional description of the task status.";
+      example: "\"Task is assigned but not yet started.\"";
+    }];
 }
 
 
@@ -32,44 +86,129 @@ message TaskStatusProto {
 
 // Corresponds to entity.Task
 message TaskProto {
-    string id = 1; // UUID as string
-    // staff_id removed, linked via ScheduleEntryProto
-    string title = 2;
-    string description = 3;
-    int32 priority = 4;
-    google.protobuf.Timestamp start_time = 5;
-    google.protobuf.Timestamp end_time = 6;
-    string status_id = 7; // Foreign key to TaskStatusProto.name
-    // assigned_at, due_at, status (string) removed
-    google.protobuf.Timestamp created_at = 8;
-    google.protobuf.Timestamp updated_at = 9;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Task";
+      description: "Represents a task assigned to a staff member via their schedule.";
+      required: ["id", "title", "priority", "start_time", "end_time", "status_id", "created_at", "updated_at"];
+    }
+  };
+    string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Unique identifier for the task (UUID format).";
+      example: "\"task-a1b2c3d4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    string title = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Title or name of the task.";
+      example: "\"Review Patient Chart\"";
+    }];
+    string description = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Detailed description of the task (optional).";
+      example: "\"Review Alice Smith\'s chart before her appointment.\"";
+    }];
+    int32 priority = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Priority level of the task (e.g., 1=High, 5=Low).";
+      example: "2";
+    }];
+    google.protobuf.Timestamp start_time = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Scheduled start time of the task (RFC3339 UTC format).";
+      example: "\"2023-04-01T09:00:00Z\"";
+    }];
+    google.protobuf.Timestamp end_time = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Scheduled end time of the task (RFC3339 UTC format).";
+      example: "\"2023-04-01T09:30:00Z\"";
+    }];
+    string status_id = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Identifier of the task\'s current status (references TaskStatusProto.name).";
+      example: "\"Pending\"";
+    }];
+    google.protobuf.Timestamp created_at = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Timestamp when the task was created (RFC3339 UTC format).";
+      example: "\"2023-03-30T11:00:00Z\"";
+    }];
+    google.protobuf.Timestamp updated_at = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Timestamp when the task was last updated (RFC3339 UTC format).";
+      example: "\"2023-03-30T11:00:00Z\"";
+    }];
 }
 
 // Corresponds to entity.ScheduleEntry (Join Table)
 message ScheduleEntryProto {
-    // id, start_time, end_time, is_booked, created_at, updated_at removed
-    string staff_id = 1; // UUID as string (part of composite key in DB)
-    // TaskID is implicit through the TaskProto message below
-    TaskProto task = 2; // Contains the linked task details
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Schedule Entry";
+      description: "Links a staff member to a specific task in their schedule.";
+      required: ["staff_id", "task"];
+    }
+  };
+    string staff_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Identifier of the staff member (UUID format).";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    TaskProto task = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The task associated with this schedule entry.";
+    }];
 }
 
 // Corresponds to entity.Staff
 message Staff {
-    string id = 1; // UUID as string
-    string first_name = 2;
-    string last_name = 3;
-    google.protobuf.Timestamp date_of_birth = 4;
-    string phone_number = 5;
-    string address = 6;
-    string role_id = 7;    // Foreign key to StaffRoleProto.name
-    string status_id = 8;  // Foreign key to StaffStatusProto.name
-    string specialization = 9; // Kept for potential STI display
-    string nurse_type = 10;    // Kept for potential STI display
-    // staff_type, contact_info, is_available removed
-    repeated ScheduleEntryProto schedule = 11; // Contains ScheduleEntryProto with nested TaskProto
-    // workload removed
-    google.protobuf.Timestamp created_at = 12;
-    google.protobuf.Timestamp updated_at = 13;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Staff";
+      description: "Represents a hospital staff member.";
+      required: ["id", "first_name", "last_name", "date_of_birth", "phone_number", "address", "role_id", "status_id", "created_at", "updated_at"];
+    }
+  };
+    string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Unique identifier for the staff member (UUID format).";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    string first_name = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Staff member\'s first name.";
+      example: "\"Dr. Evelyn\"";
+    }];
+    string last_name = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Staff member\'s last name.";
+      example: "\"Reed\"";
+    }];
+    google.protobuf.Timestamp date_of_birth = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Staff member\'s date of birth (RFC3339 UTC format).";
+      example: "\"1980-08-25T00:00:00Z\"";
+    }];
+    string phone_number = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Staff member\'s contact phone number.";
+      example: "\"+15550101010\"";
+    }];
+    string address = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Staff member\'s address.";
+      example: "\"789 Staff St, Medtown\"";
+    }];
+    string role_id = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Identifier of the staff member\'s role (references StaffRoleProto.name).";
+      example: "\"Doctor\"";
+    }];
+    string status_id = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Identifier of the staff member\'s current status (references StaffStatusProto.name).";
+      example: "\"Active\"";
+    }];
+    string specialization = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The doctor\'s area of medical specialization (e.g., \"Cardiology\", \"Neurology\", \"Pediatrics\") (optional).";
+      example: "\"Cardiology\"";
+    }];
+    string nurse_type = 10 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Specifies the type of nurse (e.g., \"RN\", \"LPN\", \"NP\") (optional).";
+      example: "\"RN\"";
+    }];
+    repeated ScheduleEntryProto schedule = 11 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "List of schedule entries, each containing an assigned task.";
+    }];
+    google.protobuf.Timestamp created_at = 12 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Timestamp when the staff record was created (RFC3339 UTC format).";
+      example: "\"2022-11-01T10:00:00Z\"";
+    }];
+    google.protobuf.Timestamp updated_at = 13 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Timestamp when the staff record was last updated (RFC3339 UTC format).";
+      example: "\"2023-03-15T16:00:00Z\"";
+    }];
 }
 
 
@@ -77,157 +216,439 @@ message Staff {
 
 // Staff Operations
 message AddStaffRequest {
-    string first_name = 1;
-    string last_name = 2;
-    google.protobuf.Timestamp date_of_birth = 3;
-    string phone_number = 4;
-    string address = 5;
-    string role_id = 6;    // FK to StaffRoleProto.name
-    string status_id = 7;  // FK to StaffStatusProto.name
-    string specialization = 8; // Optional: Relevant for Doctor role
-    string nurse_type = 9;     // Optional: Relevant for Nurse role
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Add Staff Request";
+      description: "Data required to add a new staff member.";
+      required: ["first_name", "last_name", "date_of_birth", "phone_number", "address", "role_id", "status_id"];
+    }
+  };
+    string first_name = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Staff member\'s first name.";
+      example: "\"Nurse Ben\"";
+    }];
+    string last_name = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Staff member\'s last name.";
+      example: "\"Carter\"";
+    }];
+    google.protobuf.Timestamp date_of_birth = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Date of birth (RFC3339 UTC format).";
+      example: "\"1992-03-10T00:00:00Z\"";
+    }];
+    string phone_number = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Contact phone number.";
+      example: "\"+15550202020\"";
+    }];
+    string address = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Address.";
+      example: "\"101 Nurse Station, Medtown\"";
+    }];
+    string role_id = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Role identifier (e.g., \"Nurse\"). Must match an existing StaffRoleProto.name.";
+      example: "\"Nurse\"";
+    }];
+    string status_id = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Status identifier (e.g., \"Active\"). Must match an existing StaffStatusProto.name.";
+      example: "\"Active\"";
+    }];
+    string specialization = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Required for Doctor role (e.g., \"Neurology\"). Optional otherwise.";
+      example: "\"Pediatrics\"";
+    }];
+    string nurse_type = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Required for Nurse role (e.g., \"RN\"). Optional otherwise.";
+      example: "\"LPN\"";
+    }];
 }
 
 message AddStaffResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Add Staff Response";
+      description: "Contains the details of the newly added staff member.";
+    }
+  };
     Staff staff = 1;
 }
 
 message GetStaffDetailsRequest {
-    string staff_id = 1; // UUID as string
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Staff Details Request";
+      description: "Specifies the ID of the staff member to retrieve.";
+    }
+  };
+    string staff_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the staff member.";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
 }
 
 message GetStaffDetailsResponse {
-    Staff staff = 1; // Includes schedule with tasks
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Staff Details Response";
+      description: "Contains the details of the requested staff member, including their schedule/tasks.";
+    }
+  };
+    Staff staff = 1;
 }
 
 message UpdateStaffDetailsRequest {
-    string staff_id = 1; // UUID as string
-    string first_name = 2;
-    string last_name = 3;
-    google.protobuf.Timestamp date_of_birth = 4;
-    string phone_number = 5;
-    string address = 6;
-    // Role and Status are typically updated via specific RPCs if needed, not general details update
-    string specialization = 7; // Update specialization if applicable
-    string nurse_type = 8;     // Update nurse_type if applicable
-    // Note: Use field masks for partial updates in production
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Update Staff Details Request";
+      description: "Data for updating an existing staff member. Only include fields to change (PATCH semantics).";
+      required: ["staff_id"];
+    }
+  };
+    string staff_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the staff member to update.";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    // Fields below are optional for update (use wrappers or field masks in real app)
+    string first_name = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "New first name (optional).";
+      example: "\"Benjamin\"";
+    }];
+    string last_name = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "New last name (optional).";
+      example: "\"Carter\"";
+    }];
+    google.protobuf.Timestamp date_of_birth = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "New date of birth (optional, RFC3339 UTC format).";
+      example: "\"1992-03-10T00:00:00Z\"";
+    }];
+    string phone_number = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "New phone number (optional).";
+      example: "\"+15550202021\"";
+    }];
+    string address = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "New address (optional).";
+      example: "\"102 Nurse Station, Medtown\"";
+    }];
+    string specialization = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Updated specialization (optional, mainly for Doctors).";
+      example: "\"Cardiology\"";
+    }];
+    string nurse_type = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Updated nurse type (optional, mainly for Nurses).";
+      example: "\"RN\"";
+    }];
 }
 
 message UpdateStaffDetailsResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Update Staff Details Response";
+      description: "Contains the updated staff member details.";
+    }
+  };
     Staff staff = 1;
 }
 
 // --- Messages for Restored APIs (Need Implementation Review) ---
 
 message UpdateStaffScheduleRequest {
-    string staff_id = 1; // UUID as string
-    // How to represent the schedule now? Maybe list of TaskProtos to schedule?
-    // repeated ScheduleEntryProto schedule = 2; // Original field, needs review
-    repeated TaskProto tasks_to_schedule = 2; // Alternative: provide tasks to be scheduled
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Update Staff Schedule Request";
+      description: "Adds new tasks to a staff member\'s schedule.";
+      required: ["staff_id", "tasks_to_schedule"];
+    }
+  };
+    string staff_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the staff member whose schedule is being updated.";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    repeated TaskProto tasks_to_schedule = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "A list of new tasks to be created and added to the schedule.";
+    }];
 }
 
 // UpdateStaffScheduleResponse is google.protobuf.Empty
 
 message SetStaffAvailabilityRequest {
-    string staff_id = 1; // UUID as string
-    // How does this map now? To StatusID? Or a different concept?
-    // bool is_available = 2; // Original field
-    string status_id = 2; // Alternative: Map to setting the staff status?
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Set Staff Status Request";
+      description: "Sets the employment status for a staff member.";
+      required: ["staff_id", "status_id"];
+    }
+  };
+    string staff_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the staff member.";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    string status_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The name of the target status (e.g., \"OnLeave\"). Must match an existing StaffStatusProto.name.";
+      example: "\"OnLeave\"";
+    }];
 }
 
 // SetStaffAvailabilityResponse is google.protobuf.Empty
 
 message GetDoctorAvailabilityRequest {
-    string doctor_id = 1; // UUID as string (Optional: If empty, check all with 'Doctor' role_id)
-    google.protobuf.Timestamp start_time = 2;
-    google.protobuf.Timestamp end_time = 3;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Doctor Availability Request";
+      description: "Checks the availability of a specific doctor or all doctors within a time range.";
+      required: ["start_time", "end_time"];
+    }
+  };
+    string doctor_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Optional: The UUID of a specific doctor. If omitted, checks all doctors.";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    google.protobuf.Timestamp start_time = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Start of the time range (RFC3339 UTC format).";
+      example: "\"2023-04-01T08:00:00Z\"";
+    }];
+    google.protobuf.Timestamp end_time = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "End of the time range (RFC3339 UTC format).";
+      example: "\"2023-04-01T17:00:00Z\"";
+    }];
 }
 
 message GetDoctorAvailabilityResponse {
-    // How to define availability now? Free time slots derived from existing TaskProto start/end times?
-    // repeated ScheduleEntryProto available_slots = 1; // Original, needs review
-    message TimeSlot {
-        google.protobuf.Timestamp start_time = 1;
-        google.protobuf.Timestamp end_time = 2;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Doctor Availability Response";
+      description: "A list of time slots when the specified doctor(s) are available.";
     }
-    repeated TimeSlot available_slots = 1; // Alternative: return calculated free slots
+  };
+    message TimeSlot {
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+        json_schema: {
+          title: "Available Time Slot";
+          description: "Represents a continuous block of available time.";
+        }
+      };
+        google.protobuf.Timestamp start_time = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+          description: "Start time of the available slot (RFC3339 UTC format).";
+          example: "\"2023-04-01T10:00:00Z\"";
+        }];
+        google.protobuf.Timestamp end_time = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+          description: "End time of the available slot (RFC3339 UTC format).";
+          example: "\"2023-04-01T10:30:00Z\"";
+        }];
+    }
+    repeated TimeSlot available_slots = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "List of available time slots.";
+    }];
 }
 
 message AssignTaskRequest {
-    string staff_id = 1; // UUID as string
-    // Task details to create and link via a ScheduleEntry
-    string title = 2;
-    string description = 3;
-    int32 priority = 4;
-    google.protobuf.Timestamp start_time = 5;
-    google.protobuf.Timestamp end_time = 6;
-    string status_id = 7; // Initial task status
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Assign Task Request";
+      description: "Data required to create and assign a new task to a staff member.";
+      required: ["staff_id", "title", "start_time", "end_time", "status_id"];
+    }
+  };
+    string staff_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the staff member to assign the task to.";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    string title = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Title of the task.";
+      example: "\"Prepare Morning Meds\"";
+    }];
+    string description = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Optional description of the task.";
+      example: "\"Prepare medications for patients on Ward C.\"";
+    }];
+    int32 priority = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Priority level (optional, default depends on implementation).";
+      example: "3";
+    }];
+    google.protobuf.Timestamp start_time = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Scheduled start time for the task (RFC3339 UTC format).";
+      example: "\"2023-04-01T08:00:00Z\"";
+    }];
+    google.protobuf.Timestamp end_time = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Scheduled end time for the task (RFC3339 UTC format).";
+      example: "\"2023-04-01T08:30:00Z\"";
+    }];
+    string status_id = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Initial status for the task (e.g., \"Pending\"). Must match an existing TaskStatusProto.name.";
+      example: "\"Pending\"";
+    }];
 }
 
 // AssignTaskResponse is google.protobuf.Empty (or could return created TaskProto)
 
 message TrackWorkloadRequest {
-    string staff_id = 1; // UUID as string
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Track Workload Request";
+      description: "Specifies the ID of the staff member whose workload is requested.";
+    }
+  };
+    string staff_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the staff member.";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
 }
 
 message TrackWorkloadResponse {
-    // Can be derived from Staff.schedule[].task
-    repeated TaskProto workload = 1;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Track Workload Response";
+      description: "Contains a list of tasks assigned to the specified staff member.";
+    }
+  };
+    repeated TaskProto workload = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "List of tasks assigned to the staff member.";
+    }];
 }
 
 // --- Messages for Lookup Table Operations ---
 
 // Role Operations
 message AddStaffRoleRequest {
-    string name = 1;
-    string description = 2;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Add Staff Role Request";
+      description: "Data for creating a new staff role.";
+      required: ["name"];
+    }
+  };
+    string name = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Unique name for the new role.";
+      example: "\"Pharmacist\"";
+    }];
+    string description = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Optional description.";
+      example: "\"Dispenses medications.\"";
+    }];
 }
 
 message AddStaffRoleResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Add Staff Role Response";
+      description: "Contains the details of the newly created staff role.";
+    }
+  };
     StaffRoleProto role = 1;
 }
 
 message ListStaffRolesRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "List Staff Roles Request";
+      description: "Request to list all available staff roles (no parameters currently).";
+    }
+  };
     // Add pagination fields if needed
 }
 
 message ListStaffRolesResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "List Staff Roles Response";
+      description: "A list of all available staff roles.";
+    }
+  };
     repeated StaffRoleProto roles = 1;
 }
 
 // Status Operations
 message AddStaffStatusRequest {
-    string name = 1;
-    string description = 2;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Add Staff Status Request";
+      description: "Data for creating a new staff employment status.";
+      required: ["name"];
+    }
+  };
+    string name = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Unique name for the new status.";
+      example: "\"Terminated\"";
+    }];
+    string description = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Optional description.";
+      example: "\"Employment ended.\"";
+    }];
 }
 
 message AddStaffStatusResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Add Staff Status Response";
+      description: "Contains the details of the newly created staff status.";
+    }
+  };
     StaffStatusProto status = 1;
 }
 
 message ListStaffStatusesRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "List Staff Statuses Request";
+      description: "Request to list all available staff statuses (no parameters currently).";
+    }
+  };
     // Add pagination fields if needed
 }
 
 message ListStaffStatusesResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "List Staff Statuses Response";
+      description: "A list of all available staff statuses.";
+    }
+  };
     repeated StaffStatusProto statuses = 1;
 }
 
 // Task Status Operations
 message AddTaskStatusRequest {
-    string name = 1;
-    string description = 2;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Add Task Status Request";
+      description: "Data for creating a new task status.";
+      required: ["name"];
+    }
+  };
+    string name = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Unique name for the new task status.";
+      example: "\"Blocked\"";
+    }];
+    string description = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Optional description.";
+      example: "\"Task cannot proceed due to external factor.\"";
+    }];
 }
 
 message AddTaskStatusResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Add Task Status Response";
+      description: "Contains the details of the newly created task status.";
+    }
+  };
     TaskStatusProto status = 1;
 }
 
 message ListTaskStatusesRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "List Task Statuses Request";
+      description: "Request to list all available task statuses (no parameters currently).";
+    }
+  };
     // Add pagination fields if needed
 }
 
 message ListTaskStatusesResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "List Task Statuses Response";
+      description: "A list of all available task statuses.";
+    }
+  };
     repeated TaskStatusProto statuses = 1;
 }
 
@@ -235,25 +656,164 @@ message ListTaskStatusesResponse {
 // --- Service Definition ---
 
 service StaffService {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
+    description: "Manage hospital staff, schedules, and tasks";
+  };
+
     // Staff Management
-    rpc AddStaff(AddStaffRequest) returns (AddStaffResponse);
-    rpc GetStaffDetails(GetStaffDetailsRequest) returns (GetStaffDetailsResponse);
-    rpc UpdateStaffDetails(UpdateStaffDetailsRequest) returns (UpdateStaffDetailsResponse);
+    rpc AddStaff(AddStaffRequest) returns (AddStaffResponse) {
+      option (google.api.http) = {
+        post: "/api/v1/staff";
+        body: "*";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Add Staff Member";
+        description: "Adds a new staff member to the system.";
+        tags: ["Staff"];
+      };
+    }
+    rpc GetStaffDetails(GetStaffDetailsRequest) returns (GetStaffDetailsResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/staff/{staff_id}";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Get Staff Details";
+        description: "Retrieves details for a specific staff member by their ID, including schedule/tasks.";
+        tags: ["Staff"];
+      };
+    }
+    rpc UpdateStaffDetails(UpdateStaffDetailsRequest) returns (UpdateStaffDetailsResponse) {
+      option (google.api.http) = {
+        patch: "/api/v1/staff/{staff_id}";
+        body: "*";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Update Staff Details";
+        description: "Updates specific details for an existing staff member.";
+        tags: ["Staff"];
+      };
+    }
 
     // Restored APIs (Implementation needs careful review based on new entities)
-    rpc UpdateStaffSchedule(UpdateStaffScheduleRequest) returns (google.protobuf.Empty);
-    rpc SetStaffAvailability(SetStaffAvailabilityRequest) returns (google.protobuf.Empty);
-    rpc GetDoctorAvailability(GetDoctorAvailabilityRequest) returns (GetDoctorAvailabilityResponse);
-    rpc AssignTask(AssignTaskRequest) returns (google.protobuf.Empty); // Consider returning TaskProto
-    rpc TrackWorkload(TrackWorkloadRequest) returns (TrackWorkloadResponse);
+    rpc UpdateStaffSchedule(UpdateStaffScheduleRequest) returns (google.protobuf.Empty) {
+      option (google.api.http) = {
+        put: "/api/v1/staff/{staff_id}/schedule"; // Use PUT as it adds tasks to schedule
+        body: "*";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Update Staff Schedule";
+        description: "Adds a list of new tasks to a staff member\'s schedule.";
+        tags: ["Staff Schedule"];
+      };
+    }
+    rpc SetStaffAvailability(SetStaffAvailabilityRequest) returns (google.protobuf.Empty) {
+      option (google.api.http) = {
+        put: "/api/v1/staff/{staff_id}/status"; // Changed from availability to status
+        body: "*"; // Body just contains status_id
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Set Staff Status";
+        description: "Sets the employment status for a staff member.";
+        tags: ["Staff"];
+      };
+    }
+    rpc GetDoctorAvailability(GetDoctorAvailabilityRequest) returns (GetDoctorAvailabilityResponse) {
+       option (google.api.http) = {
+        get: "/api/v1/doctors/availability"; // Changed path to be more specific
+        // doctor_id, start_time, end_time will be query parameters
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Get Doctor Availability";
+        description: "Retrieves available time slots for a specific doctor or all doctors within a time range.";
+        tags: ["Staff Schedule", "Doctors"];
+      };
+    }
+    rpc AssignTask(AssignTaskRequest) returns (google.protobuf.Empty) { // Consider returning TaskProto
+      option (google.api.http) = {
+        post: "/api/v1/staff/{staff_id}/tasks";
+        body: "*";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Assign Task";
+        description: "Creates and assigns a new task to a specific staff member.";
+        tags: ["Staff Tasks"];
+      };
+    }
+    rpc TrackWorkload(TrackWorkloadRequest) returns (TrackWorkloadResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/staff/{staff_id}/workload";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Track Staff Workload";
+        description: "Retrieves the list of tasks assigned to a specific staff member.";
+        tags: ["Staff Tasks"];
+      };
+    }
 
     // Lookup Table Management
-    rpc AddStaffRole(AddStaffRoleRequest) returns (AddStaffRoleResponse);
-    rpc ListStaffRoles(ListStaffRolesRequest) returns (ListStaffRolesResponse);
+    rpc AddStaffRole(AddStaffRoleRequest) returns (AddStaffRoleResponse) {
+      option (google.api.http) = {
+        post: "/api/v1/staff-roles";
+        body: "*";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Add Staff Role";
+        description: "Creates a new staff role definition.";
+        tags: ["Lookups", "Staff Roles"];
+      };
+    }
+    rpc ListStaffRoles(ListStaffRolesRequest) returns (ListStaffRolesResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/staff-roles";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "List Staff Roles";
+        description: "Retrieves a list of all available staff roles.";
+        tags: ["Lookups", "Staff Roles"];
+      };
+    }
 
-    rpc AddStaffStatus(AddStaffStatusRequest) returns (AddStaffStatusResponse);
-    rpc ListStaffStatuses(ListStaffStatusesRequest) returns (ListStaffStatusesResponse);
+    rpc AddStaffStatus(AddStaffStatusRequest) returns (AddStaffStatusResponse) {
+      option (google.api.http) = {
+        post: "/api/v1/staff-statuses";
+        body: "*";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Add Staff Status";
+        description: "Creates a new staff employment status definition.";
+        tags: ["Lookups", "Staff Statuses"];
+      };
+    }
+    rpc ListStaffStatuses(ListStaffStatusesRequest) returns (ListStaffStatusesResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/staff-statuses";
+      };
+       option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "List Staff Statuses";
+        description: "Retrieves a list of all available staff employment statuses.";
+        tags: ["Lookups", "Staff Statuses"];
+      };
+    }
 
-    rpc AddTaskStatus(AddTaskStatusRequest) returns (AddTaskStatusResponse);
-    rpc ListTaskStatuses(ListTaskStatusesRequest) returns (ListTaskStatusesResponse);
+    rpc AddTaskStatus(AddTaskStatusRequest) returns (AddTaskStatusResponse) {
+      option (google.api.http) = {
+        post: "/api/v1/task-statuses";
+        body: "*";
+      };
+       option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Add Task Status";
+        description: "Creates a new task status definition.";
+        tags: ["Lookups", "Task Statuses"];
+      };
+    }
+    rpc ListTaskStatuses(ListTaskStatusesRequest) returns (ListTaskStatusesResponse) {
+       option (google.api.http) = {
+        get: "/api/v1/task-statuses";
+      };
+       option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "List Task Statuses";
+        description: "Retrieves a list of all available task statuses.";
+        tags: ["Lookups", "Task Statuses"];
+      };
+    }
 } 

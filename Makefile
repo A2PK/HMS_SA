@@ -34,20 +34,33 @@ delete-cluster:
 remove-image:
 	docker rmi api-gateway:latest
 	docker rmi user-service:latest
+	docker rmi patient-service:latest
+	docker rmi staff-service:latest
+	docker rmi appointment-service:latest
+
 build-image:
 	docker build -t api-gateway:latest -f services/api-gateway/Dockerfile .
 	docker build -t user-service:latest -f services/user-service/Dockerfile .
+	docker build -t patient-service:latest -f services/patient-service/Dockerfile .
+	docker build -t staff-service:latest -f services/staff-service/Dockerfile .
+	docker build -t appointment-service:latest -f services/appointment-service/Dockerfile .
 
 image:	remove-image	build-image
 
 load-image:
 	kind load docker-image api-gateway:latest --name ride-sharing-cluster
 	kind load docker-image user-service:latest --name ride-sharing-cluster
+	kind load docker-image patient-service:latest --name ride-sharing-cluster
+	kind load docker-image staff-service:latest --name ride-sharing-cluster
+	kind load docker-image appointment-service:latest --name ride-sharing-cluster
 
 apply-config:
 	kubectl apply -f k8s/common/ # Apply Namespace and RBAC
 	kubectl apply -f k8s/api-gateway/ # Apply ConfigMap, Deployment, Service, Ingress
 	kubectl apply -f k8s/user-service/ # Apply ConfigMap, Deployment, Service
+	kubectl apply -f k8s/patient-service/ # Apply ConfigMap, Deployment, Service
+	kubectl apply -f k8s/staff-service/ # Apply ConfigMap, Deployment, Service
+	kubectl apply -f k8s/appointment-service/ # Apply ConfigMap, Deployment, Service
 
 .PHONY: describe-api
 describe-api:
@@ -61,6 +74,18 @@ describe-user:
 api-logs:
 	kubectl logs -n ride-sharing -l app=api-gateway --tail=100
 
+.PHONY: patient-logs
+patient-logs:
+	kubectl logs -n ride-sharing -l app=patient-service --tail=100
+
+.PHONY: staff-logs
+staff-logs:
+	kubectl logs -n ride-sharing -l app=staff-service --tail=100
+
+.PHONY: appointment-logs
+appointment-logs:
+	kubectl logs -n ride-sharing -l app=appointment-service --tail=100
+
 .PHONY: user-logs
 user-logs:
 	kubectl logs -n ride-sharing -l app=user-service --tail=100
@@ -69,6 +94,9 @@ user-logs:
 restart-deployments:
 	kubectl rollout restart deployment -n ride-sharing api-gateway
 	kubectl rollout restart deployment -n ride-sharing user-service
+	kubectl rollout restart deployment -n ride-sharing patient-service
+	kubectl rollout restart deployment -n ride-sharing staff-service
+	kubectl rollout restart deployment -n ride-sharing appointment-service
 
 forward-api:
 	kubectl port-forward -n ride-sharing service/api-gateway 8081:8081

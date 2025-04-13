@@ -13,8 +13,9 @@ spec:
       labels:
         app: user-service
     spec:
-      nodeSelector:
-        service: user-service
+      # Commenting out the nodeSelector to allow scheduling on any node
+      # nodeSelector:
+      #   app: user-service
       containers:
       - name: user-service
         image: user-service:latest

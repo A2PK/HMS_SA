@@ -182,40 +182,6 @@ func (g *Gateway) Shutdown(ctx context.Context) error {
 	return nil
 }
 
-// setupHandlers registers gRPC-Gateway handlers for all services
-func (g *Gateway) setupHandlers() error {
-	services, err := g.discovery.GetAllServices()
-	if err != nil {
-		return fmt.Errorf("failed to get services: %w", err)
-	}
-
-	for _, service := range services {
-		switch strings.ToLower(service.Name) {
-		case "user", "user-service":
-			if err := g.setupUserServiceHandlers(service); err != nil {
-				return err
-			}
-		case "patient", "patient-service":
-			if err := g.setupPatientServiceHandlers(service); err != nil {
-				return err
-			}
-		case "appointment", "appointment-service":
-			if err := g.setupAppointmentServiceHandlers(service); err != nil {
-				return err
-			}
-		case "staff", "staff-service":
-			if err := g.setupStaffServiceHandlers(service); err != nil {
-				return err
-			}
-		// Add cases for other services here
-		default:
-			g.logger.Warn("Unknown service discovered, skipping handler setup", "service_name", service.Name, "endpoint", service.Endpoint)
-		}
-	}
-
-	return nil
-}
-
 // defaultErrorHandler is the default gRPC-Gateway error handler.
 func defaultErrorHandler(ctx context.Context, mux *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, r *http.Request, err error) {
 	grpclog.Errorf("gRPC-Gateway Error: %v", err)

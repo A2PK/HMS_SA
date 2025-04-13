@@ -7,6 +7,8 @@
 package staff_service
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
@@ -25,7 +27,7 @@ const (
 
 type StaffRoleProto struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"` // Primary Key
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -77,7 +79,7 @@ func (x *StaffRoleProto) GetDescription() string {
 
 type StaffStatusProto struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"` // Primary Key
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -129,7 +131,7 @@ func (x *StaffStatusProto) GetDescription() string {
 
 type TaskStatusProto struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"` // Primary Key
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -181,16 +183,14 @@ func (x *TaskStatusProto) GetDescription() string {
 
 // Corresponds to entity.Task
 type TaskProto struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // UUID as string
-	// staff_id removed, linked via ScheduleEntryProto
-	Title       string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	Description string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	Priority    int32                  `protobuf:"varint,4,opt,name=priority,proto3" json:"priority,omitempty"`
-	StartTime   *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
-	EndTime     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
-	StatusId    string                 `protobuf:"bytes,7,opt,name=status_id,json=statusId,proto3" json:"status_id,omitempty"` // Foreign key to TaskStatusProto.name
-	// assigned_at, due_at, status (string) removed
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Priority      int32                  `protobuf:"varint,4,opt,name=priority,proto3" json:"priority,omitempty"`
+	StartTime     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	EndTime       *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	StatusId      string                 `protobuf:"bytes,7,opt,name=status_id,json=statusId,proto3" json:"status_id,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -292,11 +292,9 @@ func (x *TaskProto) GetUpdatedAt() *timestamppb.Timestamp {
 
 // Corresponds to entity.ScheduleEntry (Join Table)
 type ScheduleEntryProto struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// id, start_time, end_time, is_booked, created_at, updated_at removed
-	StaffId string `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"` // UUID as string (part of composite key in DB)
-	// TaskID is implicit through the TaskProto message below
-	Task          *TaskProto `protobuf:"bytes,2,opt,name=task,proto3" json:"task,omitempty"` // Contains the linked task details
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	StaffId       string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"`
+	Task          *TaskProto             `protobuf:"bytes,2,opt,name=task,proto3" json:"task,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -348,23 +346,21 @@ func (x *ScheduleEntryProto) GetTask() *TaskProto {
 // Corresponds to entity.Staff
 type Staff struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	Id             string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // UUID as string
+	Id             string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	FirstName      string                 `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
 	LastName       string                 `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
 	DateOfBirth    *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=date_of_birth,json=dateOfBirth,proto3" json:"date_of_birth,omitempty"`
 	PhoneNumber    string                 `protobuf:"bytes,5,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
 	Address        string                 `protobuf:"bytes,6,opt,name=address,proto3" json:"address,omitempty"`
-	RoleId         string                 `protobuf:"bytes,7,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`           // Foreign key to StaffRoleProto.name
-	StatusId       string                 `protobuf:"bytes,8,opt,name=status_id,json=statusId,proto3" json:"status_id,omitempty"`     // Foreign key to StaffStatusProto.name
-	Specialization string                 `protobuf:"bytes,9,opt,name=specialization,proto3" json:"specialization,omitempty"`         // Kept for potential STI display
-	NurseType      string                 `protobuf:"bytes,10,opt,name=nurse_type,json=nurseType,proto3" json:"nurse_type,omitempty"` // Kept for potential STI display
-	// staff_type, contact_info, is_available removed
-	Schedule []*ScheduleEntryProto `protobuf:"bytes,11,rep,name=schedule,proto3" json:"schedule,omitempty"` // Contains ScheduleEntryProto with nested TaskProto
-	// workload removed
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	RoleId         string                 `protobuf:"bytes,7,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	StatusId       string                 `protobuf:"bytes,8,opt,name=status_id,json=statusId,proto3" json:"status_id,omitempty"`
+	Specialization string                 `protobuf:"bytes,9,opt,name=specialization,proto3" json:"specialization,omitempty"`
+	NurseType      string                 `protobuf:"bytes,10,opt,name=nurse_type,json=nurseType,proto3" json:"nurse_type,omitempty"`
+	Schedule       []*ScheduleEntryProto  `protobuf:"bytes,11,rep,name=schedule,proto3" json:"schedule,omitempty"`
+	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Staff) Reset() {
@@ -496,10 +492,10 @@ type AddStaffRequest struct {
 	DateOfBirth    *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=date_of_birth,json=dateOfBirth,proto3" json:"date_of_birth,omitempty"`
 	PhoneNumber    string                 `protobuf:"bytes,4,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
 	Address        string                 `protobuf:"bytes,5,opt,name=address,proto3" json:"address,omitempty"`
-	RoleId         string                 `protobuf:"bytes,6,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`          // FK to StaffRoleProto.name
-	StatusId       string                 `protobuf:"bytes,7,opt,name=status_id,json=statusId,proto3" json:"status_id,omitempty"`    // FK to StaffStatusProto.name
-	Specialization string                 `protobuf:"bytes,8,opt,name=specialization,proto3" json:"specialization,omitempty"`        // Optional: Relevant for Doctor role
-	NurseType      string                 `protobuf:"bytes,9,opt,name=nurse_type,json=nurseType,proto3" json:"nurse_type,omitempty"` // Optional: Relevant for Nurse role
+	RoleId         string                 `protobuf:"bytes,6,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	StatusId       string                 `protobuf:"bytes,7,opt,name=status_id,json=statusId,proto3" json:"status_id,omitempty"`
+	Specialization string                 `protobuf:"bytes,8,opt,name=specialization,proto3" json:"specialization,omitempty"`
+	NurseType      string                 `protobuf:"bytes,9,opt,name=nurse_type,json=nurseType,proto3" json:"nurse_type,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -643,7 +639,7 @@ func (x *AddStaffResponse) GetStaff() *Staff {
 
 type GetStaffDetailsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	StaffId       string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"` // UUID as string
+	StaffId       string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -687,7 +683,7 @@ func (x *GetStaffDetailsRequest) GetStaffId() string {
 
 type GetStaffDetailsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Staff         *Staff                 `protobuf:"bytes,1,opt,name=staff,proto3" json:"staff,omitempty"` // Includes schedule with tasks
+	Staff         *Staff                 `protobuf:"bytes,1,opt,name=staff,proto3" json:"staff,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -730,16 +726,16 @@ func (x *GetStaffDetailsResponse) GetStaff() *Staff {
 }
 
 type UpdateStaffDetailsRequest struct {
-	state       protoimpl.MessageState `protogen:"open.v1"`
-	StaffId     string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"` // UUID as string
-	FirstName   string                 `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
-	LastName    string                 `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
-	DateOfBirth *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=date_of_birth,json=dateOfBirth,proto3" json:"date_of_birth,omitempty"`
-	PhoneNumber string                 `protobuf:"bytes,5,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
-	Address     string                 `protobuf:"bytes,6,opt,name=address,proto3" json:"address,omitempty"`
-	// Role and Status are typically updated via specific RPCs if needed, not general details update
-	Specialization string `protobuf:"bytes,7,opt,name=specialization,proto3" json:"specialization,omitempty"`        // Update specialization if applicable
-	NurseType      string `protobuf:"bytes,8,opt,name=nurse_type,json=nurseType,proto3" json:"nurse_type,omitempty"` // Update nurse_type if applicable
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	StaffId string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"`
+	// Fields below are optional for update (use wrappers or field masks in real app)
+	FirstName      string                 `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	LastName       string                 `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	DateOfBirth    *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=date_of_birth,json=dateOfBirth,proto3" json:"date_of_birth,omitempty"`
+	PhoneNumber    string                 `protobuf:"bytes,5,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
+	Address        string                 `protobuf:"bytes,6,opt,name=address,proto3" json:"address,omitempty"`
+	Specialization string                 `protobuf:"bytes,7,opt,name=specialization,proto3" json:"specialization,omitempty"`
+	NurseType      string                 `protobuf:"bytes,8,opt,name=nurse_type,json=nurseType,proto3" json:"nurse_type,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -875,11 +871,9 @@ func (x *UpdateStaffDetailsResponse) GetStaff() *Staff {
 }
 
 type UpdateStaffScheduleRequest struct {
-	state   protoimpl.MessageState `protogen:"open.v1"`
-	StaffId string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"` // UUID as string
-	// How to represent the schedule now? Maybe list of TaskProtos to schedule?
-	// repeated ScheduleEntryProto schedule = 2; // Original field, needs review
-	TasksToSchedule []*TaskProto `protobuf:"bytes,2,rep,name=tasks_to_schedule,json=tasksToSchedule,proto3" json:"tasks_to_schedule,omitempty"` // Alternative: provide tasks to be scheduled
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	StaffId         string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"`
+	TasksToSchedule []*TaskProto           `protobuf:"bytes,2,rep,name=tasks_to_schedule,json=tasksToSchedule,proto3" json:"tasks_to_schedule,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -929,11 +923,9 @@ func (x *UpdateStaffScheduleRequest) GetTasksToSchedule() []*TaskProto {
 }
 
 type SetStaffAvailabilityRequest struct {
-	state   protoimpl.MessageState `protogen:"open.v1"`
-	StaffId string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"` // UUID as string
-	// How does this map now? To StatusID? Or a different concept?
-	// bool is_available = 2; // Original field
-	StatusId      string `protobuf:"bytes,2,opt,name=status_id,json=statusId,proto3" json:"status_id,omitempty"` // Alternative: Map to setting the staff status?
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	StaffId       string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"`
+	StatusId      string                 `protobuf:"bytes,2,opt,name=status_id,json=statusId,proto3" json:"status_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -984,7 +976,7 @@ func (x *SetStaffAvailabilityRequest) GetStatusId() string {
 
 type GetDoctorAvailabilityRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	DoctorId      string                 `protobuf:"bytes,1,opt,name=doctor_id,json=doctorId,proto3" json:"doctor_id,omitempty"` // UUID as string (Optional: If empty, check all with 'Doctor' role_id)
+	DoctorId      string                 `protobuf:"bytes,1,opt,name=doctor_id,json=doctorId,proto3" json:"doctor_id,omitempty"`
 	StartTime     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	EndTime       *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -1044,7 +1036,7 @@ func (x *GetDoctorAvailabilityRequest) GetEndTime() *timestamppb.Timestamp {
 
 type GetDoctorAvailabilityResponse struct {
 	state          protoimpl.MessageState                    `protogen:"open.v1"`
-	AvailableSlots []*GetDoctorAvailabilityResponse_TimeSlot `protobuf:"bytes,1,rep,name=available_slots,json=availableSlots,proto3" json:"available_slots,omitempty"` // Alternative: return calculated free slots
+	AvailableSlots []*GetDoctorAvailabilityResponse_TimeSlot `protobuf:"bytes,1,rep,name=available_slots,json=availableSlots,proto3" json:"available_slots,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1087,15 +1079,14 @@ func (x *GetDoctorAvailabilityResponse) GetAvailableSlots() []*GetDoctorAvailabi
 }
 
 type AssignTaskRequest struct {
-	state   protoimpl.MessageState `protogen:"open.v1"`
-	StaffId string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"` // UUID as string
-	// Task details to create and link via a ScheduleEntry
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	StaffId       string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	Priority      int32                  `protobuf:"varint,4,opt,name=priority,proto3" json:"priority,omitempty"`
 	StartTime     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	EndTime       *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
-	StatusId      string                 `protobuf:"bytes,7,opt,name=status_id,json=statusId,proto3" json:"status_id,omitempty"` // Initial task status
+	StatusId      string                 `protobuf:"bytes,7,opt,name=status_id,json=statusId,proto3" json:"status_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1181,7 +1172,7 @@ func (x *AssignTaskRequest) GetStatusId() string {
 
 type TrackWorkloadRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	StaffId       string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"` // UUID as string
+	StaffId       string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1224,9 +1215,8 @@ func (x *TrackWorkloadRequest) GetStaffId() string {
 }
 
 type TrackWorkloadResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Can be derived from Staff.schedule[].task
-	Workload      []*TaskProto `protobuf:"bytes,1,rep,name=workload,proto3" json:"workload,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Workload      []*TaskProto           `protobuf:"bytes,1,rep,name=workload,proto3" json:"workload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1799,8 +1789,6 @@ func (x *ListTaskStatusesResponse) GetStatuses() []*TaskStatusProto {
 	return nil
 }
 
-// How to define availability now? Free time slots derived from existing TaskProto start/end times?
-// repeated ScheduleEntryProto available_slots = 1; // Original, needs review
 type GetDoctorAvailabilityResponse_TimeSlot struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	StartTime     *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
@@ -1857,153 +1845,218 @@ var File_proto_staff_service_staff_proto protoreflect.FileDescriptor
 
 const file_proto_staff_service_staff_proto_rawDesc = "" +
 	"\n" +
-	"\x1fproto/staff-service/staff.proto\x12\fstaffservice\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\"F\n" +
-	"\x0eStaffRoleProto\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\"H\n" +
-	"\x10StaffStatusProto\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\"G\n" +
-	"\x0fTaskStatusProto\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\"\xf4\x02\n" +
-	"\tTaskProto\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1a\n" +
-	"\bpriority\x18\x04 \x01(\x05R\bpriority\x129\n" +
+	"\x1fproto/staff-service/staff.proto\x12\fstaffservice\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xc6\x02\n" +
+	"\x0eStaffRoleProto\x12J\n" +
+	"\x04name\x18\x01 \x01(\tB6\x92A32'Unique name for the role (Primary Key).J\b\"Doctor\"R\x04name\x12\x8b\x01\n" +
+	"\vdescription\x18\x02 \x01(\tBi\x92Af2!Optional description of the role.JA\"Medical doctor responsible for patient diagnosis and treatment.\"R\vdescription:Z\x92AW\n" +
+	"U*\n" +
+	"Staff Role2@Represents a role a staff member can have (e.g., Doctor, Nurse).\xd2\x01\x04name\"\xb8\x02\n" +
+	"\x10StaffStatusProto\x12L\n" +
+	"\x04name\x18\x01 \x01(\tB8\x92A52)Unique name for the status (Primary Key).J\b\"Active\"R\x04name\x12m\n" +
+	"\vdescription\x18\x02 \x01(\tBK\x92AH2#Optional description of the status.J!\"Currently employed and working.\"R\vdescription:g\x92Ad\n" +
+	"b*\fStaff Status2KRepresents the employment status of a staff member (e.g., Active, OnLeave).\xd2\x01\x04name\"\xc1\x02\n" +
+	"\x0fTaskStatusProto\x12R\n" +
+	"\x04name\x18\x01 \x01(\tB>\x92A;2.Unique name for the task status (Primary Key).J\t\"Pending\"R\x04name\x12x\n" +
+	"\vdescription\x18\x02 \x01(\tBV\x92AS2(Optional description of the task status.J'\"Task is assigned but not yet started.\"R\vdescription:`\x92A]\n" +
+	"[*\vTask Status2ERepresents the status of an assigned task (e.g., Pending, Completed).\xd2\x01\x04name\"\x98\n" +
 	"\n" +
-	"start_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tstartTime\x125\n" +
-	"\bend_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\x12\x1b\n" +
-	"\tstatus_id\x18\a \x01(\tR\bstatusId\x129\n" +
+	"\tTaskProto\x12o\n" +
+	"\x02id\x18\x01 \x01(\tB_\x92A\\2-Unique identifier for the task (UUID format).J+\"task-a1b2c3d4-e5f6-7890-1234-567890abcdef\"R\x02id\x12M\n" +
+	"\x05title\x18\x02 \x01(\tB7\x92A42\x1aTitle or name of the task.J\x16\"Review Patient Chart\"R\x05title\x12\x89\x01\n" +
+	"\vdescription\x18\x03 \x01(\tBg\x92Ad2,Detailed description of the task (optional).J4\"Review Alice Smith's chart before her appointment.\"R\vdescription\x12U\n" +
+	"\bpriority\x18\x04 \x01(\x05B9\x92A621Priority level of the task (e.g., 1=High, 5=Low).J\x012R\bpriority\x12\x8e\x01\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"start_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampBS\x92AP26Scheduled start time of the task (RFC3339 UTC format).J\x16\"2023-04-01T09:00:00Z\"R\tstartTime\x12\x88\x01\n" +
+	"\bend_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampBQ\x92AN24Scheduled end time of the task (RFC3339 UTC format).J\x16\"2023-04-01T09:30:00Z\"R\aendTime\x12w\n" +
+	"\tstatus_id\x18\a \x01(\tBZ\x92AW2JIdentifier of the task's current status (references TaskStatusProto.name).J\t\"Pending\"R\bstatusId\x12\x91\x01\n" +
 	"\n" +
-	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\\\n" +
-	"\x12ScheduleEntryProto\x12\x19\n" +
-	"\bstaff_id\x18\x01 \x01(\tR\astaffId\x12+\n" +
-	"\x04task\x18\x02 \x01(\v2\x17.staffservice.TaskProtoR\x04task\"\x81\x04\n" +
-	"\x05Staff\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampBV\x92AS29Timestamp when the task was created (RFC3339 UTC format).J\x16\"2023-03-30T11:00:00Z\"R\tcreatedAt\x12\x96\x01\n" +
 	"\n" +
-	"first_name\x18\x02 \x01(\tR\tfirstName\x12\x1b\n" +
-	"\tlast_name\x18\x03 \x01(\tR\blastName\x12>\n" +
-	"\rdate_of_birth\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\vdateOfBirth\x12!\n" +
-	"\fphone_number\x18\x05 \x01(\tR\vphoneNumber\x12\x18\n" +
-	"\aaddress\x18\x06 \x01(\tR\aaddress\x12\x17\n" +
-	"\arole_id\x18\a \x01(\tR\x06roleId\x12\x1b\n" +
-	"\tstatus_id\x18\b \x01(\tR\bstatusId\x12&\n" +
-	"\x0especialization\x18\t \x01(\tR\x0especialization\x12\x1d\n" +
+	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB[\x92AX2>Timestamp when the task was last updated (RFC3339 UTC format).J\x16\"2023-03-30T11:00:00Z\"R\tupdatedAt:\xa5\x01\x92A\xa1\x01\n" +
+	"\x9e\x01*\x04Task2@Represents a task assigned to a staff member via their schedule.\xd2\x01\x02id\xd2\x01\x05title\xd2\x01\bpriority\xd2\x01\n" +
+	"start_time\xd2\x01\bend_time\xd2\x01\tstatus_id\xd2\x01\n" +
+	"created_at\xd2\x01\n" +
+	"updated_at\"\xd1\x02\n" +
+	"\x12ScheduleEntryProto\x12u\n" +
+	"\bstaff_id\x18\x01 \x01(\tBZ\x92AW2-Identifier of the staff member (UUID format).J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\astaffId\x12_\n" +
+	"\x04task\x18\x02 \x01(\v2\x17.staffservice.TaskProtoB2\x92A/2-The task associated with this schedule entry.R\x04task:c\x92A`\n" +
+	"^*\x0eSchedule Entry2:Links a staff member to a specific task in their schedule.\xd2\x01\bstaff_id\xd2\x01\x04task\"\xbd\r\n" +
+	"\x05Staff\x12r\n" +
+	"\x02id\x18\x01 \x01(\tBb\x92A_25Unique identifier for the staff member (UUID format).J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\x02id\x12L\n" +
+	"\n" +
+	"first_name\x18\x02 \x01(\tB-\x92A*2\x1aStaff member's first name.J\f\"Dr. Evelyn\"R\tfirstName\x12C\n" +
+	"\tlast_name\x18\x03 \x01(\tB&\x92A#2\x19Staff member's last name.J\x06\"Reed\"R\blastName\x12\x8f\x01\n" +
+	"\rdate_of_birth\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampBO\x92AL22Staff member's date of birth (RFC3339 UTC format).J\x16\"1980-08-25T00:00:00Z\"R\vdateOfBirth\x12\\\n" +
+	"\fphone_number\x18\x05 \x01(\tB9\x92A62$Staff member's contact phone number.J\x0e\"+15550101010\"R\vphoneNumber\x12O\n" +
+	"\aaddress\x18\x06 \x01(\tB5\x92A22\x17Staff member's address.J\x17\"789 Staff St, Medtown\"R\aaddress\x12o\n" +
+	"\arole_id\x18\a \x01(\tBV\x92AS2GIdentifier of the staff member's role (references StaffRoleProto.name).J\b\"Doctor\"R\x06roleId\x12\x7f\n" +
+	"\tstatus_id\x18\b \x01(\tBb\x92A_2SIdentifier of the staff member's current status (references StaffStatusProto.name).J\b\"Active\"R\bstatusId\x12\xa2\x01\n" +
+	"\x0especialization\x18\t \x01(\tBz\x92Aw2gThe doctor's area of medical specialization (e.g., \"Cardiology\", \"Neurology\", \"Pediatrics\") (optional).J\f\"Cardiology\"R\x0especialization\x12k\n" +
 	"\n" +
 	"nurse_type\x18\n" +
-	" \x01(\tR\tnurseType\x12<\n" +
-	"\bschedule\x18\v \x03(\v2 .staffservice.ScheduleEntryProtoR\bschedule\x129\n" +
+	" \x01(\tBL\x92AI2ASpecifies the type of nurse (e.g., \"RN\", \"LPN\", \"NP\") (optional).J\x04\"RN\"R\tnurseType\x12~\n" +
+	"\bschedule\x18\v \x03(\v2 .staffservice.ScheduleEntryProtoB@\x92A=2;List of schedule entries, each containing an assigned task.R\bschedule\x12\x99\x01\n" +
 	"\n" +
-	"created_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB^\x92A[2ATimestamp when the staff record was created (RFC3339 UTC format).J\x16\"2022-11-01T10:00:00Z\"R\tcreatedAt\x12\x9e\x01\n" +
 	"\n" +
-	"updated_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xc7\x02\n" +
-	"\x0fAddStaffRequest\x12\x1d\n" +
+	"updated_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampBc\x92A`2FTimestamp when the staff record was last updated (RFC3339 UTC format).J\x16\"2023-03-15T16:00:00Z\"R\tupdatedAt:\xaa\x01\x92A\xa6\x01\n" +
+	"\xa3\x01*\x05Staff2#Represents a hospital staff member.\xd2\x01\x02id\xd2\x01\n" +
+	"first_name\xd2\x01\tlast_name\xd2\x01\rdate_of_birth\xd2\x01\fphone_number\xd2\x01\aaddress\xd2\x01\arole_id\xd2\x01\tstatus_id\xd2\x01\n" +
+	"created_at\xd2\x01\n" +
+	"updated_at\"\xb5\b\n" +
+	"\x0fAddStaffRequest\x12K\n" +
 	"\n" +
-	"first_name\x18\x01 \x01(\tR\tfirstName\x12\x1b\n" +
-	"\tlast_name\x18\x02 \x01(\tR\blastName\x12>\n" +
-	"\rdate_of_birth\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\vdateOfBirth\x12!\n" +
-	"\fphone_number\x18\x04 \x01(\tR\vphoneNumber\x12\x18\n" +
-	"\aaddress\x18\x05 \x01(\tR\aaddress\x12\x17\n" +
-	"\arole_id\x18\x06 \x01(\tR\x06roleId\x12\x1b\n" +
-	"\tstatus_id\x18\a \x01(\tR\bstatusId\x12&\n" +
-	"\x0especialization\x18\b \x01(\tR\x0especialization\x12\x1d\n" +
+	"first_name\x18\x01 \x01(\tB,\x92A)2\x1aStaff member's first name.J\v\"Nurse Ben\"R\tfirstName\x12E\n" +
+	"\tlast_name\x18\x02 \x01(\tB(\x92A%2\x19Staff member's last name.J\b\"Carter\"R\blastName\x12\x80\x01\n" +
+	"\rdate_of_birth\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampB@\x92A=2#Date of birth (RFC3339 UTC format).J\x16\"1992-03-10T00:00:00Z\"R\vdateOfBirth\x12M\n" +
+	"\fphone_number\x18\x04 \x01(\tB*\x92A'2\x15Contact phone number.J\x0e\"+15550202020\"R\vphoneNumber\x12E\n" +
+	"\aaddress\x18\x05 \x01(\tB+\x92A(2\bAddress.J\x1c\"101 Nurse Station, Medtown\"R\aaddress\x12s\n" +
+	"\arole_id\x18\x06 \x01(\tBZ\x92AW2LRole identifier (e.g., \"Nurse\"). Must match an existing StaffRoleProto.name.J\a\"Nurse\"R\x06roleId\x12}\n" +
+	"\tstatus_id\x18\a \x01(\tB`\x92A]2QStatus identifier (e.g., \"Active\"). Must match an existing StaffStatusProto.name.J\b\"Active\"R\bstatusId\x12|\n" +
+	"\x0especialization\x18\b \x01(\tBT\x92AQ2ARequired for Doctor role (e.g., \"Neurology\"). Optional otherwise.J\f\"Pediatrics\"R\x0especialization\x12d\n" +
 	"\n" +
-	"nurse_type\x18\t \x01(\tR\tnurseType\"=\n" +
+	"nurse_type\x18\t \x01(\tBE\x92AB29Required for Nurse role (e.g., \"RN\"). Optional otherwise.J\x05\"LPN\"R\tnurseType:\x9c\x01\x92A\x98\x01\n" +
+	"\x95\x01*\x11Add Staff Request2(Data required to add a new staff member.\xd2\x01\n" +
+	"first_name\xd2\x01\tlast_name\xd2\x01\rdate_of_birth\xd2\x01\fphone_number\xd2\x01\aaddress\xd2\x01\arole_id\xd2\x01\tstatus_id\"\x8f\x01\n" +
 	"\x10AddStaffResponse\x12)\n" +
-	"\x05staff\x18\x01 \x01(\v2\x13.staffservice.StaffR\x05staff\"3\n" +
-	"\x16GetStaffDetailsRequest\x12\x19\n" +
-	"\bstaff_id\x18\x01 \x01(\tR\astaffId\"D\n" +
+	"\x05staff\x18\x01 \x01(\v2\x13.staffservice.StaffR\x05staff:P\x92AM\n" +
+	"K*\x12Add Staff Response25Contains the details of the newly added staff member.\"\xd4\x01\n" +
+	"\x16GetStaffDetailsRequest\x12e\n" +
+	"\bstaff_id\x18\x01 \x01(\tBJ\x92AG2\x1dThe UUID of the staff member.J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\astaffId:S\x92AP\n" +
+	"N*\x19Get Staff Details Request21Specifies the ID of the staff member to retrieve.\"\xbc\x01\n" +
 	"\x17GetStaffDetailsResponse\x12)\n" +
-	"\x05staff\x18\x01 \x01(\v2\x13.staffservice.StaffR\x05staff\"\xb6\x02\n" +
-	"\x19UpdateStaffDetailsRequest\x12\x19\n" +
-	"\bstaff_id\x18\x01 \x01(\tR\astaffId\x12\x1d\n" +
+	"\x05staff\x18\x01 \x01(\v2\x13.staffservice.StaffR\x05staff:v\x92As\n" +
+	"q*\x1aGet Staff Details Response2SContains the details of the requested staff member, including their schedule/tasks.\"\xbd\a\n" +
+	"\x19UpdateStaffDetailsRequest\x12o\n" +
+	"\bstaff_id\x18\x01 \x01(\tBT\x92AQ2'The UUID of the staff member to update.J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\astaffId\x12J\n" +
 	"\n" +
-	"first_name\x18\x02 \x01(\tR\tfirstName\x12\x1b\n" +
-	"\tlast_name\x18\x03 \x01(\tR\blastName\x12>\n" +
-	"\rdate_of_birth\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\vdateOfBirth\x12!\n" +
-	"\fphone_number\x18\x05 \x01(\tR\vphoneNumber\x12\x18\n" +
-	"\aaddress\x18\x06 \x01(\tR\aaddress\x12&\n" +
-	"\x0especialization\x18\a \x01(\tR\x0especialization\x12\x1d\n" +
+	"first_name\x18\x02 \x01(\tB+\x92A(2\x1aNew first name (optional).J\n" +
+	"\"Benjamin\"R\tfirstName\x12E\n" +
+	"\tlast_name\x18\x03 \x01(\tB(\x92A%2\x19New last name (optional).J\b\"Carter\"R\blastName\x12\x8e\x01\n" +
+	"\rdate_of_birth\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampBN\x92AK21New date of birth (optional, RFC3339 UTC format).J\x16\"1992-03-10T00:00:00Z\"R\vdateOfBirth\x12T\n" +
+	"\fphone_number\x18\x05 \x01(\tB1\x92A.2\x1cNew phone number (optional).J\x0e\"+15550202021\"R\vphoneNumber\x12T\n" +
+	"\aaddress\x18\x06 \x01(\tB:\x92A72\x17New address (optional).J\x1c\"102 Nurse Station, Medtown\"R\aaddress\x12q\n" +
+	"\x0especialization\x18\a \x01(\tBI\x92AF26Updated specialization (optional, mainly for Doctors).J\f\"Cardiology\"R\x0especialization\x12[\n" +
 	"\n" +
-	"nurse_type\x18\b \x01(\tR\tnurseType\"G\n" +
+	"nurse_type\x18\b \x01(\tB<\x92A921Updated nurse type (optional, mainly for Nurses).J\x04\"RN\"R\tnurseType:\x8e\x01\x92A\x8a\x01\n" +
+	"\x87\x01*\x1cUpdate Staff Details Request2\\Data for updating an existing staff member. Only include fields to change (PATCH semantics).\xd2\x01\bstaff_id\"\x99\x01\n" +
 	"\x1aUpdateStaffDetailsResponse\x12)\n" +
-	"\x05staff\x18\x01 \x01(\v2\x13.staffservice.StaffR\x05staff\"|\n" +
-	"\x1aUpdateStaffScheduleRequest\x12\x19\n" +
-	"\bstaff_id\x18\x01 \x01(\tR\astaffId\x12C\n" +
-	"\x11tasks_to_schedule\x18\x02 \x03(\v2\x17.staffservice.TaskProtoR\x0ftasksToSchedule\"U\n" +
-	"\x1bSetStaffAvailabilityRequest\x12\x19\n" +
-	"\bstaff_id\x18\x01 \x01(\tR\astaffId\x12\x1b\n" +
-	"\tstatus_id\x18\x02 \x01(\tR\bstatusId\"\xad\x01\n" +
-	"\x1cGetDoctorAvailabilityRequest\x12\x1b\n" +
-	"\tdoctor_id\x18\x01 \x01(\tR\bdoctorId\x129\n" +
+	"\x05staff\x18\x01 \x01(\v2\x13.staffservice.StaffR\x05staff:P\x92AM\n" +
+	"K*\x1dUpdate Staff Details Response2*Contains the updated staff member details.\"\xa0\x03\n" +
+	"\x1aUpdateStaffScheduleRequest\x12\x85\x01\n" +
+	"\bstaff_id\x18\x01 \x01(\tBj\x92Ag2=The UUID of the staff member whose schedule is being updated.J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\astaffId\x12\x86\x01\n" +
+	"\x11tasks_to_schedule\x18\x02 \x03(\v2\x17.staffservice.TaskProtoBA\x92A>2<A list of new tasks to be created and added to the schedule.R\x0ftasksToSchedule:q\x92An\n" +
+	"l*\x1dUpdate Staff Schedule Request2,Adds new tasks to a staff member's schedule.\xd2\x01\bstaff_id\xd2\x01\x11tasks_to_schedule\"\xfa\x02\n" +
+	"\x1bSetStaffAvailabilityRequest\x12e\n" +
+	"\bstaff_id\x18\x01 \x01(\tBJ\x92AG2\x1dThe UUID of the staff member.J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\astaffId\x12\x8b\x01\n" +
+	"\tstatus_id\x18\x02 \x01(\tBn\x92Ak2^The name of the target status (e.g., \"OnLeave\"). Must match an existing StaffStatusProto.name.J\t\"OnLeave\"R\bstatusId:f\x92Ac\n" +
+	"a*\x18Set Staff Status Request2.Sets the employment status for a staff member.\xd2\x01\bstaff_id\xd2\x01\tstatus_id\"\xd1\x04\n" +
+	"\x1cGetDoctorAvailabilityRequest\x12\x92\x01\n" +
+	"\tdoctor_id\x18\x01 \x01(\tBu\x92Ar2HOptional: The UUID of a specific doctor. If omitted, checks all doctors.J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\bdoctorId\x12\x85\x01\n" +
 	"\n" +
-	"start_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tstartTime\x125\n" +
-	"\bend_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\"\xfc\x01\n" +
-	"\x1dGetDoctorAvailabilityResponse\x12]\n" +
-	"\x0favailable_slots\x18\x01 \x03(\v24.staffservice.GetDoctorAvailabilityResponse.TimeSlotR\x0eavailableSlots\x1a|\n" +
-	"\bTimeSlot\x129\n" +
+	"start_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampBJ\x92AG2-Start of the time range (RFC3339 UTC format).J\x16\"2023-04-01T08:00:00Z\"R\tstartTime\x12\x7f\n" +
+	"\bend_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampBH\x92AE2+End of the time range (RFC3339 UTC format).J\x16\"2023-04-01T17:00:00Z\"R\aendTime:\x92\x01\x92A\x8e\x01\n" +
+	"\x8b\x01*\x1fGet Doctor Availability Request2PChecks the availability of a specific doctor or all doctors within a time range.\xd2\x01\n" +
+	"start_time\xd2\x01\bend_time\"\x85\x05\n" +
+	"\x1dGetDoctorAvailabilityResponse\x12\x81\x01\n" +
+	"\x0favailable_slots\x18\x01 \x03(\v24.staffservice.GetDoctorAvailabilityResponse.TimeSlotB\"\x92A\x1f2\x1dList of available time slots.R\x0eavailableSlots\x1a\xf4\x02\n" +
+	"\bTimeSlot\x12\x8e\x01\n" +
 	"\n" +
-	"start_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tstartTime\x125\n" +
-	"\bend_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\"\x91\x02\n" +
-	"\x11AssignTaskRequest\x12\x19\n" +
-	"\bstaff_id\x18\x01 \x01(\tR\astaffId\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1a\n" +
-	"\bpriority\x18\x04 \x01(\x05R\bpriority\x129\n" +
+	"start_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampBS\x92AP26Start time of the available slot (RFC3339 UTC format).J\x16\"2023-04-01T10:00:00Z\"R\tstartTime\x12\x88\x01\n" +
+	"\bend_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampBQ\x92AN24End time of the available slot (RFC3339 UTC format).J\x16\"2023-04-01T10:30:00Z\"R\aendTime:L\x92AI\n" +
+	"G*\x13Available Time Slot20Represents a continuous block of available time.:i\x92Af\n" +
+	"d* Get Doctor Availability Response2@A list of time slots when the specified doctor(s) are available.\"\xf4\a\n" +
+	"\x11AssignTaskRequest\x12{\n" +
+	"\bstaff_id\x18\x01 \x01(\tB`\x92A]23The UUID of the staff member to assign the task to.J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\astaffId\x12E\n" +
+	"\x05title\x18\x02 \x01(\tB/\x92A,2\x12Title of the task.J\x16\"Prepare Morning Meds\"R\x05title\x12w\n" +
+	"\vdescription\x18\x03 \x01(\tBU\x92AR2!Optional description of the task.J-\"Prepare medications for patients on Ward C.\"R\vdescription\x12a\n" +
+	"\bpriority\x18\x04 \x01(\x05BE\x92AB2=Priority level (optional, default depends on implementation).J\x013R\bpriority\x12\x8f\x01\n" +
 	"\n" +
-	"start_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tstartTime\x125\n" +
-	"\bend_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\x12\x1b\n" +
-	"\tstatus_id\x18\a \x01(\tR\bstatusId\"1\n" +
-	"\x14TrackWorkloadRequest\x12\x19\n" +
-	"\bstaff_id\x18\x01 \x01(\tR\astaffId\"L\n" +
-	"\x15TrackWorkloadResponse\x123\n" +
-	"\bworkload\x18\x01 \x03(\v2\x17.staffservice.TaskProtoR\bworkload\"K\n" +
-	"\x13AddStaffRoleRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\"H\n" +
+	"start_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampBT\x92AQ27Scheduled start time for the task (RFC3339 UTC format).J\x16\"2023-04-01T08:00:00Z\"R\tstartTime\x12\x89\x01\n" +
+	"\bend_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampBR\x92AO25Scheduled end time for the task (RFC3339 UTC format).J\x16\"2023-04-01T08:30:00Z\"R\aendTime\x12\x88\x01\n" +
+	"\tstatus_id\x18\a \x01(\tBk\x92Ah2[Initial status for the task (e.g., \"Pending\"). Must match an existing TaskStatusProto.name.J\t\"Pending\"R\bstatusId:\x95\x01\x92A\x91\x01\n" +
+	"\x8e\x01*\x13Assign Task Request2@Data required to create and assign a new task to a staff member.\xd2\x01\bstaff_id\xd2\x01\x05title\xd2\x01\n" +
+	"start_time\xd2\x01\bend_time\xd2\x01\tstatus_id\"\xdf\x01\n" +
+	"\x14TrackWorkloadRequest\x12e\n" +
+	"\bstaff_id\x18\x01 \x01(\tBJ\x92AG2\x1dThe UUID of the staff member.J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\astaffId:`\x92A]\n" +
+	"[*\x16Track Workload Request2ASpecifies the ID of the staff member whose workload is requested.\"\xe0\x01\n" +
+	"\x15TrackWorkloadResponse\x12e\n" +
+	"\bworkload\x18\x01 \x03(\v2\x17.staffservice.TaskProtoB0\x92A-2+List of tasks assigned to the staff member.R\bworkload:`\x92A]\n" +
+	"[*\x17Track Workload Response2@Contains a list of tasks assigned to the specified staff member.\"\xfe\x01\n" +
+	"\x13AddStaffRoleRequest\x12D\n" +
+	"\x04name\x18\x01 \x01(\tB0\x92A-2\x1dUnique name for the new role.J\f\"Pharmacist\"R\x04name\x12V\n" +
+	"\vdescription\x18\x02 \x01(\tB4\x92A12\x15Optional description.J\x18\"Dispenses medications.\"R\vdescription:I\x92AF\n" +
+	"D*\x16Add Staff Role Request2#Data for creating a new staff role.\xd2\x01\x04name\"\x9f\x01\n" +
 	"\x14AddStaffRoleResponse\x120\n" +
-	"\x04role\x18\x01 \x01(\v2\x1c.staffservice.StaffRoleProtoR\x04role\"\x17\n" +
-	"\x15ListStaffRolesRequest\"L\n" +
+	"\x04role\x18\x01 \x01(\v2\x1c.staffservice.StaffRoleProtoR\x04role:U\x92AR\n" +
+	"P*\x17Add Staff Role Response25Contains the details of the newly created staff role.\"~\n" +
+	"\x15ListStaffRolesRequest:e\x92Ab\n" +
+	"`*\x18List Staff Roles Request2DRequest to list all available staff roles (no parameters currently).\"\x94\x01\n" +
 	"\x16ListStaffRolesResponse\x122\n" +
-	"\x05roles\x18\x01 \x03(\v2\x1c.staffservice.StaffRoleProtoR\x05roles\"M\n" +
-	"\x15AddStaffStatusRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\"P\n" +
+	"\x05roles\x18\x01 \x03(\v2\x1c.staffservice.StaffRoleProtoR\x05roles:F\x92AC\n" +
+	"A*\x19List Staff Roles Response2$A list of all available staff roles.\"\x8c\x02\n" +
+	"\x15AddStaffStatusRequest\x12F\n" +
+	"\x04name\x18\x01 \x01(\tB2\x92A/2\x1fUnique name for the new status.J\f\"Terminated\"R\x04name\x12Q\n" +
+	"\vdescription\x18\x02 \x01(\tB/\x92A,2\x15Optional description.J\x13\"Employment ended.\"R\vdescription:X\x92AU\n" +
+	"S*\x18Add Staff Status Request20Data for creating a new staff employment status.\xd2\x01\x04name\"\xab\x01\n" +
 	"\x16AddStaffStatusResponse\x126\n" +
-	"\x06status\x18\x01 \x01(\v2\x1e.staffservice.StaffStatusProtoR\x06status\"\x1a\n" +
-	"\x18ListStaffStatusesRequest\"W\n" +
+	"\x06status\x18\x01 \x01(\v2\x1e.staffservice.StaffStatusProtoR\x06status:Y\x92AV\n" +
+	"T*\x19Add Staff Status Response27Contains the details of the newly created staff status.\"\x87\x01\n" +
+	"\x18ListStaffStatusesRequest:k\x92Ah\n" +
+	"f*\x1bList Staff Statuses Request2GRequest to list all available staff statuses (no parameters currently).\"\xa5\x01\n" +
 	"\x19ListStaffStatusesResponse\x12:\n" +
-	"\bstatuses\x18\x01 \x03(\v2\x1e.staffservice.StaffStatusProtoR\bstatuses\"L\n" +
-	"\x14AddTaskStatusRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\"N\n" +
+	"\bstatuses\x18\x01 \x03(\v2\x1e.staffservice.StaffStatusProtoR\bstatuses:L\x92AI\n" +
+	"G*\x1cList Staff Statuses Response2'A list of all available staff statuses.\"\x9a\x02\n" +
+	"\x14AddTaskStatusRequest\x12H\n" +
+	"\x04name\x18\x01 \x01(\tB4\x92A12$Unique name for the new task status.J\t\"Blocked\"R\x04name\x12k\n" +
+	"\vdescription\x18\x02 \x01(\tBI\x92AF2\x15Optional description.J-\"Task cannot proceed due to external factor.\"R\vdescription:K\x92AH\n" +
+	"F*\x17Add Task Status Request2$Data for creating a new task status.\xd2\x01\x04name\"\xa7\x01\n" +
 	"\x15AddTaskStatusResponse\x125\n" +
-	"\x06status\x18\x01 \x01(\v2\x1d.staffservice.TaskStatusProtoR\x06status\"\x19\n" +
-	"\x17ListTaskStatusesRequest\"U\n" +
+	"\x06status\x18\x01 \x01(\v2\x1d.staffservice.TaskStatusProtoR\x06status:W\x92AT\n" +
+	"R*\x18Add Task Status Response26Contains the details of the newly created task status.\"\x84\x01\n" +
+	"\x17ListTaskStatusesRequest:i\x92Af\n" +
+	"d*\x1aList Task Statuses Request2FRequest to list all available task statuses (no parameters currently).\"\xa1\x01\n" +
 	"\x18ListTaskStatusesResponse\x129\n" +
-	"\bstatuses\x18\x01 \x03(\v2\x1d.staffservice.TaskStatusProtoR\bstatuses2\x9d\n" +
+	"\bstatuses\x18\x01 \x03(\v2\x1d.staffservice.TaskStatusProtoR\bstatuses:J\x92AG\n" +
+	"E*\x1bList Task Statuses Response2&A list of all available task statuses.2\x98\x19\n" +
+	"\fStaffService\x12\xa7\x01\n" +
+	"\bAddStaff\x12\x1d.staffservice.AddStaffRequest\x1a\x1e.staffservice.AddStaffResponse\"\\\x92AA\n" +
+	"\x05Staff\x12\x10Add Staff Member\x1a&Adds a new staff member to the system.\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/v1/staff\x12\xf4\x01\n" +
+	"\x0fGetStaffDetails\x12$.staffservice.GetStaffDetailsRequest\x1a%.staffservice.GetStaffDetailsResponse\"\x93\x01\x92Ap\n" +
+	"\x05Staff\x12\x11Get Staff Details\x1aTRetrieves details for a specific staff member by their ID, including schedule/tasks.\x82\xd3\xe4\x93\x02\x1a\x12\x18/api/v1/staff/{staff_id}\x12\xe4\x01\n" +
+	"\x12UpdateStaffDetails\x12'.staffservice.UpdateStaffDetailsRequest\x1a(.staffservice.UpdateStaffDetailsResponse\"{\x92AU\n" +
+	"\x05Staff\x12\x14Update Staff Details\x1a6Updates specific details for an existing staff member.\x82\xd3\xe4\x93\x02\x1d:\x01*2\x18/api/v1/staff/{staff_id}\x12\xe8\x01\n" +
+	"\x13UpdateStaffSchedule\x12(.staffservice.UpdateStaffScheduleRequest\x1a\x16.google.protobuf.Empty\"\x8e\x01\x92A_\n" +
+	"\x0eStaff Schedule\x12\x15Update Staff Schedule\x1a6Adds a list of new tasks to a staff member's schedule.\x82\xd3\xe4\x93\x02&:\x01*\x1a!/api/v1/staff/{staff_id}/schedule\x12\xd1\x01\n" +
+	"\x14SetStaffAvailability\x12).staffservice.SetStaffAvailabilityRequest\x1a\x16.google.protobuf.Empty\"v\x92AI\n" +
+	"\x05Staff\x12\x10Set Staff Status\x1a.Sets the employment status for a staff member.\x82\xd3\xe4\x93\x02$:\x01*\x1a\x1f/api/v1/staff/{staff_id}/status\x12\xa7\x02\n" +
+	"\x15GetDoctorAvailability\x12*.staffservice.GetDoctorAvailabilityRequest\x1a+.staffservice.GetDoctorAvailabilityResponse\"\xb4\x01\x92A\x8c\x01\n" +
+	"\x0eStaff Schedule\n" +
+	"\aDoctors\x12\x17Get Doctor Availability\x1aXRetrieves available time slots for a specific doctor or all doctors within a time range.\x82\xd3\xe4\x93\x02\x1e\x12\x1c/api/v1/doctors/availability\x12\xca\x01\n" +
 	"\n" +
-	"\fStaffService\x12I\n" +
-	"\bAddStaff\x12\x1d.staffservice.AddStaffRequest\x1a\x1e.staffservice.AddStaffResponse\x12^\n" +
-	"\x0fGetStaffDetails\x12$.staffservice.GetStaffDetailsRequest\x1a%.staffservice.GetStaffDetailsResponse\x12g\n" +
-	"\x12UpdateStaffDetails\x12'.staffservice.UpdateStaffDetailsRequest\x1a(.staffservice.UpdateStaffDetailsResponse\x12W\n" +
-	"\x13UpdateStaffSchedule\x12(.staffservice.UpdateStaffScheduleRequest\x1a\x16.google.protobuf.Empty\x12Y\n" +
-	"\x14SetStaffAvailability\x12).staffservice.SetStaffAvailabilityRequest\x1a\x16.google.protobuf.Empty\x12p\n" +
-	"\x15GetDoctorAvailability\x12*.staffservice.GetDoctorAvailabilityRequest\x1a+.staffservice.GetDoctorAvailabilityResponse\x12E\n" +
-	"\n" +
-	"AssignTask\x12\x1f.staffservice.AssignTaskRequest\x1a\x16.google.protobuf.Empty\x12X\n" +
-	"\rTrackWorkload\x12\".staffservice.TrackWorkloadRequest\x1a#.staffservice.TrackWorkloadResponse\x12U\n" +
-	"\fAddStaffRole\x12!.staffservice.AddStaffRoleRequest\x1a\".staffservice.AddStaffRoleResponse\x12[\n" +
-	"\x0eListStaffRoles\x12#.staffservice.ListStaffRolesRequest\x1a$.staffservice.ListStaffRolesResponse\x12[\n" +
-	"\x0eAddStaffStatus\x12#.staffservice.AddStaffStatusRequest\x1a$.staffservice.AddStaffStatusResponse\x12d\n" +
-	"\x11ListStaffStatuses\x12&.staffservice.ListStaffStatusesRequest\x1a'.staffservice.ListStaffStatusesResponse\x12X\n" +
-	"\rAddTaskStatus\x12\".staffservice.AddTaskStatusRequest\x1a#.staffservice.AddTaskStatusResponse\x12a\n" +
-	"\x10ListTaskStatuses\x12%.staffservice.ListTaskStatusesRequest\x1a&.staffservice.ListTaskStatusesResponseB6Z4golang-microservices-boilerplate/proto/staff-serviceb\x06proto3"
+	"AssignTask\x12\x1f.staffservice.AssignTaskRequest\x1a\x16.google.protobuf.Empty\"\x82\x01\x92AV\n" +
+	"\vStaff Tasks\x12\vAssign Task\x1a:Creates and assigns a new task to a specific staff member.\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/api/v1/staff/{staff_id}/tasks\x12\xec\x01\n" +
+	"\rTrackWorkload\x12\".staffservice.TrackWorkloadRequest\x1a#.staffservice.TrackWorkloadResponse\"\x91\x01\x92Ae\n" +
+	"\vStaff Tasks\x12\x14Track Staff Workload\x1a@Retrieves the list of tasks assigned to a specific staff member.\x82\xd3\xe4\x93\x02#\x12!/api/v1/staff/{staff_id}/workload\x12\xc4\x01\n" +
+	"\fAddStaffRole\x12!.staffservice.AddStaffRoleRequest\x1a\".staffservice.AddStaffRoleResponse\"m\x92AL\n" +
+	"\aLookups\n" +
+	"\vStaff Roles\x12\x0eAdd Staff Role\x1a$Creates a new staff role definition.\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/v1/staff-roles\x12\xd3\x01\n" +
+	"\x0eListStaffRoles\x12#.staffservice.ListStaffRolesRequest\x1a$.staffservice.ListStaffRolesResponse\"v\x92AX\n" +
+	"\aLookups\n" +
+	"\vStaff Roles\x12\x10List Staff Roles\x1a.Retrieves a list of all available staff roles.\x82\xd3\xe4\x93\x02\x15\x12\x13/api/v1/staff-roles\x12\xe0\x01\n" +
+	"\x0eAddStaffStatus\x12#.staffservice.AddStaffStatusRequest\x1a$.staffservice.AddStaffStatusResponse\"\x82\x01\x92A^\n" +
+	"\aLookups\n" +
+	"\x0eStaff Statuses\x12\x10Add Staff Status\x1a1Creates a new staff employment status definition.\x82\xd3\xe4\x93\x02\x1b:\x01*\"\x16/api/v1/staff-statuses\x12\xf4\x01\n" +
+	"\x11ListStaffStatuses\x12&.staffservice.ListStaffStatusesRequest\x1a'.staffservice.ListStaffStatusesResponse\"\x8d\x01\x92Al\n" +
+	"\aLookups\n" +
+	"\x0eStaff Statuses\x12\x13List Staff Statuses\x1a<Retrieves a list of all available staff employment statuses.\x82\xd3\xe4\x93\x02\x18\x12\x16/api/v1/staff-statuses\x12\xcd\x01\n" +
+	"\rAddTaskStatus\x12\".staffservice.AddTaskStatusRequest\x1a#.staffservice.AddTaskStatusResponse\"s\x92AP\n" +
+	"\aLookups\n" +
+	"\rTask Statuses\x12\x0fAdd Task Status\x1a%Creates a new task status definition.\x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/v1/task-statuses\x12\xe1\x01\n" +
+	"\x10ListTaskStatuses\x12%.staffservice.ListTaskStatusesRequest\x1a&.staffservice.ListTaskStatusesResponse\"~\x92A^\n" +
+	"\aLookups\n" +
+	"\rTask Statuses\x12\x12List Task Statuses\x1a0Retrieves a list of all available task statuses.\x82\xd3\xe4\x93\x02\x17\x12\x15/api/v1/task-statuses\x1a0\x92A-\x12+Manage hospital staff, schedules, and tasksB\xcb\x01\x92A\x91\x01\x12g\n" +
+	"\x11Staff Service API\x12MAPI for managing hospital staff, their roles, statuses, schedules, and tasks.2\x031.0*\x02\x01\x022\x10application/json:\x10application/jsonZ4golang-microservices-boilerplate/proto/staff-serviceb\x06proto3"
 
 var (
 	file_proto_staff_service_staff_proto_rawDescOnce sync.Once

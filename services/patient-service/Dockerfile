@@ -11,7 +11,7 @@ COPY . .
 
 # Build the patient-service binary
 # Ensure the path matches your project structure
-RUN CGO_ENABLED=0 GOOS=linux go build -o patient-service ./services/patient-service/cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o patient-service ./services/patient-service/cmd/
 
 # --- Final Stage ---
 FROM alpine:latest

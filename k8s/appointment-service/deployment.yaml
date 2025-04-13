@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appointment-service
+  namespace: ride-sharing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appointment-service
+  template:
+    metadata:
+      labels:
+        app: appointment-service
+    spec:
+      # Commenting out the nodeSelector to allow scheduling on any node
+      # nodeSelector:
+      #   app: appointment-service
+      containers:
+      - name: appointment-service
+        image: appointment-service:latest # Assumes image name matches service name
+        imagePullPolicy: IfNotPresent # Use IfNotPresent for local development (like Kind)
+        ports:
+        - containerPort: 9090 # Assuming port 9090, adjust if different
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: appointment-service
+  namespace: ride-sharing
+  labels:
+    # Standard labels for discoverability (optional but good practice)
+    app.kubernetes.io/name: appointment-service
+    app.kubernetes.io/component: grpc-service
+spec:
+  selector:
+    app: appointment-service
+  ports:
+  - name: grpc
+    port: 9090 # Port the service is exposed on within the cluster
+    targetPort: 9090 # Port the container is listening on
+  type: ClusterIP # Expose service internally within the cluster 

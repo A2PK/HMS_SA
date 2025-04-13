@@ -7,6 +7,8 @@
 package appointment_service
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
@@ -84,9 +86,9 @@ func (AppointmentStatus) EnumDescriptor() ([]byte, []int) {
 
 type Appointment struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`                                // UUID as string
-	PatientId       string                 `protobuf:"bytes,2,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"` // UUID as string
-	DoctorId        string                 `protobuf:"bytes,3,opt,name=doctor_id,json=doctorId,proto3" json:"doctor_id,omitempty"`    // UUID as string
+	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	PatientId       string                 `protobuf:"bytes,2,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
+	DoctorId        string                 `protobuf:"bytes,3,opt,name=doctor_id,json=doctorId,proto3" json:"doctor_id,omitempty"`
 	AppointmentTime *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=appointment_time,json=appointmentTime,proto3" json:"appointment_time,omitempty"`
 	Duration        *durationpb.Duration   `protobuf:"bytes,5,opt,name=duration,proto3" json:"duration,omitempty"`
 	Reason          string                 `protobuf:"bytes,6,opt,name=reason,proto3" json:"reason,omitempty"`
@@ -94,7 +96,7 @@ type Appointment struct {
 	Notes           string                 `protobuf:"bytes,8,opt,name=notes,proto3" json:"notes,omitempty"`
 	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt       *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	Place           string                 `protobuf:"bytes,11,opt,name=place,proto3" json:"place,omitempty"` // Added: Location/Place of the appointment
+	Place           string                 `protobuf:"bytes,11,opt,name=place,proto3" json:"place,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -208,12 +210,12 @@ func (x *Appointment) GetPlace() string {
 
 type ScheduleAppointmentRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	PatientId       string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"` // UUID as string
-	DoctorId        string                 `protobuf:"bytes,2,opt,name=doctor_id,json=doctorId,proto3" json:"doctor_id,omitempty"`    // UUID as string
+	PatientId       string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
+	DoctorId        string                 `protobuf:"bytes,2,opt,name=doctor_id,json=doctorId,proto3" json:"doctor_id,omitempty"`
 	Reason          string                 `protobuf:"bytes,3,opt,name=reason,proto3" json:"reason,omitempty"`
 	AppointmentTime *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=appointment_time,json=appointmentTime,proto3" json:"appointment_time,omitempty"`
 	Duration        *durationpb.Duration   `protobuf:"bytes,5,opt,name=duration,proto3" json:"duration,omitempty"`
-	Place           string                 `protobuf:"bytes,6,opt,name=place,proto3" json:"place,omitempty"` // Added: Location/Place for the new appointment
+	Place           string                 `protobuf:"bytes,6,opt,name=place,proto3" json:"place,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -336,7 +338,7 @@ func (x *ScheduleAppointmentResponse) GetAppointment() *Appointment {
 
 type GetAppointmentDetailsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AppointmentId string                 `protobuf:"bytes,1,opt,name=appointment_id,json=appointmentId,proto3" json:"appointment_id,omitempty"` // UUID as string
+	AppointmentId string                 `protobuf:"bytes,1,opt,name=appointment_id,json=appointmentId,proto3" json:"appointment_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -424,7 +426,7 @@ func (x *GetAppointmentDetailsResponse) GetAppointment() *Appointment {
 
 type UpdateAppointmentStatusRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AppointmentId string                 `protobuf:"bytes,1,opt,name=appointment_id,json=appointmentId,proto3" json:"appointment_id,omitempty"` // UUID as string
+	AppointmentId string                 `protobuf:"bytes,1,opt,name=appointment_id,json=appointmentId,proto3" json:"appointment_id,omitempty"`
 	Status        AppointmentStatus      `protobuf:"varint,2,opt,name=status,proto3,enum=appointmentservice.AppointmentStatus" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -520,10 +522,10 @@ func (x *UpdateAppointmentStatusResponse) GetAppointment() *Appointment {
 
 type RescheduleAppointmentRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AppointmentId string                 `protobuf:"bytes,1,opt,name=appointment_id,json=appointmentId,proto3" json:"appointment_id,omitempty"` // UUID as string
+	AppointmentId string                 `protobuf:"bytes,1,opt,name=appointment_id,json=appointmentId,proto3" json:"appointment_id,omitempty"`
 	NewTime       *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=new_time,json=newTime,proto3" json:"new_time,omitempty"`
-	NewDuration   *durationpb.Duration   `protobuf:"bytes,3,opt,name=new_duration,json=newDuration,proto3" json:"new_duration,omitempty"` // Optional, use field mask or presence check
-	Place         string                 `protobuf:"bytes,4,opt,name=place,proto3" json:"place,omitempty"`                                // Optional: New Location/Place for the rescheduled appointment
+	NewDuration   *durationpb.Duration   `protobuf:"bytes,3,opt,name=new_duration,json=newDuration,proto3" json:"new_duration,omitempty"`
+	Place         string                 `protobuf:"bytes,4,opt,name=place,proto3" json:"place,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -632,7 +634,7 @@ func (x *RescheduleAppointmentResponse) GetAppointment() *Appointment {
 
 type CancelAppointmentRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AppointmentId string                 `protobuf:"bytes,1,opt,name=appointment_id,json=appointmentId,proto3" json:"appointment_id,omitempty"` // UUID as string
+	AppointmentId string                 `protobuf:"bytes,1,opt,name=appointment_id,json=appointmentId,proto3" json:"appointment_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -676,7 +678,7 @@ func (x *CancelAppointmentRequest) GetAppointmentId() string {
 
 type GetAppointmentsForPatientRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	PatientId     string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"` // UUID as string
+	PatientId     string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"` // Optional: Add time range filters?
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -764,7 +766,7 @@ func (x *GetAppointmentsForPatientResponse) GetAppointments() []*Appointment {
 
 type GetAppointmentsForDoctorRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	DoctorId      string                 `protobuf:"bytes,1,opt,name=doctor_id,json=doctorId,proto3" json:"doctor_id,omitempty"` // UUID as string
+	DoctorId      string                 `protobuf:"bytes,1,opt,name=doctor_id,json=doctorId,proto3" json:"doctor_id,omitempty"`
 	StartTime     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	EndTime       *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -870,78 +872,107 @@ var File_proto_appointment_service_appointment_proto protoreflect.FileDescriptor
 
 const file_proto_appointment_service_appointment_proto_rawDesc = "" +
 	"\n" +
-	"+proto/appointment-service/appointment.proto\x12\x12appointmentservice\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xd0\x03\n" +
-	"\vAppointment\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
+	"+proto/appointment-service/appointment.proto\x12\x12appointmentservice\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xa8\f\n" +
+	"\vAppointment\x12u\n" +
+	"\x02id\x18\x01 \x01(\tBe\x92Ab24Unique identifier for the appointment (UUID format).J*\"apt-a1b2c3d4-e5f6-7890-1234-567890abcdef\"R\x02id\x12t\n" +
 	"\n" +
-	"patient_id\x18\x02 \x01(\tR\tpatientId\x12\x1b\n" +
-	"\tdoctor_id\x18\x03 \x01(\tR\bdoctorId\x12E\n" +
-	"\x10appointment_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x0fappointmentTime\x125\n" +
-	"\bduration\x18\x05 \x01(\v2\x19.google.protobuf.DurationR\bduration\x12\x16\n" +
-	"\x06reason\x18\x06 \x01(\tR\x06reason\x12=\n" +
-	"\x06status\x18\a \x01(\x0e2%.appointmentservice.AppointmentStatusR\x06status\x12\x14\n" +
-	"\x05notes\x18\b \x01(\tR\x05notes\x129\n" +
+	"patient_id\x18\x02 \x01(\tBU\x92AR2(Identifier of the patient (UUID format).J&\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"R\tpatientId\x12w\n" +
+	"\tdoctor_id\x18\x03 \x01(\tBZ\x92AW2-Identifier of the doctor/staff (UUID format).J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\bdoctorId\x12\xa4\x01\n" +
+	"\x10appointment_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB]\x92AZ2@Scheduled date and time of the appointment (RFC3339 UTC format).J\x16\"2023-04-01T10:00:00Z\"R\x0fappointmentTime\x12|\n" +
+	"\bduration\x18\x05 \x01(\v2\x19.google.protobuf.DurationBE\x92AB27Duration of the appointment (e.g., \"3600s\" for 1 hour).J\a\"1800s\"R\bduration\x12U\n" +
+	"\x06reason\x18\x06 \x01(\tB=\x92A:2&Reason for the appointment (optional).J\x10\"Annual Checkup\"R\x06reason\x12s\n" +
+	"\x06status\x18\a \x01(\x0e2%.appointmentservice.AppointmentStatusB4\x92A12\"Current status of the appointment.J\v\"SCHEDULED\"R\x06status\x12p\n" +
+	"\x05notes\x18\b \x01(\tBZ\x92AW22Additional notes about the appointment (optional).J!\"Patient requested morning slot.\"R\x05notes\x12\x98\x01\n" +
 	"\n" +
-	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB]\x92AZ2@Timestamp when the appointment was created (RFC3339 UTC format).J\x16\"2023-03-20T15:00:00Z\"R\tcreatedAt\x12\x9d\x01\n" +
 	"\n" +
 	"updated_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x14\n" +
-	"\x05place\x18\v \x01(\tR\x05place\"\x84\x02\n" +
-	"\x1aScheduleAppointmentRequest\x12\x1d\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampBb\x92A_2ETimestamp when the appointment was last updated (RFC3339 UTC format).J\x16\"2023-03-21T09:30:00Z\"R\tupdatedAt\x12z\n" +
+	"\x05place\x18\v \x01(\tBd\x92Aa2NLocation/Place of the appointment (e.g., Room number, Clinic name) (optional).J\x0f\"Clinic Room 3\"R\x05place:\x98\x01\x92A\x94\x01\n" +
+	"\x91\x01*\vAppointment2#Represents a scheduled appointment.\xd2\x01\x02id\xd2\x01\n" +
+	"patient_id\xd2\x01\tdoctor_id\xd2\x01\x10appointment_time\xd2\x01\bduration\xd2\x01\x06status\xd2\x01\n" +
+	"created_at\xd2\x01\n" +
+	"updated_at\"\xea\x06\n" +
+	"\x1aScheduleAppointmentRequest\x12d\n" +
 	"\n" +
-	"patient_id\x18\x01 \x01(\tR\tpatientId\x12\x1b\n" +
-	"\tdoctor_id\x18\x02 \x01(\tR\bdoctorId\x12\x16\n" +
-	"\x06reason\x18\x03 \x01(\tR\x06reason\x12E\n" +
-	"\x10appointment_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x0fappointmentTime\x125\n" +
-	"\bduration\x18\x05 \x01(\v2\x19.google.protobuf.DurationR\bduration\x12\x14\n" +
-	"\x05place\x18\x06 \x01(\tR\x05place\"`\n" +
+	"patient_id\x18\x01 \x01(\tBE\x92AB2\x18The UUID of the patient.J&\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"R\tpatientId\x12g\n" +
+	"\tdoctor_id\x18\x02 \x01(\tBJ\x92AG2\x1dThe UUID of the doctor/staff.J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\bdoctorId\x12]\n" +
+	"\x06reason\x18\x03 \x01(\tBE\x92AB2&Reason for the appointment (optional).J\x18\"Follow-up consultation\"R\x06reason\x12\xa3\x01\n" +
+	"\x10appointment_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\\\x92AY2?Desired date and time for the appointment (RFC3339 UTC format).J\x16\"2023-04-10T14:00:00Z\"R\x0fappointmentTime\x12\x84\x01\n" +
+	"\bduration\x18\x05 \x01(\v2\x19.google.protobuf.DurationBM\x92AJ2@Desired duration for the appointment (e.g., \"900s\" for 15 mins).J\x06\"900s\"R\bduration\x12d\n" +
+	"\x05place\x18\x06 \x01(\tBN\x92AK22Location/Place for the new appointment (optional).J\x15\"Consultation Room A\"R\x05place:\x8a\x01\x92A\x86\x01\n" +
+	"\x83\x01*\x1cSchedule Appointment Request2,Data required to schedule a new appointment.\xd2\x01\n" +
+	"patient_id\xd2\x01\tdoctor_id\xd2\x01\x10appointment_time\xd2\x01\bduration\"\xc0\x01\n" +
 	"\x1bScheduleAppointmentResponse\x12A\n" +
-	"\vappointment\x18\x01 \x01(\v2\x1f.appointmentservice.AppointmentR\vappointment\"E\n" +
-	"\x1cGetAppointmentDetailsRequest\x12%\n" +
-	"\x0eappointment_id\x18\x01 \x01(\tR\rappointmentId\"b\n" +
+	"\vappointment\x18\x01 \x01(\v2\x1f.appointmentservice.AppointmentR\vappointment:^\x92A[\n" +
+	"Y*\x1dSchedule Appointment Response28Contains the details of the newly scheduled appointment.\"\xee\x01\n" +
+	"\x1cGetAppointmentDetailsRequest\x12t\n" +
+	"\x0eappointment_id\x18\x01 \x01(\tBM\x92AJ2\x1cThe UUID of the appointment.J*\"apt-a1b2c3d4-e5f6-7890-1234-567890abcdef\"R\rappointmentId:X\x92AU\n" +
+	"S*\x1fGet Appointment Details Request20Specifies the ID of the appointment to retrieve.\"\xbf\x01\n" +
 	"\x1dGetAppointmentDetailsResponse\x12A\n" +
-	"\vappointment\x18\x01 \x01(\v2\x1f.appointmentservice.AppointmentR\vappointment\"\x86\x01\n" +
-	"\x1eUpdateAppointmentStatusRequest\x12%\n" +
-	"\x0eappointment_id\x18\x01 \x01(\tR\rappointmentId\x12=\n" +
-	"\x06status\x18\x02 \x01(\x0e2%.appointmentservice.AppointmentStatusR\x06status\"d\n" +
+	"\vappointment\x18\x01 \x01(\v2\x1f.appointmentservice.AppointmentR\vappointment:[\x92AX\n" +
+	"V* Get Appointment Details Response22Contains the details of the requested appointment.\"\x93\x03\n" +
+	"\x1eUpdateAppointmentStatusRequest\x12~\n" +
+	"\x0eappointment_id\x18\x01 \x01(\tBW\x92AT2&The UUID of the appointment to update.J*\"apt-a1b2c3d4-e5f6-7890-1234-567890abcdef\"R\rappointmentId\x12t\n" +
+	"\x06status\x18\x02 \x01(\x0e2%.appointmentservice.AppointmentStatusB5\x92A22#The new status for the appointment.J\v\"CONFIRMED\"R\x06status:{\x92Ax\n" +
+	"v*!Update Appointment Status Request27Specifies the ID of the appointment and the new status.\xd2\x01\x0eappointment_id\xd2\x01\x06status\"\xca\x01\n" +
 	"\x1fUpdateAppointmentStatusResponse\x12A\n" +
-	"\vappointment\x18\x01 \x01(\v2\x1f.appointmentservice.AppointmentR\vappointment\"\xd0\x01\n" +
-	"\x1cRescheduleAppointmentRequest\x12%\n" +
-	"\x0eappointment_id\x18\x01 \x01(\tR\rappointmentId\x125\n" +
-	"\bnew_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\anewTime\x12<\n" +
-	"\fnew_duration\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\vnewDuration\x12\x14\n" +
-	"\x05place\x18\x04 \x01(\tR\x05place\"b\n" +
+	"\vappointment\x18\x01 \x01(\v2\x1f.appointmentservice.AppointmentR\vappointment:d\x92Aa\n" +
+	"_*\"Update Appointment Status Response29Contains the appointment details after the status update.\"\xc1\x05\n" +
+	"\x1cRescheduleAppointmentRequest\x12\x82\x01\n" +
+	"\x0eappointment_id\x18\x01 \x01(\tB[\x92AX2*The UUID of the appointment to reschedule.J*\"apt-a1b2c3d4-e5f6-7890-1234-567890abcdef\"R\rappointmentId\x12\x93\x01\n" +
+	"\bnew_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\\\x92AY2?The new date and time for the appointment (RFC3339 UTC format).J\x16\"2023-04-11T11:00:00Z\"R\anewTime\x12\x92\x01\n" +
+	"\fnew_duration\x18\x03 \x01(\v2\x19.google.protobuf.DurationBT\x92AQ2FOptional new duration for the appointment (e.g., \"1800s\" for 30 mins).J\a\"1800s\"R\vnewDuration\x12i\n" +
+	"\x05place\x18\x04 \x01(\tBS\x92AP2<Optional new Location/Place for the rescheduled appointment.J\x10\"Online Meeting\"R\x05place:\x85\x01\x92A\x81\x01\n" +
+	"\x7f*\x1eReschedule Appointment Request2ASpecifies the ID and new details for rescheduling an appointment.\xd2\x01\x0eappointment_id\xd2\x01\bnew_time\"\xc0\x01\n" +
 	"\x1dRescheduleAppointmentResponse\x12A\n" +
-	"\vappointment\x18\x01 \x01(\v2\x1f.appointmentservice.AppointmentR\vappointment\"A\n" +
-	"\x18CancelAppointmentRequest\x12%\n" +
-	"\x0eappointment_id\x18\x01 \x01(\tR\rappointmentId\"A\n" +
-	" GetAppointmentsForPatientRequest\x12\x1d\n" +
+	"\vappointment\x18\x01 \x01(\v2\x1f.appointmentservice.AppointmentR\vappointment:\\\x92AY\n" +
+	"W*\x1fReschedule Appointment Response24Contains the appointment details after rescheduling.\"\xed\x01\n" +
+	"\x18CancelAppointmentRequest\x12~\n" +
+	"\x0eappointment_id\x18\x01 \x01(\tBW\x92AT2&The UUID of the appointment to cancel.J*\"apt-a1b2c3d4-e5f6-7890-1234-567890abcdef\"R\rappointmentId:Q\x92AN\n" +
+	"L*\x1aCancel Appointment Request2.Specifies the ID of the appointment to cancel.\"\xf5\x01\n" +
+	" GetAppointmentsForPatientRequest\x12d\n" +
 	"\n" +
-	"patient_id\x18\x01 \x01(\tR\tpatientId\"h\n" +
+	"patient_id\x18\x01 \x01(\tBE\x92AB2\x18The UUID of the patient.J&\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"R\tpatientId:k\x92Ah\n" +
+	"f*$Get Appointments For Patient Request2>Specifies the ID of the patient whose appointments are needed.\"\xd2\x01\n" +
 	"!GetAppointmentsForPatientResponse\x12C\n" +
-	"\fappointments\x18\x01 \x03(\v2\x1f.appointmentservice.AppointmentR\fappointments\"\xb0\x01\n" +
-	"\x1fGetAppointmentsForDoctorRequest\x12\x1b\n" +
-	"\tdoctor_id\x18\x01 \x01(\tR\bdoctorId\x129\n" +
+	"\fappointments\x18\x01 \x03(\v2\x1f.appointmentservice.AppointmentR\fappointments:h\x92Ae\n" +
+	"c*%Get Appointments For Patient Response2:Contains a list of appointments for the specified patient.\"\xb1\x04\n" +
+	"\x1fGetAppointmentsForDoctorRequest\x12g\n" +
+	"\tdoctor_id\x18\x01 \x01(\tBJ\x92AG2\x1dThe UUID of the doctor/staff.J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\bdoctorId\x12\x85\x01\n" +
 	"\n" +
-	"start_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tstartTime\x125\n" +
-	"\bend_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\"g\n" +
+	"start_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampBJ\x92AG2-Start of the time range (RFC3339 UTC format).J\x16\"2023-04-01T00:00:00Z\"R\tstartTime\x12\x7f\n" +
+	"\bend_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampBH\x92AE2+End of the time range (RFC3339 UTC format).J\x16\"2023-04-30T23:59:59Z\"R\aendTime:\x9b\x01\x92A\x97\x01\n" +
+	"\x94\x01*#Get Appointments For Doctor Request2ISpecifies the ID of the doctor and a time range to retrieve appointments.\xd2\x01\tdoctor_id\xd2\x01\n" +
+	"start_time\xd2\x01\bend_time\"\xe5\x01\n" +
 	" GetAppointmentsForDoctorResponse\x12C\n" +
-	"\fappointments\x18\x01 \x03(\v2\x1f.appointmentservice.AppointmentR\fappointments*\x80\x01\n" +
+	"\fappointments\x18\x01 \x03(\v2\x1f.appointmentservice.AppointmentR\fappointments:|\x92Ay\n" +
+	"w*$Get Appointments For Doctor Response2OContains a list of appointments for the specified doctor within the time range.*\x80\x01\n" +
 	"\x11AppointmentStatus\x12\"\n" +
 	"\x1eAPPOINTMENT_STATUS_UNSPECIFIED\x10\x00\x12\r\n" +
 	"\tSCHEDULED\x10\x01\x12\r\n" +
 	"\tCONFIRMED\x10\x02\x12\r\n" +
 	"\tCANCELLED\x10\x03\x12\r\n" +
 	"\tCOMPLETED\x10\x04\x12\v\n" +
-	"\aNO_SHOW\x10\x052\xfb\x06\n" +
-	"\x12AppointmentService\x12v\n" +
-	"\x13ScheduleAppointment\x12..appointmentservice.ScheduleAppointmentRequest\x1a/.appointmentservice.ScheduleAppointmentResponse\x12|\n" +
-	"\x15GetAppointmentDetails\x120.appointmentservice.GetAppointmentDetailsRequest\x1a1.appointmentservice.GetAppointmentDetailsResponse\x12\x82\x01\n" +
-	"\x17UpdateAppointmentStatus\x122.appointmentservice.UpdateAppointmentStatusRequest\x1a3.appointmentservice.UpdateAppointmentStatusResponse\x12|\n" +
-	"\x15RescheduleAppointment\x120.appointmentservice.RescheduleAppointmentRequest\x1a1.appointmentservice.RescheduleAppointmentResponse\x12Y\n" +
-	"\x11CancelAppointment\x12,.appointmentservice.CancelAppointmentRequest\x1a\x16.google.protobuf.Empty\x12\x88\x01\n" +
-	"\x19GetAppointmentsForPatient\x124.appointmentservice.GetAppointmentsForPatientRequest\x1a5.appointmentservice.GetAppointmentsForPatientResponse\x12\x85\x01\n" +
-	"\x18GetAppointmentsForDoctor\x123.appointmentservice.GetAppointmentsForDoctorRequest\x1a4.appointmentservice.GetAppointmentsForDoctorResponseB<Z:golang-microservices-boilerplate/proto/appointment-serviceb\x06proto3"
+	"\aNO_SHOW\x10\x052\x87\x10\n" +
+	"\x12AppointmentService\x12\xdc\x01\n" +
+	"\x13ScheduleAppointment\x12..appointmentservice.ScheduleAppointmentRequest\x1a/.appointmentservice.ScheduleAppointmentResponse\"d\x92AB\n" +
+	"\fAppointments\x12\x14Schedule Appointment\x1a\x1cSchedules a new appointment.\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/v1/appointments\x12\x8f\x02\n" +
+	"\x15GetAppointmentDetails\x120.appointmentservice.GetAppointmentDetailsRequest\x1a1.appointmentservice.GetAppointmentDetailsResponse\"\x90\x01\x92A`\n" +
+	"\fAppointments\x12\x17Get Appointment Details\x1a7Retrieves details for a specific appointment by its ID.\x82\xd3\xe4\x93\x02'\x12%/api/v1/appointments/{appointment_id}\x12\xcb\x02\n" +
+	"\x17UpdateAppointmentStatus\x122.appointmentservice.UpdateAppointmentStatusRequest\x1a3.appointmentservice.UpdateAppointmentStatusResponse\"\xc6\x01\x92AY\n" +
+	"\fAppointments\x12\x19Update Appointment Status\x1a.Updates the status of an existing appointment.\x82\xd3\xe4\x93\x02d:\x01*Z1:\x01*\x1a,/api/v1/appointments/{appointment_id}/status2,/api/v1/appointments/{appointment_id}/status\x12\xc2\x02\n" +
+	"\x15RescheduleAppointment\x120.appointmentservice.RescheduleAppointmentRequest\x1a1.appointmentservice.RescheduleAppointmentResponse\"\xc3\x01\x92A\x84\x01\n" +
+	"\fAppointments\x12\x16Reschedule Appointment\x1a\\Reschedules an existing appointment to a new time, and optionally updates duration or place.\x82\xd3\xe4\x93\x025:\x01*20/api/v1/appointments/{appointment_id}/reschedule\x12\xd9\x01\n" +
+	"\x11CancelAppointment\x12,.appointmentservice.CancelAppointmentRequest\x1a\x16.google.protobuf.Empty\"~\x92AD\n" +
+	"\fAppointments\x12\x12Cancel Appointment\x1a Cancels an existing appointment.\x82\xd3\xe4\x93\x021:\x01*\",/api/v1/appointments/{appointment_id}/cancel\x12\xac\x02\n" +
+	"\x19GetAppointmentsForPatient\x124.appointmentservice.GetAppointmentsForPatientRequest\x1a5.appointmentservice.GetAppointmentsForPatientResponse\"\xa1\x01\x92Al\n" +
+	"\fAppointments\n" +
+	"\bPatients\x12\x18Get Patient Appointments\x1a8Retrieves a list of appointments for a specific patient.\x82\xd3\xe4\x93\x02,\x12*/api/v1/patients/{patient_id}/appointments\x12\xbf\x02\n" +
+	"\x18GetAppointmentsForDoctor\x123.appointmentservice.GetAppointmentsForDoctorRequest\x1a4.appointmentservice.GetAppointmentsForDoctorResponse\"\xb7\x01\x92A\x83\x01\n" +
+	"\fAppointments\n" +
+	"\aDoctors\x12\x17Get Doctor Appointments\x1aQRetrieves a list of appointments for a specific doctor within a given time range.\x82\xd3\xe4\x93\x02*\x12(/api/v1/doctors/{doctor_id}/appointments\x1a \x92A\x1d\x12\x1bManage patient appointmentsB\xa7\x01\x92Ah\x12>\n" +
+	"\x17Appointment Service API\x12\x1eAPI for managing appointments.2\x031.0*\x02\x01\x022\x10application/json:\x10application/jsonZ:golang-microservices-boilerplate/proto/appointment-serviceb\x06proto3"
 
 var (
 	file_proto_appointment_service_appointment_proto_rawDescOnce sync.Once

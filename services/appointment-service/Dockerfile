@@ -11,7 +11,7 @@ COPY . .
 
 # Build the appointment-service binary
 # Ensure the path matches your project structure
-RUN CGO_ENABLED=0 GOOS=linux go build -o appointment-service ./services/appointment-service/cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o appointment-service ./services/appointment-service/cmd/
 
 # --- Final Stage ---
 FROM alpine:latest

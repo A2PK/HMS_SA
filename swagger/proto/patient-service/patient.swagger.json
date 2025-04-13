@@ -1,13 +1,19 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "proto/patient-service/patient.proto",
-    "version": "version not set"
+    "title": "Patient Service API",
+    "description": "API for managing patient records and medical history.",
+    "version": "1.0"
   },
   "tags": [
     {
-      "name": "PatientService"
+      "name": "PatientService",
+      "description": "Manage patient information and medical records"
     }
+  ],
+  "schemes": [
+    "http",
+    "https"
   ],
   "consumes": [
     "application/json"
@@ -15,8 +21,269 @@
   "produces": [
     "application/json"
   ],
-  "paths": {},
+  "paths": {
+    "/api/v1/patients": {
+      "post": {
+        "summary": "Register Patient",
+        "description": "Registers a new patient in the system.",
+        "operationId": "PatientService_RegisterPatient",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/patientserviceRegisterPatientResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Data required to register a new patient.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/patientserviceRegisterPatientRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Patients"
+        ]
+      }
+    },
+    "/api/v1/patients/{patientId}": {
+      "get": {
+        "summary": "Get Patient Details",
+        "description": "Retrieves details for a specific patient by their ID.",
+        "operationId": "PatientService_GetPatientDetails",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/patientserviceGetPatientDetailsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "patientId",
+            "description": "The UUID of the patient.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Patients"
+        ]
+      },
+      "patch": {
+        "summary": "Update Patient Details",
+        "description": "Updates specific details for an existing patient.",
+        "operationId": "PatientService_UpdatePatientDetails",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/patientserviceUpdatePatientDetailsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "patientId",
+            "description": "The UUID of the patient to update.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PatientServiceUpdatePatientDetailsBody"
+            }
+          }
+        ],
+        "tags": [
+          "Patients"
+        ]
+      }
+    },
+    "/api/v1/patients/{patientId}/medical-history": {
+      "get": {
+        "summary": "Get Medical History",
+        "description": "Retrieves the list of medical records for a specific patient.",
+        "operationId": "PatientService_GetPatientMedicalHistory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/patientserviceGetPatientMedicalHistoryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "patientId",
+            "description": "The UUID of the patient.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Medical Records"
+        ]
+      }
+    },
+    "/api/v1/patients/{patientId}/medical-records": {
+      "post": {
+        "summary": "Add Medical Record",
+        "description": "Adds a new medical record to a patient's history.",
+        "operationId": "PatientService_AddMedicalRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "patientId",
+            "description": "The UUID of the patient to add the record to.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PatientServiceAddMedicalRecordBody"
+            }
+          }
+        ],
+        "tags": [
+          "Medical Records"
+        ]
+      }
+    }
+  },
   "definitions": {
+    "PatientServiceAddMedicalRecordBody": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-03-01T10:00:00Z",
+          "description": "Date of the record (RFC3339 UTC format)."
+        },
+        "staffId": {
+          "type": "string",
+          "example": "s1a2b3c4-e5f6-7890-1234-567890abcdef",
+          "description": "Identifier of the staff member creating the record (UUID format)."
+        },
+        "diagnosis": {
+          "type": "string",
+          "example": "Influenza",
+          "description": "Diagnosis for this record."
+        },
+        "treatment": {
+          "type": "string",
+          "example": "Tamiflu, rest",
+          "description": "Treatment provided or prescribed."
+        },
+        "notes": {
+          "type": "string",
+          "example": "High fever, body aches.",
+          "description": "Additional notes (optional)."
+        }
+      },
+      "description": "Data required to add a new medical record for a patient.",
+      "title": "Add Medical Record Request",
+      "required": [
+        "date",
+        "staffId",
+        "diagnosis",
+        "treatment"
+      ]
+    },
+    "PatientServiceUpdatePatientDetailsBody": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "Alicia",
+          "description": "New first name (optional).",
+          "title": "Fields below are optional for update (use wrappers or field masks in real app)"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Smithson",
+          "description": "New last name (optional)."
+        },
+        "gender": {
+          "type": "string",
+          "example": "Female",
+          "description": "New gender (optional)."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "example": "+15551112233",
+          "description": "New phone number (optional)."
+        },
+        "address": {
+          "type": "string",
+          "example": "789 Recuperation Ave, Healthville",
+          "description": "New address (optional)."
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "format": "date-time",
+          "example": "1990-05-15T00:00:00Z",
+          "description": "New date of birth (optional, RFC3339 UTC format)."
+        }
+      },
+      "description": "Data for updating an existing patient. Include only fields to change (use PATCH semantics).",
+      "title": "Update Patient Details Request"
+    },
     "patientserviceGetPatientDetailsResponse": {
       "type": "object",
       "properties": {
@@ -24,7 +291,8 @@
           "$ref": "#/definitions/patientservicePatient"
         }
       },
-      "title": "Response for GetPatientDetails"
+      "description": "Contains the details of the requested patient.",
+      "title": "Get Patient Details Response"
     },
     "patientserviceGetPatientMedicalHistoryResponse": {
       "type": "object",
@@ -37,87 +305,193 @@
           }
         }
       },
-      "title": "Response for GetPatientMedicalHistory"
+      "description": "Contains a list of medical records for the requested patient.",
+      "title": "Get Patient Medical History Response"
     },
     "patientserviceMedicalRecord": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
-          "title": "UUID as string"
+          "example": "r1a2b3c4-e5f6-7890-1234-567890abcdef",
+          "description": "Unique identifier for the medical record (UUID format)."
         },
         "patientId": {
           "type": "string",
-          "title": "UUID as string"
+          "example": "p1a2b3c4-e5f6-7890-1234-567890abcdef",
+          "description": "Identifier of the patient this record belongs to (UUID format)."
         },
         "date": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-02-10T14:00:00Z",
+          "description": "Date the medical record was created or pertains to (RFC3339 UTC format)."
         },
         "staffId": {
-          "type": "string"
+          "type": "string",
+          "example": "s1a2b3c4-e5f6-7890-1234-567890abcdef",
+          "description": "Identifier of the staff member who created the record (UUID format)."
         },
         "diagnosis": {
-          "type": "string"
+          "type": "string",
+          "example": "Common Cold",
+          "description": "Diagnosis provided in this record."
         },
         "treatment": {
-          "type": "string"
+          "type": "string",
+          "example": "Rest and fluids",
+          "description": "Treatment administered or prescribed."
         },
         "notes": {
-          "type": "string"
+          "type": "string",
+          "example": "Patient reported mild fever.",
+          "description": "Additional notes related to this medical record (optional)."
         },
         "createdAt": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-02-10T14:30:00Z",
+          "description": "Timestamp when the medical record was created (RFC3339 UTC format)."
         },
         "updatedAt": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-02-10T14:30:00Z",
+          "description": "Timestamp when the medical record was last updated (RFC3339 UTC format)."
         }
-      }
+      },
+      "description": "Represents a single medical record entry for a patient.",
+      "title": "Medical Record",
+      "required": [
+        "id",
+        "patientId",
+        "date",
+        "staffId",
+        "diagnosis",
+        "treatment",
+        "createdAt",
+        "updatedAt"
+      ]
     },
     "patientservicePatient": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
-          "title": "UUID as string"
+          "example": "p1a2b3c4-e5f6-7890-1234-567890abcdef",
+          "description": "Unique identifier for the patient (UUID format)."
         },
         "firstName": {
-          "type": "string"
+          "type": "string",
+          "example": "Alice",
+          "description": "Patient's first name."
         },
         "lastName": {
-          "type": "string"
+          "type": "string",
+          "example": "Smith",
+          "description": "Patient's last name."
         },
         "dateOfBirth": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "1990-05-15T00:00:00Z",
+          "description": "Patient's date of birth (RFC3339 UTC format)."
         },
         "gender": {
-          "type": "string"
+          "type": "string",
+          "example": "Female",
+          "description": "Patient's gender (e.g., 'Male', 'Female', 'Other')."
         },
         "phoneNumber": {
-          "type": "string"
+          "type": "string",
+          "example": "+15551234567",
+          "description": "Patient's contact phone number."
         },
         "address": {
-          "type": "string"
+          "type": "string",
+          "example": "123 Health St, Wellness City",
+          "description": "Patient's address."
         },
         "medicalHistory": {
           "type": "array",
           "items": {
             "type": "object",
             "$ref": "#/definitions/patientserviceMedicalRecord"
-          }
+          },
+          "description": "List of medical records associated with the patient."
         },
         "createdAt": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-02-01T09:00:00Z",
+          "description": "Timestamp when the patient record was created (RFC3339 UTC format)."
         },
         "updatedAt": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-02-10T14:30:00Z",
+          "description": "Timestamp when the patient record was last updated (RFC3339 UTC format)."
         }
-      }
+      },
+      "description": "Represents a patient in the system.",
+      "title": "Patient",
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "dateOfBirth",
+        "gender",
+        "phoneNumber",
+        "address",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "patientserviceRegisterPatientRequest": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "Bob",
+          "description": "Patient's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Johnson",
+          "description": "Patient's last name."
+        },
+        "gender": {
+          "type": "string",
+          "example": "Male",
+          "description": "Patient's gender."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "example": "+15559876543",
+          "description": "Patient's contact phone number."
+        },
+        "address": {
+          "type": "string",
+          "example": "456 Cure Ln, Remedy Town",
+          "description": "Patient's address."
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "format": "date-time",
+          "example": "1985-11-20T00:00:00Z",
+          "description": "Patient's date of birth (RFC3339 UTC format)."
+        }
+      },
+      "description": "Data required to register a new patient.",
+      "title": "Register Patient Request",
+      "required": [
+        "firstName",
+        "lastName",
+        "gender",
+        "phoneNumber",
+        "address",
+        "dateOfBirth"
+      ]
     },
     "patientserviceRegisterPatientResponse": {
       "type": "object",
@@ -126,7 +500,8 @@
           "$ref": "#/definitions/patientservicePatient"
         }
       },
-      "title": "Response for RegisterPatient (returns the created patient)"
+      "description": "Contains the details of the newly registered patient.",
+      "title": "Register Patient Response"
     },
     "patientserviceUpdatePatientDetailsResponse": {
       "type": "object",
@@ -135,7 +510,8 @@
           "$ref": "#/definitions/patientservicePatient"
         }
       },
-      "title": "Response for UpdatePatientDetails"
+      "description": "Contains the updated patient details.",
+      "title": "Update Patient Details Response"
     },
     "protobufAny": {
       "type": "object",

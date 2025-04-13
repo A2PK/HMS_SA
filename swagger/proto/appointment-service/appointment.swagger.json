@@ -1,13 +1,19 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "proto/appointment-service/appointment.proto",
-    "version": "version not set"
+    "title": "Appointment Service API",
+    "description": "API for managing appointments.",
+    "version": "1.0"
   },
   "tags": [
     {
-      "name": "AppointmentService"
+      "name": "AppointmentService",
+      "description": "Manage patient appointments"
     }
+  ],
+  "schemes": [
+    "http",
+    "https"
   ],
   "consumes": [
     "application/json"
@@ -15,52 +21,444 @@
   "produces": [
     "application/json"
   ],
-  "paths": {},
+  "paths": {
+    "/api/v1/appointments": {
+      "post": {
+        "summary": "Schedule Appointment",
+        "description": "Schedules a new appointment.",
+        "operationId": "AppointmentService_ScheduleAppointment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/appointmentserviceScheduleAppointmentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Data required to schedule a new appointment.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/appointmentserviceScheduleAppointmentRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/v1/appointments/{appointmentId}": {
+      "get": {
+        "summary": "Get Appointment Details",
+        "description": "Retrieves details for a specific appointment by its ID.",
+        "operationId": "AppointmentService_GetAppointmentDetails",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/appointmentserviceGetAppointmentDetailsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "description": "The UUID of the appointment.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/v1/appointments/{appointmentId}/cancel": {
+      "post": {
+        "summary": "Cancel Appointment",
+        "description": "Cancels an existing appointment.",
+        "operationId": "AppointmentService_CancelAppointment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "description": "The UUID of the appointment to cancel.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AppointmentServiceCancelAppointmentBody"
+            }
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/v1/appointments/{appointmentId}/reschedule": {
+      "patch": {
+        "summary": "Reschedule Appointment",
+        "description": "Reschedules an existing appointment to a new time, and optionally updates duration or place.",
+        "operationId": "AppointmentService_RescheduleAppointment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/appointmentserviceRescheduleAppointmentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "description": "The UUID of the appointment to reschedule.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AppointmentServiceRescheduleAppointmentBody"
+            }
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/v1/appointments/{appointmentId}/status": {
+      "put": {
+        "summary": "Update Appointment Status",
+        "description": "Updates the status of an existing appointment.",
+        "operationId": "AppointmentService_UpdateAppointmentStatus2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/appointmentserviceUpdateAppointmentStatusResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "description": "The UUID of the appointment to update.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AppointmentServiceUpdateAppointmentStatusBody"
+            }
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      },
+      "patch": {
+        "summary": "Update Appointment Status",
+        "description": "Updates the status of an existing appointment.",
+        "operationId": "AppointmentService_UpdateAppointmentStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/appointmentserviceUpdateAppointmentStatusResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "description": "The UUID of the appointment to update.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AppointmentServiceUpdateAppointmentStatusBody"
+            }
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/v1/doctors/{doctorId}/appointments": {
+      "get": {
+        "summary": "Get Doctor Appointments",
+        "description": "Retrieves a list of appointments for a specific doctor within a given time range.",
+        "operationId": "AppointmentService_GetAppointmentsForDoctor",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/appointmentserviceGetAppointmentsForDoctorResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "doctorId",
+            "description": "The UUID of the doctor/staff.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startTime",
+            "description": "Start of the time range (RFC3339 UTC format).",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endTime",
+            "description": "End of the time range (RFC3339 UTC format).",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "Appointments",
+          "Doctors"
+        ]
+      }
+    },
+    "/api/v1/patients/{patientId}/appointments": {
+      "get": {
+        "summary": "Get Patient Appointments",
+        "description": "Retrieves a list of appointments for a specific patient.",
+        "operationId": "AppointmentService_GetAppointmentsForPatient",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/appointmentserviceGetAppointmentsForPatientResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "patientId",
+            "description": "The UUID of the patient.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Appointments",
+          "Patients"
+        ]
+      }
+    }
+  },
   "definitions": {
+    "AppointmentServiceCancelAppointmentBody": {
+      "type": "object",
+      "description": "Specifies the ID of the appointment to cancel.",
+      "title": "Cancel Appointment Request"
+    },
+    "AppointmentServiceRescheduleAppointmentBody": {
+      "type": "object",
+      "properties": {
+        "newTime": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-04-11T11:00:00Z",
+          "description": "The new date and time for the appointment (RFC3339 UTC format)."
+        },
+        "newDuration": {
+          "type": "string",
+          "example": "1800s",
+          "description": "Optional new duration for the appointment (e.g., \"1800s\" for 30 mins)."
+        },
+        "place": {
+          "type": "string",
+          "example": "Online Meeting",
+          "description": "Optional new Location/Place for the rescheduled appointment."
+        }
+      },
+      "description": "Specifies the ID and new details for rescheduling an appointment.",
+      "title": "Reschedule Appointment Request",
+      "required": [
+        "newTime"
+      ]
+    },
+    "AppointmentServiceUpdateAppointmentStatusBody": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/appointmentserviceAppointmentStatus",
+          "example": "CONFIRMED",
+          "description": "The new status for the appointment."
+        }
+      },
+      "description": "Specifies the ID of the appointment and the new status.",
+      "title": "Update Appointment Status Request",
+      "required": [
+        "status"
+      ]
+    },
     "appointmentserviceAppointment": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
-          "title": "UUID as string"
+          "example": "apt-a1b2c3d4-e5f6-7890-1234-567890abcdef",
+          "description": "Unique identifier for the appointment (UUID format)."
         },
         "patientId": {
           "type": "string",
-          "title": "UUID as string"
+          "example": "p1a2b3c4-e5f6-7890-1234-567890abcdef",
+          "description": "Identifier of the patient (UUID format)."
         },
         "doctorId": {
           "type": "string",
-          "title": "UUID as string"
+          "example": "s1a2b3c4-e5f6-7890-1234-567890abcdef",
+          "description": "Identifier of the doctor/staff (UUID format)."
         },
         "appointmentTime": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-04-01T10:00:00Z",
+          "description": "Scheduled date and time of the appointment (RFC3339 UTC format)."
         },
         "duration": {
-          "type": "string"
+          "type": "string",
+          "example": "1800s",
+          "description": "Duration of the appointment (e.g., \"3600s\" for 1 hour)."
         },
         "reason": {
-          "type": "string"
+          "type": "string",
+          "example": "Annual Checkup",
+          "description": "Reason for the appointment (optional)."
         },
         "status": {
-          "$ref": "#/definitions/appointmentserviceAppointmentStatus"
+          "$ref": "#/definitions/appointmentserviceAppointmentStatus",
+          "example": "SCHEDULED",
+          "description": "Current status of the appointment."
         },
         "notes": {
-          "type": "string"
+          "type": "string",
+          "example": "Patient requested morning slot.",
+          "description": "Additional notes about the appointment (optional)."
         },
         "createdAt": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-03-20T15:00:00Z",
+          "description": "Timestamp when the appointment was created (RFC3339 UTC format)."
         },
         "updatedAt": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-03-21T09:30:00Z",
+          "description": "Timestamp when the appointment was last updated (RFC3339 UTC format)."
         },
         "place": {
           "type": "string",
-          "title": "Added: Location/Place of the appointment"
+          "example": "Clinic Room 3",
+          "description": "Location/Place of the appointment (e.g., Room number, Clinic name) (optional)."
         }
-      }
+      },
+      "description": "Represents a scheduled appointment.",
+      "title": "Appointment",
+      "required": [
+        "id",
+        "patientId",
+        "doctorId",
+        "appointmentTime",
+        "duration",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
     },
     "appointmentserviceAppointmentStatus": {
       "type": "string",
@@ -80,7 +478,9 @@
         "appointment": {
           "$ref": "#/definitions/appointmentserviceAppointment"
         }
-      }
+      },
+      "description": "Contains the details of the requested appointment.",
+      "title": "Get Appointment Details Response"
     },
     "appointmentserviceGetAppointmentsForDoctorResponse": {
       "type": "object",
@@ -92,7 +492,9 @@
             "$ref": "#/definitions/appointmentserviceAppointment"
           }
         }
-      }
+      },
+      "description": "Contains a list of appointments for the specified doctor within the time range.",
+      "title": "Get Appointments For Doctor Response"
     },
     "appointmentserviceGetAppointmentsForPatientResponse": {
       "type": "object",
@@ -104,7 +506,9 @@
             "$ref": "#/definitions/appointmentserviceAppointment"
           }
         }
-      }
+      },
+      "description": "Contains a list of appointments for the specified patient.",
+      "title": "Get Appointments For Patient Response"
     },
     "appointmentserviceRescheduleAppointmentResponse": {
       "type": "object",
@@ -112,7 +516,53 @@
         "appointment": {
           "$ref": "#/definitions/appointmentserviceAppointment"
         }
-      }
+      },
+      "description": "Contains the appointment details after rescheduling.",
+      "title": "Reschedule Appointment Response"
+    },
+    "appointmentserviceScheduleAppointmentRequest": {
+      "type": "object",
+      "properties": {
+        "patientId": {
+          "type": "string",
+          "example": "p1a2b3c4-e5f6-7890-1234-567890abcdef",
+          "description": "The UUID of the patient."
+        },
+        "doctorId": {
+          "type": "string",
+          "example": "s1a2b3c4-e5f6-7890-1234-567890abcdef",
+          "description": "The UUID of the doctor/staff."
+        },
+        "reason": {
+          "type": "string",
+          "example": "Follow-up consultation",
+          "description": "Reason for the appointment (optional)."
+        },
+        "appointmentTime": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-04-10T14:00:00Z",
+          "description": "Desired date and time for the appointment (RFC3339 UTC format)."
+        },
+        "duration": {
+          "type": "string",
+          "example": "900s",
+          "description": "Desired duration for the appointment (e.g., \"900s\" for 15 mins)."
+        },
+        "place": {
+          "type": "string",
+          "example": "Consultation Room A",
+          "description": "Location/Place for the new appointment (optional)."
+        }
+      },
+      "description": "Data required to schedule a new appointment.",
+      "title": "Schedule Appointment Request",
+      "required": [
+        "patientId",
+        "doctorId",
+        "appointmentTime",
+        "duration"
+      ]
     },
     "appointmentserviceScheduleAppointmentResponse": {
       "type": "object",
@@ -120,7 +570,9 @@
         "appointment": {
           "$ref": "#/definitions/appointmentserviceAppointment"
         }
-      }
+      },
+      "description": "Contains the details of the newly scheduled appointment.",
+      "title": "Schedule Appointment Response"
     },
     "appointmentserviceUpdateAppointmentStatusResponse": {
       "type": "object",
@@ -128,7 +580,9 @@
         "appointment": {
           "$ref": "#/definitions/appointmentserviceAppointment"
         }
-      }
+      },
+      "description": "Contains the appointment details after the status update.",
+      "title": "Update Appointment Status Response"
     },
     "protobufAny": {
       "type": "object",

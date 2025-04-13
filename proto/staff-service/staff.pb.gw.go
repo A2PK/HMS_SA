@@ -63,9 +63,16 @@ func request_StaffService_GetStaffDetails_0(ctx context.Context, marshaler runti
 	var (
 		protoReq GetStaffDetailsRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	io.Copy(io.Discard, req.Body)
+	val, ok := pathParams["staff_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "staff_id")
+	}
+	protoReq.StaffId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "staff_id", err)
 	}
 	msg, err := client.GetStaffDetails(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -75,9 +82,15 @@ func local_request_StaffService_GetStaffDetails_0(ctx context.Context, marshaler
 	var (
 		protoReq GetStaffDetailsRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok := pathParams["staff_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "staff_id")
+	}
+	protoReq.StaffId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "staff_id", err)
 	}
 	msg, err := server.GetStaffDetails(ctx, &protoReq)
 	return msg, metadata, err
@@ -87,9 +100,18 @@ func request_StaffService_UpdateStaffDetails_0(ctx context.Context, marshaler ru
 	var (
 		protoReq UpdateStaffDetailsRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["staff_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "staff_id")
+	}
+	protoReq.StaffId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "staff_id", err)
 	}
 	msg, err := client.UpdateStaffDetails(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -99,9 +121,18 @@ func local_request_StaffService_UpdateStaffDetails_0(ctx context.Context, marsha
 	var (
 		protoReq UpdateStaffDetailsRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["staff_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "staff_id")
+	}
+	protoReq.StaffId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "staff_id", err)
 	}
 	msg, err := server.UpdateStaffDetails(ctx, &protoReq)
 	return msg, metadata, err
@@ -111,9 +142,18 @@ func request_StaffService_UpdateStaffSchedule_0(ctx context.Context, marshaler r
 	var (
 		protoReq UpdateStaffScheduleRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["staff_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "staff_id")
+	}
+	protoReq.StaffId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "staff_id", err)
 	}
 	msg, err := client.UpdateStaffSchedule(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -123,9 +163,18 @@ func local_request_StaffService_UpdateStaffSchedule_0(ctx context.Context, marsh
 	var (
 		protoReq UpdateStaffScheduleRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["staff_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "staff_id")
+	}
+	protoReq.StaffId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "staff_id", err)
 	}
 	msg, err := server.UpdateStaffSchedule(ctx, &protoReq)
 	return msg, metadata, err
@@ -135,9 +184,18 @@ func request_StaffService_SetStaffAvailability_0(ctx context.Context, marshaler 
 	var (
 		protoReq SetStaffAvailabilityRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["staff_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "staff_id")
+	}
+	protoReq.StaffId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "staff_id", err)
 	}
 	msg, err := client.SetStaffAvailability(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -147,20 +205,35 @@ func local_request_StaffService_SetStaffAvailability_0(ctx context.Context, mars
 	var (
 		protoReq SetStaffAvailabilityRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+	val, ok := pathParams["staff_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "staff_id")
+	}
+	protoReq.StaffId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "staff_id", err)
+	}
 	msg, err := server.SetStaffAvailability(ctx, &protoReq)
 	return msg, metadata, err
 }
+
+var filter_StaffService_GetDoctorAvailability_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
 func request_StaffService_GetDoctorAvailability_0(ctx context.Context, marshaler runtime.Marshaler, client StaffServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq GetDoctorAvailabilityRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+	io.Copy(io.Discard, req.Body)
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_StaffService_GetDoctorAvailability_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.GetDoctorAvailability(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -172,7 +245,10 @@ func local_request_StaffService_GetDoctorAvailability_0(ctx context.Context, mar
 		protoReq GetDoctorAvailabilityRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_StaffService_GetDoctorAvailability_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := server.GetDoctorAvailability(ctx, &protoReq)
@@ -183,9 +259,18 @@ func request_StaffService_AssignTask_0(ctx context.Context, marshaler runtime.Ma
 	var (
 		protoReq AssignTaskRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["staff_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "staff_id")
+	}
+	protoReq.StaffId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "staff_id", err)
 	}
 	msg, err := client.AssignTask(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -195,9 +280,18 @@ func local_request_StaffService_AssignTask_0(ctx context.Context, marshaler runt
 	var (
 		protoReq AssignTaskRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["staff_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "staff_id")
+	}
+	protoReq.StaffId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "staff_id", err)
 	}
 	msg, err := server.AssignTask(ctx, &protoReq)
 	return msg, metadata, err
@@ -207,9 +301,16 @@ func request_StaffService_TrackWorkload_0(ctx context.Context, marshaler runtime
 	var (
 		protoReq TrackWorkloadRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	io.Copy(io.Discard, req.Body)
+	val, ok := pathParams["staff_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "staff_id")
+	}
+	protoReq.StaffId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "staff_id", err)
 	}
 	msg, err := client.TrackWorkload(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -219,9 +320,15 @@ func local_request_StaffService_TrackWorkload_0(ctx context.Context, marshaler r
 	var (
 		protoReq TrackWorkloadRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok := pathParams["staff_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "staff_id")
+	}
+	protoReq.StaffId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "staff_id", err)
 	}
 	msg, err := server.TrackWorkload(ctx, &protoReq)
 	return msg, metadata, err
@@ -256,9 +363,7 @@ func request_StaffService_ListStaffRoles_0(ctx context.Context, marshaler runtim
 		protoReq ListStaffRolesRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
+	io.Copy(io.Discard, req.Body)
 	msg, err := client.ListStaffRoles(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
@@ -268,9 +373,6 @@ func local_request_StaffService_ListStaffRoles_0(ctx context.Context, marshaler 
 		protoReq ListStaffRolesRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
 	msg, err := server.ListStaffRoles(ctx, &protoReq)
 	return msg, metadata, err
 }
@@ -304,9 +406,7 @@ func request_StaffService_ListStaffStatuses_0(ctx context.Context, marshaler run
 		protoReq ListStaffStatusesRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
+	io.Copy(io.Discard, req.Body)
 	msg, err := client.ListStaffStatuses(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
@@ -316,9 +416,6 @@ func local_request_StaffService_ListStaffStatuses_0(ctx context.Context, marshal
 		protoReq ListStaffStatusesRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
 	msg, err := server.ListStaffStatuses(ctx, &protoReq)
 	return msg, metadata, err
 }
@@ -352,9 +449,7 @@ func request_StaffService_ListTaskStatuses_0(ctx context.Context, marshaler runt
 		protoReq ListTaskStatusesRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
+	io.Copy(io.Discard, req.Body)
 	msg, err := client.ListTaskStatuses(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
@@ -364,9 +459,6 @@ func local_request_StaffService_ListTaskStatuses_0(ctx context.Context, marshale
 		protoReq ListTaskStatusesRequest
 		metadata runtime.ServerMetadata
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
 	msg, err := server.ListTaskStatuses(ctx, &protoReq)
 	return msg, metadata, err
 }
@@ -383,7 +475,7 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/AddStaff", runtime.WithHTTPPathPattern("/staffservice.StaffService/AddStaff"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/AddStaff", runtime.WithHTTPPathPattern("/api/v1/staff"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -397,13 +489,13 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_AddStaff_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_GetStaffDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StaffService_GetStaffDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/GetStaffDetails", runtime.WithHTTPPathPattern("/staffservice.StaffService/GetStaffDetails"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/GetStaffDetails", runtime.WithHTTPPathPattern("/api/v1/staff/{staff_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -417,13 +509,13 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_GetStaffDetails_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_UpdateStaffDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPatch, pattern_StaffService_UpdateStaffDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/UpdateStaffDetails", runtime.WithHTTPPathPattern("/staffservice.StaffService/UpdateStaffDetails"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/UpdateStaffDetails", runtime.WithHTTPPathPattern("/api/v1/staff/{staff_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -437,13 +529,13 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_UpdateStaffDetails_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_UpdateStaffSchedule_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPut, pattern_StaffService_UpdateStaffSchedule_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/UpdateStaffSchedule", runtime.WithHTTPPathPattern("/staffservice.StaffService/UpdateStaffSchedule"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/UpdateStaffSchedule", runtime.WithHTTPPathPattern("/api/v1/staff/{staff_id}/schedule"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -457,13 +549,13 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_UpdateStaffSchedule_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_SetStaffAvailability_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPut, pattern_StaffService_SetStaffAvailability_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/SetStaffAvailability", runtime.WithHTTPPathPattern("/staffservice.StaffService/SetStaffAvailability"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/SetStaffAvailability", runtime.WithHTTPPathPattern("/api/v1/staff/{staff_id}/status"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -477,13 +569,13 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_SetStaffAvailability_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_GetDoctorAvailability_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StaffService_GetDoctorAvailability_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/GetDoctorAvailability", runtime.WithHTTPPathPattern("/staffservice.StaffService/GetDoctorAvailability"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/GetDoctorAvailability", runtime.WithHTTPPathPattern("/api/v1/doctors/availability"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -503,7 +595,7 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/AssignTask", runtime.WithHTTPPathPattern("/staffservice.StaffService/AssignTask"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/AssignTask", runtime.WithHTTPPathPattern("/api/v1/staff/{staff_id}/tasks"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -517,13 +609,13 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_AssignTask_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_TrackWorkload_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StaffService_TrackWorkload_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/TrackWorkload", runtime.WithHTTPPathPattern("/staffservice.StaffService/TrackWorkload"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/TrackWorkload", runtime.WithHTTPPathPattern("/api/v1/staff/{staff_id}/workload"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -543,7 +635,7 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/AddStaffRole", runtime.WithHTTPPathPattern("/staffservice.StaffService/AddStaffRole"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/AddStaffRole", runtime.WithHTTPPathPattern("/api/v1/staff-roles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -557,13 +649,13 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_AddStaffRole_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_ListStaffRoles_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StaffService_ListStaffRoles_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/ListStaffRoles", runtime.WithHTTPPathPattern("/staffservice.StaffService/ListStaffRoles"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/ListStaffRoles", runtime.WithHTTPPathPattern("/api/v1/staff-roles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -583,7 +675,7 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/AddStaffStatus", runtime.WithHTTPPathPattern("/staffservice.StaffService/AddStaffStatus"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/AddStaffStatus", runtime.WithHTTPPathPattern("/api/v1/staff-statuses"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -597,13 +689,13 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_AddStaffStatus_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_ListStaffStatuses_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StaffService_ListStaffStatuses_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/ListStaffStatuses", runtime.WithHTTPPathPattern("/staffservice.StaffService/ListStaffStatuses"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/ListStaffStatuses", runtime.WithHTTPPathPattern("/api/v1/staff-statuses"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -623,7 +715,7 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/AddTaskStatus", runtime.WithHTTPPathPattern("/staffservice.StaffService/AddTaskStatus"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/AddTaskStatus", runtime.WithHTTPPathPattern("/api/v1/task-statuses"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -637,13 +729,13 @@ func RegisterStaffServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_AddTaskStatus_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_ListTaskStatuses_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StaffService_ListTaskStatuses_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/ListTaskStatuses", runtime.WithHTTPPathPattern("/staffservice.StaffService/ListTaskStatuses"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/staffservice.StaffService/ListTaskStatuses", runtime.WithHTTPPathPattern("/api/v1/task-statuses"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -701,7 +793,7 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/AddStaff", runtime.WithHTTPPathPattern("/staffservice.StaffService/AddStaff"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/AddStaff", runtime.WithHTTPPathPattern("/api/v1/staff"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -714,11 +806,11 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_AddStaff_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_GetStaffDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StaffService_GetStaffDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/GetStaffDetails", runtime.WithHTTPPathPattern("/staffservice.StaffService/GetStaffDetails"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/GetStaffDetails", runtime.WithHTTPPathPattern("/api/v1/staff/{staff_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -731,11 +823,11 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_GetStaffDetails_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_UpdateStaffDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPatch, pattern_StaffService_UpdateStaffDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/UpdateStaffDetails", runtime.WithHTTPPathPattern("/staffservice.StaffService/UpdateStaffDetails"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/UpdateStaffDetails", runtime.WithHTTPPathPattern("/api/v1/staff/{staff_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -748,11 +840,11 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_UpdateStaffDetails_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_UpdateStaffSchedule_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPut, pattern_StaffService_UpdateStaffSchedule_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/UpdateStaffSchedule", runtime.WithHTTPPathPattern("/staffservice.StaffService/UpdateStaffSchedule"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/UpdateStaffSchedule", runtime.WithHTTPPathPattern("/api/v1/staff/{staff_id}/schedule"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -765,11 +857,11 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_UpdateStaffSchedule_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_SetStaffAvailability_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPut, pattern_StaffService_SetStaffAvailability_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/SetStaffAvailability", runtime.WithHTTPPathPattern("/staffservice.StaffService/SetStaffAvailability"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/SetStaffAvailability", runtime.WithHTTPPathPattern("/api/v1/staff/{staff_id}/status"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -782,11 +874,11 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_SetStaffAvailability_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_GetDoctorAvailability_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StaffService_GetDoctorAvailability_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/GetDoctorAvailability", runtime.WithHTTPPathPattern("/staffservice.StaffService/GetDoctorAvailability"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/GetDoctorAvailability", runtime.WithHTTPPathPattern("/api/v1/doctors/availability"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -803,7 +895,7 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/AssignTask", runtime.WithHTTPPathPattern("/staffservice.StaffService/AssignTask"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/AssignTask", runtime.WithHTTPPathPattern("/api/v1/staff/{staff_id}/tasks"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -816,11 +908,11 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_AssignTask_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_TrackWorkload_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StaffService_TrackWorkload_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/TrackWorkload", runtime.WithHTTPPathPattern("/staffservice.StaffService/TrackWorkload"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/TrackWorkload", runtime.WithHTTPPathPattern("/api/v1/staff/{staff_id}/workload"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -837,7 +929,7 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/AddStaffRole", runtime.WithHTTPPathPattern("/staffservice.StaffService/AddStaffRole"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/AddStaffRole", runtime.WithHTTPPathPattern("/api/v1/staff-roles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -850,11 +942,11 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_AddStaffRole_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_ListStaffRoles_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StaffService_ListStaffRoles_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/ListStaffRoles", runtime.WithHTTPPathPattern("/staffservice.StaffService/ListStaffRoles"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/ListStaffRoles", runtime.WithHTTPPathPattern("/api/v1/staff-roles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -871,7 +963,7 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/AddStaffStatus", runtime.WithHTTPPathPattern("/staffservice.StaffService/AddStaffStatus"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/AddStaffStatus", runtime.WithHTTPPathPattern("/api/v1/staff-statuses"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -884,11 +976,11 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_AddStaffStatus_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_ListStaffStatuses_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StaffService_ListStaffStatuses_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/ListStaffStatuses", runtime.WithHTTPPathPattern("/staffservice.StaffService/ListStaffStatuses"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/ListStaffStatuses", runtime.WithHTTPPathPattern("/api/v1/staff-statuses"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -905,7 +997,7 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/AddTaskStatus", runtime.WithHTTPPathPattern("/staffservice.StaffService/AddTaskStatus"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/AddTaskStatus", runtime.WithHTTPPathPattern("/api/v1/task-statuses"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -918,11 +1010,11 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		}
 		forward_StaffService_AddTaskStatus_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_StaffService_ListTaskStatuses_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_StaffService_ListTaskStatuses_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/ListTaskStatuses", runtime.WithHTTPPathPattern("/staffservice.StaffService/ListTaskStatuses"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/staffservice.StaffService/ListTaskStatuses", runtime.WithHTTPPathPattern("/api/v1/task-statuses"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -939,20 +1031,20 @@ func RegisterStaffServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 }
 
 var (
-	pattern_StaffService_AddStaff_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "AddStaff"}, ""))
-	pattern_StaffService_GetStaffDetails_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "GetStaffDetails"}, ""))
-	pattern_StaffService_UpdateStaffDetails_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "UpdateStaffDetails"}, ""))
-	pattern_StaffService_UpdateStaffSchedule_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "UpdateStaffSchedule"}, ""))
-	pattern_StaffService_SetStaffAvailability_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "SetStaffAvailability"}, ""))
-	pattern_StaffService_GetDoctorAvailability_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "GetDoctorAvailability"}, ""))
-	pattern_StaffService_AssignTask_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "AssignTask"}, ""))
-	pattern_StaffService_TrackWorkload_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "TrackWorkload"}, ""))
-	pattern_StaffService_AddStaffRole_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "AddStaffRole"}, ""))
-	pattern_StaffService_ListStaffRoles_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "ListStaffRoles"}, ""))
-	pattern_StaffService_AddStaffStatus_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "AddStaffStatus"}, ""))
-	pattern_StaffService_ListStaffStatuses_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "ListStaffStatuses"}, ""))
-	pattern_StaffService_AddTaskStatus_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "AddTaskStatus"}, ""))
-	pattern_StaffService_ListTaskStatuses_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"staffservice.StaffService", "ListTaskStatuses"}, ""))
+	pattern_StaffService_AddStaff_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "staff"}, ""))
+	pattern_StaffService_GetStaffDetails_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "staff", "staff_id"}, ""))
+	pattern_StaffService_UpdateStaffDetails_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "staff", "staff_id"}, ""))
+	pattern_StaffService_UpdateStaffSchedule_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "staff", "staff_id", "schedule"}, ""))
+	pattern_StaffService_SetStaffAvailability_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "staff", "staff_id", "status"}, ""))
+	pattern_StaffService_GetDoctorAvailability_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "doctors", "availability"}, ""))
+	pattern_StaffService_AssignTask_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "staff", "staff_id", "tasks"}, ""))
+	pattern_StaffService_TrackWorkload_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "staff", "staff_id", "workload"}, ""))
+	pattern_StaffService_AddStaffRole_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "staff-roles"}, ""))
+	pattern_StaffService_ListStaffRoles_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "staff-roles"}, ""))
+	pattern_StaffService_AddStaffStatus_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "staff-statuses"}, ""))
+	pattern_StaffService_ListStaffStatuses_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "staff-statuses"}, ""))
+	pattern_StaffService_AddTaskStatus_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "task-statuses"}, ""))
+	pattern_StaffService_ListTaskStatuses_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "task-statuses"}, ""))
 )
 
 var (

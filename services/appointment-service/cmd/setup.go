@@ -48,7 +48,10 @@ func setupDatabase(logger coreLogger.Logger) *coreDatabase.DatabaseConnection {
 // setupDependencies initializes and returns the core dependencies: repository, use case, mapper, and staff client adapter.
 func setupDependencies(db *coreDatabase.DatabaseConnection, logger coreLogger.Logger, staffServiceAddress string) (appointmentUseCase.AppointmentUseCase, controller.Mapper) {
 	// Staff Service gRPC Client
-	staffClientConn, err := coreGrpc.NewBaseGrpcClient(logger, &coreGrpc.GrpcClientConfig{ServiceHost: staffServiceAddress})
+	staffClientConn, err := coreGrpc.NewBaseGrpcClient(logger, &coreGrpc.GrpcClientConfig{
+		ServiceHost:            staffServiceAddress,
+		AllowInsecureTransport: true,
+	})
 	if err != nil {
 		logger.Fatal("Failed to connect to staff service", "address", staffServiceAddress, "error", err)
 	}

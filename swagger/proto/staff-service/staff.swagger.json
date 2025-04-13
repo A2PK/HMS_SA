@@ -1,13 +1,19 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "proto/staff-service/staff.proto",
-    "version": "version not set"
+    "title": "Staff Service API",
+    "description": "API for managing hospital staff, their roles, statuses, schedules, and tasks.",
+    "version": "1.0"
   },
   "tags": [
     {
-      "name": "StaffService"
+      "name": "StaffService",
+      "description": "Manage hospital staff, schedules, and tasks"
     }
+  ],
+  "schemes": [
+    "http",
+    "https"
   ],
   "consumes": [
     "application/json"
@@ -15,21 +21,643 @@
   "produces": [
     "application/json"
   ],
-  "paths": {},
+  "paths": {
+    "/api/v1/doctors/availability": {
+      "get": {
+        "summary": "Get Doctor Availability",
+        "description": "Retrieves available time slots for a specific doctor or all doctors within a time range.",
+        "operationId": "StaffService_GetDoctorAvailability",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/staffserviceGetDoctorAvailabilityResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "doctorId",
+            "description": "Optional: The UUID of a specific doctor. If omitted, checks all doctors.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startTime",
+            "description": "Start of the time range (RFC3339 UTC format).",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endTime",
+            "description": "End of the time range (RFC3339 UTC format).",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "Staff Schedule",
+          "Doctors"
+        ]
+      }
+    },
+    "/api/v1/staff": {
+      "post": {
+        "summary": "Add Staff Member",
+        "description": "Adds a new staff member to the system.",
+        "operationId": "StaffService_AddStaff",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/staffserviceAddStaffResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Data required to add a new staff member.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/staffserviceAddStaffRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Staff"
+        ]
+      }
+    },
+    "/api/v1/staff-roles": {
+      "get": {
+        "summary": "List Staff Roles",
+        "description": "Retrieves a list of all available staff roles.",
+        "operationId": "StaffService_ListStaffRoles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/staffserviceListStaffRolesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Lookups",
+          "Staff Roles"
+        ]
+      },
+      "post": {
+        "summary": "Add Staff Role",
+        "description": "Creates a new staff role definition.",
+        "operationId": "StaffService_AddStaffRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/staffserviceAddStaffRoleResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Data for creating a new staff role.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/staffserviceAddStaffRoleRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Lookups",
+          "Staff Roles"
+        ]
+      }
+    },
+    "/api/v1/staff-statuses": {
+      "get": {
+        "summary": "List Staff Statuses",
+        "description": "Retrieves a list of all available staff employment statuses.",
+        "operationId": "StaffService_ListStaffStatuses",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/staffserviceListStaffStatusesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Lookups",
+          "Staff Statuses"
+        ]
+      },
+      "post": {
+        "summary": "Add Staff Status",
+        "description": "Creates a new staff employment status definition.",
+        "operationId": "StaffService_AddStaffStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/staffserviceAddStaffStatusResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Data for creating a new staff employment status.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/staffserviceAddStaffStatusRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Lookups",
+          "Staff Statuses"
+        ]
+      }
+    },
+    "/api/v1/staff/{staffId}": {
+      "get": {
+        "summary": "Get Staff Details",
+        "description": "Retrieves details for a specific staff member by their ID, including schedule/tasks.",
+        "operationId": "StaffService_GetStaffDetails",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/staffserviceGetStaffDetailsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "staffId",
+            "description": "The UUID of the staff member.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Staff"
+        ]
+      },
+      "patch": {
+        "summary": "Update Staff Details",
+        "description": "Updates specific details for an existing staff member.",
+        "operationId": "StaffService_UpdateStaffDetails",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/staffserviceUpdateStaffDetailsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "staffId",
+            "description": "The UUID of the staff member to update.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StaffServiceUpdateStaffDetailsBody"
+            }
+          }
+        ],
+        "tags": [
+          "Staff"
+        ]
+      }
+    },
+    "/api/v1/staff/{staffId}/schedule": {
+      "put": {
+        "summary": "Update Staff Schedule",
+        "description": "Adds a list of new tasks to a staff member's schedule.",
+        "operationId": "StaffService_UpdateStaffSchedule",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "staffId",
+            "description": "The UUID of the staff member whose schedule is being updated.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StaffServiceUpdateStaffScheduleBody"
+            }
+          }
+        ],
+        "tags": [
+          "Staff Schedule"
+        ]
+      }
+    },
+    "/api/v1/staff/{staffId}/status": {
+      "put": {
+        "summary": "Set Staff Status",
+        "description": "Sets the employment status for a staff member.",
+        "operationId": "StaffService_SetStaffAvailability",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "staffId",
+            "description": "The UUID of the staff member.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StaffServiceSetStaffAvailabilityBody"
+            }
+          }
+        ],
+        "tags": [
+          "Staff"
+        ]
+      }
+    },
+    "/api/v1/staff/{staffId}/tasks": {
+      "post": {
+        "summary": "Assign Task",
+        "description": "Creates and assigns a new task to a specific staff member.",
+        "operationId": "StaffService_AssignTask",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "staffId",
+            "description": "The UUID of the staff member to assign the task to.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StaffServiceAssignTaskBody"
+            }
+          }
+        ],
+        "tags": [
+          "Staff Tasks"
+        ]
+      }
+    },
+    "/api/v1/staff/{staffId}/workload": {
+      "get": {
+        "summary": "Track Staff Workload",
+        "description": "Retrieves the list of tasks assigned to a specific staff member.",
+        "operationId": "StaffService_TrackWorkload",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/staffserviceTrackWorkloadResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "staffId",
+            "description": "The UUID of the staff member.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Staff Tasks"
+        ]
+      }
+    },
+    "/api/v1/task-statuses": {
+      "get": {
+        "summary": "List Task Statuses",
+        "description": "Retrieves a list of all available task statuses.",
+        "operationId": "StaffService_ListTaskStatuses",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/staffserviceListTaskStatusesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Lookups",
+          "Task Statuses"
+        ]
+      },
+      "post": {
+        "summary": "Add Task Status",
+        "description": "Creates a new task status definition.",
+        "operationId": "StaffService_AddTaskStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/staffserviceAddTaskStatusResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Data for creating a new task status.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/staffserviceAddTaskStatusRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Lookups",
+          "Task Statuses"
+        ]
+      }
+    }
+  },
   "definitions": {
     "GetDoctorAvailabilityResponseTimeSlot": {
       "type": "object",
       "properties": {
         "startTime": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-04-01T10:00:00Z",
+          "description": "Start time of the available slot (RFC3339 UTC format)."
         },
         "endTime": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-04-01T10:30:00Z",
+          "description": "End time of the available slot (RFC3339 UTC format)."
         }
       },
-      "title": "How to define availability now? Free time slots derived from existing TaskProto start/end times?\nrepeated ScheduleEntryProto available_slots = 1; // Original, needs review"
+      "description": "Represents a continuous block of available time.",
+      "title": "Available Time Slot"
+    },
+    "StaffServiceAssignTaskBody": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Prepare Morning Meds",
+          "description": "Title of the task."
+        },
+        "description": {
+          "type": "string",
+          "example": "Prepare medications for patients on Ward C.",
+          "description": "Optional description of the task."
+        },
+        "priority": {
+          "type": "integer",
+          "format": "int32",
+          "example": 3,
+          "description": "Priority level (optional, default depends on implementation)."
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-04-01T08:00:00Z",
+          "description": "Scheduled start time for the task (RFC3339 UTC format)."
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-04-01T08:30:00Z",
+          "description": "Scheduled end time for the task (RFC3339 UTC format)."
+        },
+        "statusId": {
+          "type": "string",
+          "example": "Pending",
+          "description": "Initial status for the task (e.g., \"Pending\"). Must match an existing TaskStatusProto.name."
+        }
+      },
+      "description": "Data required to create and assign a new task to a staff member.",
+      "title": "Assign Task Request",
+      "required": [
+        "title",
+        "startTime",
+        "endTime",
+        "statusId"
+      ]
+    },
+    "StaffServiceSetStaffAvailabilityBody": {
+      "type": "object",
+      "properties": {
+        "statusId": {
+          "type": "string",
+          "example": "OnLeave",
+          "description": "The name of the target status (e.g., \"OnLeave\"). Must match an existing StaffStatusProto.name."
+        }
+      },
+      "description": "Sets the employment status for a staff member.",
+      "title": "Set Staff Status Request",
+      "required": [
+        "statusId"
+      ]
+    },
+    "StaffServiceUpdateStaffDetailsBody": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "Benjamin",
+          "description": "New first name (optional).",
+          "title": "Fields below are optional for update (use wrappers or field masks in real app)"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Carter",
+          "description": "New last name (optional)."
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "format": "date-time",
+          "example": "1992-03-10T00:00:00Z",
+          "description": "New date of birth (optional, RFC3339 UTC format)."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "example": "+15550202021",
+          "description": "New phone number (optional)."
+        },
+        "address": {
+          "type": "string",
+          "example": "102 Nurse Station, Medtown",
+          "description": "New address (optional)."
+        },
+        "specialization": {
+          "type": "string",
+          "example": "Cardiology",
+          "description": "Updated specialization (optional, mainly for Doctors)."
+        },
+        "nurseType": {
+          "type": "string",
+          "example": "RN",
+          "description": "Updated nurse type (optional, mainly for Nurses)."
+        }
+      },
+      "description": "Data for updating an existing staff member. Only include fields to change (PATCH semantics).",
+      "title": "Update Staff Details Request"
+    },
+    "StaffServiceUpdateStaffScheduleBody": {
+      "type": "object",
+      "properties": {
+        "tasksToSchedule": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/staffserviceTaskProto"
+          },
+          "description": "A list of new tasks to be created and added to the schedule."
+        }
+      },
+      "description": "Adds new tasks to a staff member's schedule.",
+      "title": "Update Staff Schedule Request",
+      "required": [
+        "tasksToSchedule"
+      ]
     },
     "protobufAny": {
       "type": "object",
@@ -59,13 +687,97 @@
         }
       }
     },
+    "staffserviceAddStaffRequest": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "Nurse Ben",
+          "description": "Staff member's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Carter",
+          "description": "Staff member's last name."
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "format": "date-time",
+          "example": "1992-03-10T00:00:00Z",
+          "description": "Date of birth (RFC3339 UTC format)."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "example": "+15550202020",
+          "description": "Contact phone number."
+        },
+        "address": {
+          "type": "string",
+          "example": "101 Nurse Station, Medtown",
+          "description": "Address."
+        },
+        "roleId": {
+          "type": "string",
+          "example": "Nurse",
+          "description": "Role identifier (e.g., \"Nurse\"). Must match an existing StaffRoleProto.name."
+        },
+        "statusId": {
+          "type": "string",
+          "example": "Active",
+          "description": "Status identifier (e.g., \"Active\"). Must match an existing StaffStatusProto.name."
+        },
+        "specialization": {
+          "type": "string",
+          "example": "Pediatrics",
+          "description": "Required for Doctor role (e.g., \"Neurology\"). Optional otherwise."
+        },
+        "nurseType": {
+          "type": "string",
+          "example": "LPN",
+          "description": "Required for Nurse role (e.g., \"RN\"). Optional otherwise."
+        }
+      },
+      "description": "Data required to add a new staff member.",
+      "title": "Add Staff Request",
+      "required": [
+        "firstName",
+        "lastName",
+        "dateOfBirth",
+        "phoneNumber",
+        "address",
+        "roleId",
+        "statusId"
+      ]
+    },
     "staffserviceAddStaffResponse": {
       "type": "object",
       "properties": {
         "staff": {
           "$ref": "#/definitions/staffserviceStaff"
         }
-      }
+      },
+      "description": "Contains the details of the newly added staff member.",
+      "title": "Add Staff Response"
+    },
+    "staffserviceAddStaffRoleRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Pharmacist",
+          "description": "Unique name for the new role."
+        },
+        "description": {
+          "type": "string",
+          "example": "Dispenses medications.",
+          "description": "Optional description."
+        }
+      },
+      "description": "Data for creating a new staff role.",
+      "title": "Add Staff Role Request",
+      "required": [
+        "name"
+      ]
     },
     "staffserviceAddStaffRoleResponse": {
       "type": "object",
@@ -73,7 +785,29 @@
         "role": {
           "$ref": "#/definitions/staffserviceStaffRoleProto"
         }
-      }
+      },
+      "description": "Contains the details of the newly created staff role.",
+      "title": "Add Staff Role Response"
+    },
+    "staffserviceAddStaffStatusRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Terminated",
+          "description": "Unique name for the new status."
+        },
+        "description": {
+          "type": "string",
+          "example": "Employment ended.",
+          "description": "Optional description."
+        }
+      },
+      "description": "Data for creating a new staff employment status.",
+      "title": "Add Staff Status Request",
+      "required": [
+        "name"
+      ]
     },
     "staffserviceAddStaffStatusResponse": {
       "type": "object",
@@ -81,7 +815,29 @@
         "status": {
           "$ref": "#/definitions/staffserviceStaffStatusProto"
         }
-      }
+      },
+      "description": "Contains the details of the newly created staff status.",
+      "title": "Add Staff Status Response"
+    },
+    "staffserviceAddTaskStatusRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Blocked",
+          "description": "Unique name for the new task status."
+        },
+        "description": {
+          "type": "string",
+          "example": "Task cannot proceed due to external factor.",
+          "description": "Optional description."
+        }
+      },
+      "description": "Data for creating a new task status.",
+      "title": "Add Task Status Request",
+      "required": [
+        "name"
+      ]
     },
     "staffserviceAddTaskStatusResponse": {
       "type": "object",
@@ -89,7 +845,9 @@
         "status": {
           "$ref": "#/definitions/staffserviceTaskStatusProto"
         }
-      }
+      },
+      "description": "Contains the details of the newly created task status.",
+      "title": "Add Task Status Response"
     },
     "staffserviceGetDoctorAvailabilityResponse": {
       "type": "object",
@@ -100,18 +858,21 @@
             "type": "object",
             "$ref": "#/definitions/GetDoctorAvailabilityResponseTimeSlot"
           },
-          "title": "Alternative: return calculated free slots"
+          "description": "List of available time slots."
         }
-      }
+      },
+      "description": "A list of time slots when the specified doctor(s) are available.",
+      "title": "Get Doctor Availability Response"
     },
     "staffserviceGetStaffDetailsResponse": {
       "type": "object",
       "properties": {
         "staff": {
-          "$ref": "#/definitions/staffserviceStaff",
-          "title": "Includes schedule with tasks"
+          "$ref": "#/definitions/staffserviceStaff"
         }
-      }
+      },
+      "description": "Contains the details of the requested staff member, including their schedule/tasks.",
+      "title": "Get Staff Details Response"
     },
     "staffserviceListStaffRolesResponse": {
       "type": "object",
@@ -123,7 +884,9 @@
             "$ref": "#/definitions/staffserviceStaffRoleProto"
           }
         }
-      }
+      },
+      "description": "A list of all available staff roles.",
+      "title": "List Staff Roles Response"
     },
     "staffserviceListStaffStatusesResponse": {
       "type": "object",
@@ -135,7 +898,9 @@
             "$ref": "#/definitions/staffserviceStaffStatusProto"
           }
         }
-      }
+      },
+      "description": "A list of all available staff statuses.",
+      "title": "List Staff Statuses Response"
     },
     "staffserviceListTaskStatusesResponse": {
       "type": "object",
@@ -147,62 +912,83 @@
             "$ref": "#/definitions/staffserviceTaskStatusProto"
           }
         }
-      }
+      },
+      "description": "A list of all available task statuses.",
+      "title": "List Task Statuses Response"
     },
     "staffserviceScheduleEntryProto": {
       "type": "object",
       "properties": {
         "staffId": {
           "type": "string",
-          "description": "UUID as string (part of composite key in DB)",
-          "title": "id, start_time, end_time, is_booked, created_at, updated_at removed"
+          "example": "s1a2b3c4-e5f6-7890-1234-567890abcdef",
+          "description": "Identifier of the staff member (UUID format)."
         },
         "task": {
           "$ref": "#/definitions/staffserviceTaskProto",
-          "description": "Contains the linked task details",
-          "title": "TaskID is implicit through the TaskProto message below"
+          "description": "The task associated with this schedule entry."
         }
       },
-      "title": "Corresponds to entity.ScheduleEntry (Join Table)"
+      "description": "Links a staff member to a specific task in their schedule.",
+      "title": "Schedule Entry",
+      "required": [
+        "staffId",
+        "task"
+      ]
     },
     "staffserviceStaff": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
-          "title": "UUID as string"
+          "example": "s1a2b3c4-e5f6-7890-1234-567890abcdef",
+          "description": "Unique identifier for the staff member (UUID format)."
         },
         "firstName": {
-          "type": "string"
+          "type": "string",
+          "example": "Dr. Evelyn",
+          "description": "Staff member's first name."
         },
         "lastName": {
-          "type": "string"
+          "type": "string",
+          "example": "Reed",
+          "description": "Staff member's last name."
         },
         "dateOfBirth": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "1980-08-25T00:00:00Z",
+          "description": "Staff member's date of birth (RFC3339 UTC format)."
         },
         "phoneNumber": {
-          "type": "string"
+          "type": "string",
+          "example": "+15550101010",
+          "description": "Staff member's contact phone number."
         },
         "address": {
-          "type": "string"
+          "type": "string",
+          "example": "789 Staff St, Medtown",
+          "description": "Staff member's address."
         },
         "roleId": {
           "type": "string",
-          "title": "Foreign key to StaffRoleProto.name"
+          "example": "Doctor",
+          "description": "Identifier of the staff member's role (references StaffRoleProto.name)."
         },
         "statusId": {
           "type": "string",
-          "title": "Foreign key to StaffStatusProto.name"
+          "example": "Active",
+          "description": "Identifier of the staff member's current status (references StaffStatusProto.name)."
         },
         "specialization": {
           "type": "string",
-          "title": "Kept for potential STI display"
+          "example": "Cardiology",
+          "description": "The doctor's area of medical specialization (e.g., \"Cardiology\", \"Neurology\", \"Pediatrics\") (optional)."
         },
         "nurseType": {
           "type": "string",
-          "title": "Kept for potential STI display"
+          "example": "RN",
+          "description": "Specifies the type of nurse (e.g., \"RN\", \"LPN\", \"NP\") (optional)."
         },
         "schedule": {
           "type": "array",
@@ -210,98 +996,162 @@
             "type": "object",
             "$ref": "#/definitions/staffserviceScheduleEntryProto"
           },
-          "description": "Contains ScheduleEntryProto with nested TaskProto",
-          "title": "staff_type, contact_info, is_available removed"
+          "description": "List of schedule entries, each containing an assigned task."
         },
         "createdAt": {
           "type": "string",
           "format": "date-time",
-          "title": "workload removed"
+          "example": "2022-11-01T10:00:00Z",
+          "description": "Timestamp when the staff record was created (RFC3339 UTC format)."
         },
         "updatedAt": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-03-15T16:00:00Z",
+          "description": "Timestamp when the staff record was last updated (RFC3339 UTC format)."
         }
       },
-      "title": "Corresponds to entity.Staff"
+      "description": "Represents a hospital staff member.",
+      "title": "Staff",
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "dateOfBirth",
+        "phoneNumber",
+        "address",
+        "roleId",
+        "statusId",
+        "createdAt",
+        "updatedAt"
+      ]
     },
     "staffserviceStaffRoleProto": {
       "type": "object",
       "properties": {
         "name": {
           "type": "string",
-          "title": "Primary Key"
+          "example": "Doctor",
+          "description": "Unique name for the role (Primary Key)."
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "example": "Medical doctor responsible for patient diagnosis and treatment.",
+          "description": "Optional description of the role."
         }
-      }
+      },
+      "description": "Represents a role a staff member can have (e.g., Doctor, Nurse).",
+      "title": "Staff Role",
+      "required": [
+        "name"
+      ]
     },
     "staffserviceStaffStatusProto": {
       "type": "object",
       "properties": {
         "name": {
           "type": "string",
-          "title": "Primary Key"
+          "example": "Active",
+          "description": "Unique name for the status (Primary Key)."
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "example": "Currently employed and working.",
+          "description": "Optional description of the status."
         }
-      }
+      },
+      "description": "Represents the employment status of a staff member (e.g., Active, OnLeave).",
+      "title": "Staff Status",
+      "required": [
+        "name"
+      ]
     },
     "staffserviceTaskProto": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
-          "title": "UUID as string"
+          "example": "task-a1b2c3d4-e5f6-7890-1234-567890abcdef",
+          "description": "Unique identifier for the task (UUID format)."
         },
         "title": {
           "type": "string",
-          "title": "staff_id removed, linked via ScheduleEntryProto"
+          "example": "Review Patient Chart",
+          "description": "Title or name of the task."
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "example": "Review Alice Smith's chart before her appointment.",
+          "description": "Detailed description of the task (optional)."
         },
         "priority": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "example": 2,
+          "description": "Priority level of the task (e.g., 1=High, 5=Low)."
         },
         "startTime": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-04-01T09:00:00Z",
+          "description": "Scheduled start time of the task (RFC3339 UTC format)."
         },
         "endTime": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-04-01T09:30:00Z",
+          "description": "Scheduled end time of the task (RFC3339 UTC format)."
         },
         "statusId": {
           "type": "string",
-          "title": "Foreign key to TaskStatusProto.name"
+          "example": "Pending",
+          "description": "Identifier of the task's current status (references TaskStatusProto.name)."
         },
         "createdAt": {
           "type": "string",
           "format": "date-time",
-          "title": "assigned_at, due_at, status (string) removed"
+          "example": "2023-03-30T11:00:00Z",
+          "description": "Timestamp when the task was created (RFC3339 UTC format)."
         },
         "updatedAt": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "example": "2023-03-30T11:00:00Z",
+          "description": "Timestamp when the task was last updated (RFC3339 UTC format)."
         }
       },
-      "title": "Corresponds to entity.Task"
+      "description": "Represents a task assigned to a staff member via their schedule.",
+      "title": "Task",
+      "required": [
+        "id",
+        "title",
+        "priority",
+        "startTime",
+        "endTime",
+        "statusId",
+        "createdAt",
+        "updatedAt"
+      ]
     },
     "staffserviceTaskStatusProto": {
       "type": "object",
       "properties": {
         "name": {
           "type": "string",
-          "title": "Primary Key"
+          "example": "Pending",
+          "description": "Unique name for the task status (Primary Key)."
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "example": "Task is assigned but not yet started.",
+          "description": "Optional description of the task status."
         }
-      }
+      },
+      "description": "Represents the status of an assigned task (e.g., Pending, Completed).",
+      "title": "Task Status",
+      "required": [
+        "name"
+      ]
     },
     "staffserviceTrackWorkloadResponse": {
       "type": "object",
@@ -312,9 +1162,11 @@
             "type": "object",
             "$ref": "#/definitions/staffserviceTaskProto"
           },
-          "title": "Can be derived from Staff.schedule[].task"
+          "description": "List of tasks assigned to the staff member."
         }
-      }
+      },
+      "description": "Contains a list of tasks assigned to the specified staff member.",
+      "title": "Track Workload Response"
     },
     "staffserviceUpdateStaffDetailsResponse": {
       "type": "object",
@@ -322,7 +1174,9 @@
         "staff": {
           "$ref": "#/definitions/staffserviceStaff"
         }
-      }
+      },
+      "description": "Contains the updated staff member details.",
+      "title": "Update Staff Details Response"
     }
   }
 }

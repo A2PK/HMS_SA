@@ -7,6 +7,8 @@
 package patient_service
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
@@ -25,7 +27,7 @@ const (
 
 type Patient struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	Id             string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // UUID as string
+	Id             string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	FirstName      string                 `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
 	LastName       string                 `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
 	DateOfBirth    *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=date_of_birth,json=dateOfBirth,proto3" json:"date_of_birth,omitempty"`
@@ -141,8 +143,8 @@ func (x *Patient) GetUpdatedAt() *timestamppb.Timestamp {
 
 type MedicalRecord struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`                                // UUID as string
-	PatientId     string                 `protobuf:"bytes,2,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"` // UUID as string
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	PatientId     string                 `protobuf:"bytes,2,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
 	Date          *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=date,proto3" json:"date,omitempty"`
 	StaffId       string                 `protobuf:"bytes,4,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"`
 	Diagnosis     string                 `protobuf:"bytes,5,opt,name=diagnosis,proto3" json:"diagnosis,omitempty"`
@@ -380,7 +382,7 @@ func (x *RegisterPatientResponse) GetPatient() *Patient {
 // Request for GetPatientDetails
 type GetPatientDetailsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	PatientId     string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"` // UUID as string
+	PatientId     string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -469,9 +471,10 @@ func (x *GetPatientDetailsResponse) GetPatient() *Patient {
 
 // Request for UpdatePatientDetails
 type UpdatePatientDetailsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	PatientId     string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"` // UUID as string
-	FirstName     string                 `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"` // Use optional or field masks for partial updates
+	state     protoimpl.MessageState `protogen:"open.v1"`
+	PatientId string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
+	// Fields below are optional for update (use wrappers or field masks in real app)
+	FirstName     string                 `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
 	LastName      string                 `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
 	Gender        string                 `protobuf:"bytes,4,opt,name=gender,proto3" json:"gender,omitempty"`
 	PhoneNumber   string                 `protobuf:"bytes,5,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
@@ -607,9 +610,8 @@ func (x *UpdatePatientDetailsResponse) GetPatient() *Patient {
 
 // Request for AddMedicalRecord
 type AddMedicalRecordRequest struct {
-	state     protoimpl.MessageState `protogen:"open.v1"`
-	PatientId string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"` // UUID as string
-	// Pass the data needed to create a new medical record
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PatientId     string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
 	Date          *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=date,proto3" json:"date,omitempty"`
 	StaffId       string                 `protobuf:"bytes,3,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"`
 	Diagnosis     string                 `protobuf:"bytes,4,opt,name=diagnosis,proto3" json:"diagnosis,omitempty"`
@@ -694,7 +696,7 @@ func (x *AddMedicalRecordRequest) GetNotes() string {
 // Request for GetPatientMedicalHistory
 type GetPatientMedicalHistoryRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	PatientId     string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"` // UUID as string
+	PatientId     string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -785,81 +787,109 @@ var File_proto_patient_service_patient_proto protoreflect.FileDescriptor
 
 const file_proto_patient_service_patient_proto_rawDesc = "" +
 	"\n" +
-	"#proto/patient-service/patient.proto\x12\x0epatientservice\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xa8\x03\n" +
-	"\aPatient\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
+	"#proto/patient-service/patient.proto\x12\x0epatientservice\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xf9\t\n" +
+	"\aPatient\x12m\n" +
+	"\x02id\x18\x01 \x01(\tB]\x92AZ20Unique identifier for the patient (UUID format).J&\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"R\x02id\x12B\n" +
 	"\n" +
-	"first_name\x18\x02 \x01(\tR\tfirstName\x12\x1b\n" +
-	"\tlast_name\x18\x03 \x01(\tR\blastName\x12>\n" +
-	"\rdate_of_birth\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\vdateOfBirth\x12\x16\n" +
-	"\x06gender\x18\x05 \x01(\tR\x06gender\x12!\n" +
-	"\fphone_number\x18\x06 \x01(\tR\vphoneNumber\x12\x18\n" +
-	"\aaddress\x18\a \x01(\tR\aaddress\x12F\n" +
-	"\x0fmedical_history\x18\b \x03(\v2\x1d.patientservice.MedicalRecordR\x0emedicalHistory\x129\n" +
+	"first_name\x18\x02 \x01(\tB#\x92A 2\x15Patient's first name.J\a\"Alice\"R\tfirstName\x12?\n" +
+	"\tlast_name\x18\x03 \x01(\tB\"\x92A\x1f2\x14Patient's last name.J\a\"Smith\"R\blastName\x12\x8a\x01\n" +
+	"\rdate_of_birth\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampBJ\x92AG2-Patient's date of birth (RFC3339 UTC format).J\x16\"1990-05-15T00:00:00Z\"R\vdateOfBirth\x12Z\n" +
+	"\x06gender\x18\x05 \x01(\tBB\x92A?23Patient's gender (e.g., 'Male', 'Female', 'Other').J\b\"Female\"R\x06gender\x12W\n" +
+	"\fphone_number\x18\x06 \x01(\tB4\x92A12\x1fPatient's contact phone number.J\x0e\"+15551234567\"R\vphoneNumber\x12Q\n" +
+	"\aaddress\x18\a \x01(\tB7\x92A42\x12Patient's address.J\x1e\"123 Health St, Wellness City\"R\aaddress\x12\x81\x01\n" +
+	"\x0fmedical_history\x18\b \x03(\v2\x1d.patientservice.MedicalRecordB9\x92A624List of medical records associated with the patient.R\x0emedicalHistory\x12\x9b\x01\n" +
 	"\n" +
-	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB`\x92A]2CTimestamp when the patient record was created (RFC3339 UTC format).J\x16\"2023-02-01T09:00:00Z\"R\tcreatedAt\x12\xa0\x01\n" +
 	"\n" +
 	"updated_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xd1\x02\n" +
-	"\rMedicalRecord\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampBe\x92Ab2HTimestamp when the patient record was last updated (RFC3339 UTC format).J\x16\"2023-02-10T14:30:00Z\"R\tupdatedAt:\x9f\x01\x92A\x9b\x01\n" +
+	"\x98\x01*\aPatient2#Represents a patient in the system.\xd2\x01\x02id\xd2\x01\n" +
+	"first_name\xd2\x01\tlast_name\xd2\x01\rdate_of_birth\xd2\x01\x06gender\xd2\x01\fphone_number\xd2\x01\aaddress\xd2\x01\n" +
+	"created_at\xd2\x01\n" +
+	"updated_at\"\xcf\n" +
 	"\n" +
-	"patient_id\x18\x02 \x01(\tR\tpatientId\x12.\n" +
-	"\x04date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x04date\x12\x19\n" +
-	"\bstaff_id\x18\x04 \x01(\tR\astaffId\x12\x1c\n" +
-	"\tdiagnosis\x18\x05 \x01(\tR\tdiagnosis\x12\x1c\n" +
-	"\ttreatment\x18\x06 \x01(\tR\ttreatment\x12\x14\n" +
-	"\x05notes\x18\a \x01(\tR\x05notes\x129\n" +
+	"\rMedicalRecord\x12t\n" +
+	"\x02id\x18\x01 \x01(\tBd\x92Aa27Unique identifier for the medical record (UUID format).J&\"r1a2b3c4-e5f6-7890-1234-567890abcdef\"R\x02id\x12\x8b\x01\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"patient_id\x18\x02 \x01(\tBl\x92Ai2?Identifier of the patient this record belongs to (UUID format).J&\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"R\tpatientId\x12\x95\x01\n" +
+	"\x04date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampBe\x92Ab2HDate the medical record was created or pertains to (RFC3339 UTC format).J\x16\"2023-02-10T14:00:00Z\"R\x04date\x12\x8c\x01\n" +
+	"\bstaff_id\x18\x04 \x01(\tBq\x92An2DIdentifier of the staff member who created the record (UUID format).J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\astaffId\x12T\n" +
+	"\tdiagnosis\x18\x05 \x01(\tB6\x92A32\"Diagnosis provided in this record.J\r\"Common Cold\"R\tdiagnosis\x12[\n" +
+	"\ttreatment\x18\x06 \x01(\tB=\x92A:2%Treatment administered or prescribed.J\x11\"Rest and fluids\"R\ttreatment\x12v\n" +
+	"\x05notes\x18\a \x01(\tB`\x92A]2;Additional notes related to this medical record (optional).J\x1e\"Patient reported mild fever.\"R\x05notes\x12\x9b\x01\n" +
 	"\n" +
-	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xe9\x01\n" +
-	"\x16RegisterPatientRequest\x12\x1d\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB`\x92A]2CTimestamp when the medical record was created (RFC3339 UTC format).J\x16\"2023-02-10T14:30:00Z\"R\tcreatedAt\x12\xa0\x01\n" +
 	"\n" +
-	"first_name\x18\x01 \x01(\tR\tfirstName\x12\x1b\n" +
-	"\tlast_name\x18\x02 \x01(\tR\blastName\x12\x16\n" +
-	"\x06gender\x18\x03 \x01(\tR\x06gender\x12!\n" +
-	"\fphone_number\x18\x04 \x01(\tR\vphoneNumber\x12\x18\n" +
-	"\aaddress\x18\x05 \x01(\tR\aaddress\x12>\n" +
-	"\rdate_of_birth\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\vdateOfBirth\"L\n" +
+	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampBe\x92Ab2HTimestamp when the medical record was last updated (RFC3339 UTC format).J\x16\"2023-02-10T14:30:00Z\"R\tupdatedAt:\xa6\x01\x92A\xa2\x01\n" +
+	"\x9f\x01*\x0eMedical Record27Represents a single medical record entry for a patient.\xd2\x01\x02id\xd2\x01\n" +
+	"patient_id\xd2\x01\x04date\xd2\x01\bstaff_id\xd2\x01\tdiagnosis\xd2\x01\ttreatment\xd2\x01\n" +
+	"created_at\xd2\x01\n" +
+	"updated_at\"\xa3\x05\n" +
+	"\x16RegisterPatientRequest\x12@\n" +
+	"\n" +
+	"first_name\x18\x01 \x01(\tB!\x92A\x1e2\x15Patient's first name.J\x05\"Bob\"R\tfirstName\x12A\n" +
+	"\tlast_name\x18\x02 \x01(\tB$\x92A!2\x14Patient's last name.J\t\"Johnson\"R\blastName\x126\n" +
+	"\x06gender\x18\x03 \x01(\tB\x1e\x92A\x1b2\x11Patient's gender.J\x06\"Male\"R\x06gender\x12W\n" +
+	"\fphone_number\x18\x04 \x01(\tB4\x92A12\x1fPatient's contact phone number.J\x0e\"+15559876543\"R\vphoneNumber\x12M\n" +
+	"\aaddress\x18\x05 \x01(\tB3\x92A02\x12Patient's address.J\x1a\"456 Cure Ln, Remedy Town\"R\aaddress\x12\x8a\x01\n" +
+	"\rdate_of_birth\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampBJ\x92AG2-Patient's date of birth (RFC3339 UTC format).J\x16\"1985-11-20T00:00:00Z\"R\vdateOfBirth:\x96\x01\x92A\x92\x01\n" +
+	"\x8f\x01*\x18Register Patient Request2(Data required to register a new patient.\xd2\x01\n" +
+	"first_name\xd2\x01\tlast_name\xd2\x01\x06gender\xd2\x01\fphone_number\xd2\x01\aaddress\xd2\x01\rdate_of_birth\"\xa5\x01\n" +
 	"\x17RegisterPatientResponse\x121\n" +
-	"\apatient\x18\x01 \x01(\v2\x17.patientservice.PatientR\apatient\"9\n" +
-	"\x18GetPatientDetailsRequest\x12\x1d\n" +
+	"\apatient\x18\x01 \x01(\v2\x17.patientservice.PatientR\apatient:W\x92AT\n" +
+	"R*\x19Register Patient Response25Contains the details of the newly registered patient.\"\xd2\x01\n" +
+	"\x18GetPatientDetailsRequest\x12d\n" +
 	"\n" +
-	"patient_id\x18\x01 \x01(\tR\tpatientId\"N\n" +
+	"patient_id\x18\x01 \x01(\tBE\x92AB2\x18The UUID of the patient.J&\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"R\tpatientId:P\x92AM\n" +
+	"K*\x1bGet Patient Details Request2,Specifies the ID of the patient to retrieve.\"\xa3\x01\n" +
 	"\x19GetPatientDetailsResponse\x121\n" +
-	"\apatient\x18\x01 \x01(\v2\x17.patientservice.PatientR\apatient\"\x8d\x02\n" +
-	"\x1bUpdatePatientDetailsRequest\x12\x1d\n" +
+	"\apatient\x18\x01 \x01(\v2\x17.patientservice.PatientR\apatient:S\x92AP\n" +
+	"N*\x1cGet Patient Details Response2.Contains the details of the requested patient.\"\xb7\x06\n" +
+	"\x1bUpdatePatientDetailsRequest\x12n\n" +
 	"\n" +
-	"patient_id\x18\x01 \x01(\tR\tpatientId\x12\x1d\n" +
+	"patient_id\x18\x01 \x01(\tBO\x92AL2\"The UUID of the patient to update.J&\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"R\tpatientId\x12H\n" +
 	"\n" +
-	"first_name\x18\x02 \x01(\tR\tfirstName\x12\x1b\n" +
-	"\tlast_name\x18\x03 \x01(\tR\blastName\x12\x16\n" +
-	"\x06gender\x18\x04 \x01(\tR\x06gender\x12!\n" +
-	"\fphone_number\x18\x05 \x01(\tR\vphoneNumber\x12\x18\n" +
-	"\aaddress\x18\x06 \x01(\tR\aaddress\x12>\n" +
-	"\rdate_of_birth\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\vdateOfBirth\"Q\n" +
+	"first_name\x18\x02 \x01(\tB)\x92A&2\x1aNew first name (optional).J\b\"Alicia\"R\tfirstName\x12G\n" +
+	"\tlast_name\x18\x03 \x01(\tB*\x92A'2\x19New last name (optional).J\n" +
+	"\"Smithson\"R\blastName\x12=\n" +
+	"\x06gender\x18\x04 \x01(\tB%\x92A\"2\x16New gender (optional).J\b\"Female\"R\x06gender\x12T\n" +
+	"\fphone_number\x18\x05 \x01(\tB1\x92A.2\x1cNew phone number (optional).J\x0e\"+15551112233\"R\vphoneNumber\x12[\n" +
+	"\aaddress\x18\x06 \x01(\tBA\x92A>2\x17New address (optional).J#\"789 Recuperation Ave, Healthville\"R\aaddress\x12\x8e\x01\n" +
+	"\rdate_of_birth\x18\a \x01(\v2\x1a.google.protobuf.TimestampBN\x92AK21New date of birth (optional, RFC3339 UTC format).J\x16\"1990-05-15T00:00:00Z\"R\vdateOfBirth:\x91\x01\x92A\x8d\x01\n" +
+	"\x8a\x01*\x1eUpdate Patient Details Request2[Data for updating an existing patient. Include only fields to change (use PATCH semantics).\xd2\x01\n" +
+	"patient_id\"\xa0\x01\n" +
 	"\x1cUpdatePatientDetailsResponse\x121\n" +
-	"\apatient\x18\x01 \x01(\v2\x17.patientservice.PatientR\apatient\"\xd5\x01\n" +
-	"\x17AddMedicalRecordRequest\x12\x1d\n" +
+	"\apatient\x18\x01 \x01(\v2\x17.patientservice.PatientR\apatient:M\x92AJ\n" +
+	"H*\x1fUpdate Patient Details Response2%Contains the updated patient details.\"\xa5\x06\n" +
+	"\x17AddMedicalRecordRequest\x12y\n" +
 	"\n" +
-	"patient_id\x18\x01 \x01(\tR\tpatientId\x12.\n" +
-	"\x04date\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x04date\x12\x19\n" +
-	"\bstaff_id\x18\x03 \x01(\tR\astaffId\x12\x1c\n" +
-	"\tdiagnosis\x18\x04 \x01(\tR\tdiagnosis\x12\x1c\n" +
-	"\ttreatment\x18\x05 \x01(\tR\ttreatment\x12\x14\n" +
-	"\x05notes\x18\x06 \x01(\tR\x05notes\"@\n" +
-	"\x1fGetPatientMedicalHistoryRequest\x12\x1d\n" +
+	"patient_id\x18\x01 \x01(\tBZ\x92AW2-The UUID of the patient to add the record to.J&\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"R\tpatientId\x12u\n" +
+	"\x04date\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampBE\x92AB2(Date of the record (RFC3339 UTC format).J\x16\"2023-03-01T10:00:00Z\"R\x04date\x12\x89\x01\n" +
+	"\bstaff_id\x18\x03 \x01(\tBn\x92Ak2AIdentifier of the staff member creating the record (UUID format).J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\astaffId\x12J\n" +
+	"\tdiagnosis\x18\x04 \x01(\tB,\x92A)2\x1aDiagnosis for this record.J\v\"Influenza\"R\tdiagnosis\x12U\n" +
+	"\ttreatment\x18\x05 \x01(\tB7\x92A42!Treatment provided or prescribed.J\x0f\"Tamiflu, rest\"R\ttreatment\x12R\n" +
+	"\x05notes\x18\x06 \x01(\tB<\x92A92\x1cAdditional notes (optional).J\x19\"High fever, body aches.\"R\x05notes:\x94\x01\x92A\x90\x01\n" +
+	"\x8d\x01*\x1aAdd Medical Record Request28Data required to add a new medical record for a patient.\xd2\x01\n" +
+	"patient_id\xd2\x01\x04date\xd2\x01\bstaff_id\xd2\x01\tdiagnosis\xd2\x01\ttreatment\"\xf5\x01\n" +
+	"\x1fGetPatientMedicalHistoryRequest\x12d\n" +
 	"\n" +
-	"patient_id\x18\x01 \x01(\tR\tpatientId\"j\n" +
+	"patient_id\x18\x01 \x01(\tBE\x92AB2\x18The UUID of the patient.J&\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"R\tpatientId:l\x92Ai\n" +
+	"g*#Get Patient Medical History Request2@Specifies the ID of the patient whose medical history is needed.\"\xd6\x01\n" +
 	" GetPatientMedicalHistoryResponse\x12F\n" +
-	"\x0fmedical_history\x18\x01 \x03(\v2\x1d.patientservice.MedicalRecordR\x0emedicalHistory2\xa5\x04\n" +
-	"\x0ePatientService\x12b\n" +
-	"\x0fRegisterPatient\x12&.patientservice.RegisterPatientRequest\x1a'.patientservice.RegisterPatientResponse\x12h\n" +
-	"\x11GetPatientDetails\x12(.patientservice.GetPatientDetailsRequest\x1a).patientservice.GetPatientDetailsResponse\x12q\n" +
-	"\x14UpdatePatientDetails\x12+.patientservice.UpdatePatientDetailsRequest\x1a,.patientservice.UpdatePatientDetailsResponse\x12S\n" +
-	"\x10AddMedicalRecord\x12'.patientservice.AddMedicalRecordRequest\x1a\x16.google.protobuf.Empty\x12}\n" +
-	"\x18GetPatientMedicalHistory\x12/.patientservice.GetPatientMedicalHistoryRequest\x1a0.patientservice.GetPatientMedicalHistoryResponseB8Z6golang-microservices-boilerplate/proto/patient-serviceb\x06proto3"
+	"\x0fmedical_history\x18\x01 \x03(\v2\x1d.patientservice.MedicalRecordR\x0emedicalHistory:j\x92Ag\n" +
+	"e*$Get Patient Medical History Response2=Contains a list of medical records for the requested patient.2\xfc\t\n" +
+	"\x0ePatientService\x12\xc6\x01\n" +
+	"\x0fRegisterPatient\x12&.patientservice.RegisterPatientRequest\x1a'.patientservice.RegisterPatientResponse\"b\x92AD\n" +
+	"\bPatients\x12\x10Register Patient\x1a&Registers a new patient in the system.\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/patients\x12\xe8\x01\n" +
+	"\x11GetPatientDetails\x12(.patientservice.GetPatientDetailsRequest\x1a).patientservice.GetPatientDetailsResponse\"~\x92AV\n" +
+	"\bPatients\x12\x13Get Patient Details\x1a5Retrieves details for a specific patient by their ID.\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/patients/{patient_id}\x12\xf4\x01\n" +
+	"\x14UpdatePatientDetails\x12+.patientservice.UpdatePatientDetailsRequest\x1a,.patientservice.UpdatePatientDetailsResponse\"\x80\x01\x92AU\n" +
+	"\bPatients\x12\x16Update Patient Details\x1a1Updates specific details for an existing patient.\x82\xd3\xe4\x93\x02\":\x01*2\x1d/api/v1/patients/{patient_id}\x12\xe9\x01\n" +
+	"\x10AddMedicalRecord\x12'.patientservice.AddMedicalRecordRequest\x1a\x16.google.protobuf.Empty\"\x93\x01\x92AX\n" +
+	"\x0fMedical Records\x12\x12Add Medical Record\x1a1Adds a new medical record to a patient's history.\x82\xd3\xe4\x93\x022:\x01*\"-/api/v1/patients/{patient_id}/medical-records\x12\x9d\x02\n" +
+	"\x18GetPatientMedicalHistory\x12/.patientservice.GetPatientMedicalHistoryRequest\x1a0.patientservice.GetPatientMedicalHistoryResponse\"\x9d\x01\x92Ae\n" +
+	"\x0fMedical Records\x12\x13Get Medical History\x1a=Retrieves the list of medical records for a specific patient.\x82\xd3\xe4\x93\x02/\x12-/api/v1/patients/{patient_id}/medical-history\x1a3\x92A0\x12.Manage patient information and medical recordsB\xb6\x01\x92A{\x12Q\n" +
+	"\x13Patient Service API\x125API for managing patient records and medical history.2\x031.0*\x02\x01\x022\x10application/json:\x10application/jsonZ6golang-microservices-boilerplate/proto/patient-serviceb\x06proto3"
 
 var (
 	file_proto_patient_service_patient_proto_rawDescOnce sync.Once

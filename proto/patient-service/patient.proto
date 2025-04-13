@@ -6,108 +6,371 @@ option go_package = "golang-microservices-boilerplate/proto/patient-service";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+// Add imports for annotations
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// Add OpenAPI definition options for the Patient Service
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Patient Service API";
+    version: "1.0";
+    description: "API for managing patient records and medical history.";
+  };
+  schemes: [HTTP, HTTPS]; // Assuming HTTP/HTTPS if gateway is used
+  consumes: ["application/json"];
+  produces: ["application/json"];
+  // No global security defined for this internal service example
+};
 
 // --- Messages representing Entities (subset of fields for gRPC) ---
 
 message Patient {
-    string id = 1; // UUID as string
-    string first_name = 2;
-    string last_name = 3;
-    google.protobuf.Timestamp date_of_birth = 4;
-    string gender = 5;
-    string phone_number = 6;
-    string address = 7;
-    repeated MedicalRecord medical_history = 8;
-    google.protobuf.Timestamp created_at = 9;
-    google.protobuf.Timestamp updated_at = 10;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Patient";
+      description: "Represents a patient in the system.";
+      required: ["id", "first_name", "last_name", "date_of_birth", "gender", "phone_number", "address", "created_at", "updated_at"];
+    }
+  };
+
+    string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Unique identifier for the patient (UUID format).";
+      example: "\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    string first_name = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Patient's first name.";
+      example: "\"Alice\"";
+    }];
+    string last_name = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Patient's last name.";
+      example: "\"Smith\"";
+    }];
+    google.protobuf.Timestamp date_of_birth = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Patient's date of birth (RFC3339 UTC format).";
+      example: "\"1990-05-15T00:00:00Z\"";
+    }];
+    string gender = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Patient's gender (e.g., 'Male', 'Female', 'Other').";
+      example: "\"Female\"";
+    }];
+    string phone_number = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Patient's contact phone number.";
+      example: "\"+15551234567\"";
+    }];
+    string address = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Patient's address.";
+      example: "\"123 Health St, Wellness City\"";
+    }];
+    repeated MedicalRecord medical_history = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "List of medical records associated with the patient.";
+    }];
+    google.protobuf.Timestamp created_at = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Timestamp when the patient record was created (RFC3339 UTC format).";
+      example: "\"2023-02-01T09:00:00Z\"";
+    }];
+    google.protobuf.Timestamp updated_at = 10 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Timestamp when the patient record was last updated (RFC3339 UTC format).";
+      example: "\"2023-02-10T14:30:00Z\"";
+    }];
 }
 
 message MedicalRecord {
-    string id = 1; // UUID as string
-    string patient_id = 2; // UUID as string
-    google.protobuf.Timestamp date = 3;
-    string staff_id = 4;
-    string diagnosis = 5;
-    string treatment = 6;
-    string notes = 7;
-    google.protobuf.Timestamp created_at = 8;
-    google.protobuf.Timestamp updated_at = 9;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Medical Record";
+      description: "Represents a single medical record entry for a patient.";
+      required: ["id", "patient_id", "date", "staff_id", "diagnosis", "treatment", "created_at", "updated_at"];
+    }
+  };
+
+    string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Unique identifier for the medical record (UUID format).";
+      example: "\"r1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    string patient_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Identifier of the patient this record belongs to (UUID format).";
+      example: "\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    google.protobuf.Timestamp date = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Date the medical record was created or pertains to (RFC3339 UTC format).";
+      example: "\"2023-02-10T14:00:00Z\"";
+    }];
+    string staff_id = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Identifier of the staff member who created the record (UUID format).";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    string diagnosis = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Diagnosis provided in this record.";
+      example: "\"Common Cold\"";
+    }];
+    string treatment = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Treatment administered or prescribed.";
+      example: "\"Rest and fluids\"";
+    }];
+    string notes = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Additional notes related to this medical record (optional).";
+      example: "\"Patient reported mild fever.\"";
+    }];
+    google.protobuf.Timestamp created_at = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Timestamp when the medical record was created (RFC3339 UTC format).";
+      example: "\"2023-02-10T14:30:00Z\"";
+    }];
+    google.protobuf.Timestamp updated_at = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Timestamp when the medical record was last updated (RFC3339 UTC format).";
+      example: "\"2023-02-10T14:30:00Z\"";
+    }];
 }
 
 // --- Request/Response Messages for Service Methods ---
 
 // Request for RegisterPatient
 message RegisterPatientRequest {
-    string first_name = 1;
-    string last_name = 2;
-    string gender = 3;
-    string phone_number = 4;
-    string address = 5;
-    google.protobuf.Timestamp date_of_birth = 6;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Register Patient Request";
+      description: "Data required to register a new patient.";
+      required: ["first_name", "last_name", "gender", "phone_number", "address", "date_of_birth"];
+    }
+  };
+
+    string first_name = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Patient's first name.";
+      example: "\"Bob\"";
+    }];
+    string last_name = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Patient's last name.";
+      example: "\"Johnson\"";
+    }];
+    string gender = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Patient's gender.";
+      example: "\"Male\"";
+    }];
+    string phone_number = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Patient's contact phone number.";
+      example: "\"+15559876543\"";
+    }];
+    string address = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Patient's address.";
+      example: "\"456 Cure Ln, Remedy Town\"";
+    }];
+    google.protobuf.Timestamp date_of_birth = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Patient's date of birth (RFC3339 UTC format).";
+      example: "\"1985-11-20T00:00:00Z\"";
+    }];
 }
 
 // Response for RegisterPatient (returns the created patient)
 message RegisterPatientResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Register Patient Response";
+      description: "Contains the details of the newly registered patient.";
+    }
+  };
     Patient patient = 1;
 }
 
 // Request for GetPatientDetails
 message GetPatientDetailsRequest {
-    string patient_id = 1; // UUID as string
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Patient Details Request";
+      description: "Specifies the ID of the patient to retrieve.";
+    }
+  };
+    string patient_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the patient.";
+      example: "\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
 }
 
 // Response for GetPatientDetails
 message GetPatientDetailsResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Patient Details Response";
+      description: "Contains the details of the requested patient.";
+    }
+  };
     Patient patient = 1;
 }
 
 // Request for UpdatePatientDetails
 message UpdatePatientDetailsRequest {
-    string patient_id = 1; // UUID as string
-    string first_name = 2; // Use optional or field masks for partial updates
-    string last_name = 3;
-    string gender = 4;
-    string phone_number = 5;
-    string address = 6;
-    google.protobuf.Timestamp date_of_birth = 7;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Update Patient Details Request";
+      description: "Data for updating an existing patient. Include only fields to change (use PATCH semantics).";
+      required: ["patient_id"]; // ID is required to identify the patient
+    }
+  };
+    string patient_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the patient to update.";
+      example: "\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    // Fields below are optional for update (use wrappers or field masks in real app)
+    string first_name = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "New first name (optional).";
+      example: "\"Alicia\"";
+    }];
+    string last_name = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "New last name (optional).";
+      example: "\"Smithson\"";
+    }];
+    string gender = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "New gender (optional).";
+      example: "\"Female\"";
+    }];
+    string phone_number = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "New phone number (optional).";
+      example: "\"+15551112233\"";
+    }];
+    string address = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "New address (optional).";
+      example: "\"789 Recuperation Ave, Healthville\"";
+    }];
+    google.protobuf.Timestamp date_of_birth = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "New date of birth (optional, RFC3339 UTC format).";
+      example: "\"1990-05-15T00:00:00Z\"";
+    }];
 }
 
 // Response for UpdatePatientDetails
 message UpdatePatientDetailsResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Update Patient Details Response";
+      description: "Contains the updated patient details.";
+    }
+  };
     Patient patient = 1;
 }
 
 // Request for AddMedicalRecord
 message AddMedicalRecordRequest {
-    string patient_id = 1; // UUID as string
-    // Pass the data needed to create a new medical record
-    google.protobuf.Timestamp date = 2;
-    string staff_id = 3;
-    string diagnosis = 4;
-    string treatment = 5;
-    string notes = 6;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Add Medical Record Request";
+      description: "Data required to add a new medical record for a patient.";
+      required: ["patient_id", "date", "staff_id", "diagnosis", "treatment"];
+    }
+  };
+    string patient_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the patient to add the record to.";
+      example: "\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    google.protobuf.Timestamp date = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Date of the record (RFC3339 UTC format).";
+      example: "\"2023-03-01T10:00:00Z\"";
+    }];
+    string staff_id = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Identifier of the staff member creating the record (UUID format).";
+      example: "\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
+    string diagnosis = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Diagnosis for this record.";
+      example: "\"Influenza\"";
+    }];
+    string treatment = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Treatment provided or prescribed.";
+      example: "\"Tamiflu, rest\"";
+    }];
+    string notes = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Additional notes (optional).";
+      example: "\"High fever, body aches.\"";
+    }];
 }
 
-// Response for AddMedicalRecord (could be Empty or return the created record)
-// Using Empty for simplicity for now.
-// message AddMedicalRecordResponse { MedicalRecord record = 1; }
+// Response for AddMedicalRecord (Empty)
 
 // Request for GetPatientMedicalHistory
 message GetPatientMedicalHistoryRequest {
-    string patient_id = 1; // UUID as string
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Patient Medical History Request";
+      description: "Specifies the ID of the patient whose medical history is needed.";
+    }
+  };
+    string patient_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "The UUID of the patient.";
+      example: "\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"";
+    }];
 }
 
 // Response for GetPatientMedicalHistory
 message GetPatientMedicalHistoryResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Get Patient Medical History Response";
+      description: "Contains a list of medical records for the requested patient.";
+    }
+  };
     repeated MedicalRecord medical_history = 1;
 }
 
 // --- Service Definition ---
 
 service PatientService {
-    rpc RegisterPatient(RegisterPatientRequest) returns (RegisterPatientResponse);
-    rpc GetPatientDetails(GetPatientDetailsRequest) returns (GetPatientDetailsResponse);
-    rpc UpdatePatientDetails(UpdatePatientDetailsRequest) returns (UpdatePatientDetailsResponse);
-    rpc AddMedicalRecord(AddMedicalRecordRequest) returns (google.protobuf.Empty); // Using Empty response
-    rpc GetPatientMedicalHistory(GetPatientMedicalHistoryRequest) returns (GetPatientMedicalHistoryResponse);
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
+    description: "Manage patient information and medical records";
+  };
+
+    rpc RegisterPatient(RegisterPatientRequest) returns (RegisterPatientResponse) {
+      option (google.api.http) = {
+        post: "/api/v1/patients";
+        body: "*";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Register Patient";
+        description: "Registers a new patient in the system.";
+        tags: ["Patients"];
+      };
+    }
+    rpc GetPatientDetails(GetPatientDetailsRequest) returns (GetPatientDetailsResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/patients/{patient_id}";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Get Patient Details";
+        description: "Retrieves details for a specific patient by their ID.";
+        tags: ["Patients"];
+      };
+    }
+    rpc UpdatePatientDetails(UpdatePatientDetailsRequest) returns (UpdatePatientDetailsResponse) {
+      option (google.api.http) = {
+        patch: "/api/v1/patients/{patient_id}";
+        body: "*";
+        // additional_bindings {
+        //   put: "/api/v1/patients/{patient_id}"; // Optional: support PUT for full replacement
+        //   body: "*";
+        // }
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Update Patient Details";
+        description: "Updates specific details for an existing patient.";
+        tags: ["Patients"];
+      };
+    }
+    rpc AddMedicalRecord(AddMedicalRecordRequest) returns (google.protobuf.Empty) { // Using Empty response
+      option (google.api.http) = {
+        post: "/api/v1/patients/{patient_id}/medical-records";
+        body: "*";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Add Medical Record";
+        description: "Adds a new medical record to a patient's history.";
+        tags: ["Medical Records"];
+      };
+    }
+    rpc GetPatientMedicalHistory(GetPatientMedicalHistoryRequest) returns (GetPatientMedicalHistoryResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/patients/{patient_id}/medical-history";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "Get Medical History";
+        description: "Retrieves the list of medical records for a specific patient.";
+        tags: ["Medical Records"];
+      };
+    }
 } 

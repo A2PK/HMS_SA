@@ -63,9 +63,16 @@ func request_PatientService_GetPatientDetails_0(ctx context.Context, marshaler r
 	var (
 		protoReq GetPatientDetailsRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	io.Copy(io.Discard, req.Body)
+	val, ok := pathParams["patient_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "patient_id")
+	}
+	protoReq.PatientId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "patient_id", err)
 	}
 	msg, err := client.GetPatientDetails(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -75,9 +82,15 @@ func local_request_PatientService_GetPatientDetails_0(ctx context.Context, marsh
 	var (
 		protoReq GetPatientDetailsRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok := pathParams["patient_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "patient_id")
+	}
+	protoReq.PatientId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "patient_id", err)
 	}
 	msg, err := server.GetPatientDetails(ctx, &protoReq)
 	return msg, metadata, err
@@ -87,9 +100,18 @@ func request_PatientService_UpdatePatientDetails_0(ctx context.Context, marshale
 	var (
 		protoReq UpdatePatientDetailsRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["patient_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "patient_id")
+	}
+	protoReq.PatientId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "patient_id", err)
 	}
 	msg, err := client.UpdatePatientDetails(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -99,9 +121,18 @@ func local_request_PatientService_UpdatePatientDetails_0(ctx context.Context, ma
 	var (
 		protoReq UpdatePatientDetailsRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["patient_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "patient_id")
+	}
+	protoReq.PatientId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "patient_id", err)
 	}
 	msg, err := server.UpdatePatientDetails(ctx, &protoReq)
 	return msg, metadata, err
@@ -111,9 +142,18 @@ func request_PatientService_AddMedicalRecord_0(ctx context.Context, marshaler ru
 	var (
 		protoReq AddMedicalRecordRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["patient_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "patient_id")
+	}
+	protoReq.PatientId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "patient_id", err)
 	}
 	msg, err := client.AddMedicalRecord(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -123,9 +163,18 @@ func local_request_PatientService_AddMedicalRecord_0(ctx context.Context, marsha
 	var (
 		protoReq AddMedicalRecordRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["patient_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "patient_id")
+	}
+	protoReq.PatientId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "patient_id", err)
 	}
 	msg, err := server.AddMedicalRecord(ctx, &protoReq)
 	return msg, metadata, err
@@ -135,9 +184,16 @@ func request_PatientService_GetPatientMedicalHistory_0(ctx context.Context, mars
 	var (
 		protoReq GetPatientMedicalHistoryRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	io.Copy(io.Discard, req.Body)
+	val, ok := pathParams["patient_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "patient_id")
+	}
+	protoReq.PatientId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "patient_id", err)
 	}
 	msg, err := client.GetPatientMedicalHistory(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -147,9 +203,15 @@ func local_request_PatientService_GetPatientMedicalHistory_0(ctx context.Context
 	var (
 		protoReq GetPatientMedicalHistoryRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok := pathParams["patient_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "patient_id")
+	}
+	protoReq.PatientId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "patient_id", err)
 	}
 	msg, err := server.GetPatientMedicalHistory(ctx, &protoReq)
 	return msg, metadata, err
@@ -167,7 +229,7 @@ func RegisterPatientServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/patientservice.PatientService/RegisterPatient", runtime.WithHTTPPathPattern("/patientservice.PatientService/RegisterPatient"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/patientservice.PatientService/RegisterPatient", runtime.WithHTTPPathPattern("/api/v1/patients"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -181,13 +243,13 @@ func RegisterPatientServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		}
 		forward_PatientService_RegisterPatient_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_PatientService_GetPatientDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_PatientService_GetPatientDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/patientservice.PatientService/GetPatientDetails", runtime.WithHTTPPathPattern("/patientservice.PatientService/GetPatientDetails"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/patientservice.PatientService/GetPatientDetails", runtime.WithHTTPPathPattern("/api/v1/patients/{patient_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -201,13 +263,13 @@ func RegisterPatientServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		}
 		forward_PatientService_GetPatientDetails_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_PatientService_UpdatePatientDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPatch, pattern_PatientService_UpdatePatientDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/patientservice.PatientService/UpdatePatientDetails", runtime.WithHTTPPathPattern("/patientservice.PatientService/UpdatePatientDetails"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/patientservice.PatientService/UpdatePatientDetails", runtime.WithHTTPPathPattern("/api/v1/patients/{patient_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -227,7 +289,7 @@ func RegisterPatientServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/patientservice.PatientService/AddMedicalRecord", runtime.WithHTTPPathPattern("/patientservice.PatientService/AddMedicalRecord"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/patientservice.PatientService/AddMedicalRecord", runtime.WithHTTPPathPattern("/api/v1/patients/{patient_id}/medical-records"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -241,13 +303,13 @@ func RegisterPatientServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		}
 		forward_PatientService_AddMedicalRecord_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_PatientService_GetPatientMedicalHistory_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_PatientService_GetPatientMedicalHistory_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/patientservice.PatientService/GetPatientMedicalHistory", runtime.WithHTTPPathPattern("/patientservice.PatientService/GetPatientMedicalHistory"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/patientservice.PatientService/GetPatientMedicalHistory", runtime.WithHTTPPathPattern("/api/v1/patients/{patient_id}/medical-history"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -305,7 +367,7 @@ func RegisterPatientServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/patientservice.PatientService/RegisterPatient", runtime.WithHTTPPathPattern("/patientservice.PatientService/RegisterPatient"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/patientservice.PatientService/RegisterPatient", runtime.WithHTTPPathPattern("/api/v1/patients"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -318,11 +380,11 @@ func RegisterPatientServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		}
 		forward_PatientService_RegisterPatient_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_PatientService_GetPatientDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_PatientService_GetPatientDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/patientservice.PatientService/GetPatientDetails", runtime.WithHTTPPathPattern("/patientservice.PatientService/GetPatientDetails"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/patientservice.PatientService/GetPatientDetails", runtime.WithHTTPPathPattern("/api/v1/patients/{patient_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -335,11 +397,11 @@ func RegisterPatientServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		}
 		forward_PatientService_GetPatientDetails_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_PatientService_UpdatePatientDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPatch, pattern_PatientService_UpdatePatientDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/patientservice.PatientService/UpdatePatientDetails", runtime.WithHTTPPathPattern("/patientservice.PatientService/UpdatePatientDetails"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/patientservice.PatientService/UpdatePatientDetails", runtime.WithHTTPPathPattern("/api/v1/patients/{patient_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -356,7 +418,7 @@ func RegisterPatientServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/patientservice.PatientService/AddMedicalRecord", runtime.WithHTTPPathPattern("/patientservice.PatientService/AddMedicalRecord"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/patientservice.PatientService/AddMedicalRecord", runtime.WithHTTPPathPattern("/api/v1/patients/{patient_id}/medical-records"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -369,11 +431,11 @@ func RegisterPatientServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		}
 		forward_PatientService_AddMedicalRecord_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_PatientService_GetPatientMedicalHistory_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_PatientService_GetPatientMedicalHistory_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/patientservice.PatientService/GetPatientMedicalHistory", runtime.WithHTTPPathPattern("/patientservice.PatientService/GetPatientMedicalHistory"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/patientservice.PatientService/GetPatientMedicalHistory", runtime.WithHTTPPathPattern("/api/v1/patients/{patient_id}/medical-history"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -390,11 +452,11 @@ func RegisterPatientServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_PatientService_RegisterPatient_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"patientservice.PatientService", "RegisterPatient"}, ""))
-	pattern_PatientService_GetPatientDetails_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"patientservice.PatientService", "GetPatientDetails"}, ""))
-	pattern_PatientService_UpdatePatientDetails_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"patientservice.PatientService", "UpdatePatientDetails"}, ""))
-	pattern_PatientService_AddMedicalRecord_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"patientservice.PatientService", "AddMedicalRecord"}, ""))
-	pattern_PatientService_GetPatientMedicalHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"patientservice.PatientService", "GetPatientMedicalHistory"}, ""))
+	pattern_PatientService_RegisterPatient_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "patients"}, ""))
+	pattern_PatientService_GetPatientDetails_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "patients", "patient_id"}, ""))
+	pattern_PatientService_UpdatePatientDetails_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "patients", "patient_id"}, ""))
+	pattern_PatientService_AddMedicalRecord_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "patients", "patient_id", "medical-records"}, ""))
+	pattern_PatientService_GetPatientMedicalHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "patients", "patient_id", "medical-history"}, ""))
 )
 
 var (

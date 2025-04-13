@@ -12,7 +12,7 @@ COPY . .
 
 # Build the staff-service binary
 # Ensure the path matches your project structure
-RUN CGO_ENABLED=0 GOOS=linux go build -o staff-service ./services/staff-service/cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o staff-service ./services/staff-service/cmd/
 
 # --- Final Stage ---
 FROM alpine:latest
