@@ -1,0 +1,162 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "proto/appointment-service/appointment.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AppointmentService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "appointmentserviceAppointment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "UUID as string"
+        },
+        "patientId": {
+          "type": "string",
+          "title": "UUID as string"
+        },
+        "doctorId": {
+          "type": "string",
+          "title": "UUID as string"
+        },
+        "appointmentTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/appointmentserviceAppointmentStatus"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "place": {
+          "type": "string",
+          "title": "Added: Location/Place of the appointment"
+        }
+      }
+    },
+    "appointmentserviceAppointmentStatus": {
+      "type": "string",
+      "enum": [
+        "APPOINTMENT_STATUS_UNSPECIFIED",
+        "SCHEDULED",
+        "CONFIRMED",
+        "CANCELLED",
+        "COMPLETED",
+        "NO_SHOW"
+      ],
+      "default": "APPOINTMENT_STATUS_UNSPECIFIED"
+    },
+    "appointmentserviceGetAppointmentDetailsResponse": {
+      "type": "object",
+      "properties": {
+        "appointment": {
+          "$ref": "#/definitions/appointmentserviceAppointment"
+        }
+      }
+    },
+    "appointmentserviceGetAppointmentsForDoctorResponse": {
+      "type": "object",
+      "properties": {
+        "appointments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/appointmentserviceAppointment"
+          }
+        }
+      }
+    },
+    "appointmentserviceGetAppointmentsForPatientResponse": {
+      "type": "object",
+      "properties": {
+        "appointments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/appointmentserviceAppointment"
+          }
+        }
+      }
+    },
+    "appointmentserviceRescheduleAppointmentResponse": {
+      "type": "object",
+      "properties": {
+        "appointment": {
+          "$ref": "#/definitions/appointmentserviceAppointment"
+        }
+      }
+    },
+    "appointmentserviceScheduleAppointmentResponse": {
+      "type": "object",
+      "properties": {
+        "appointment": {
+          "$ref": "#/definitions/appointmentserviceAppointment"
+        }
+      }
+    },
+    "appointmentserviceUpdateAppointmentStatusResponse": {
+      "type": "object",
+      "properties": {
+        "appointment": {
+          "$ref": "#/definitions/appointmentserviceAppointment"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

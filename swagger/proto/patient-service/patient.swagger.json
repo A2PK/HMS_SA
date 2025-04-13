@@ -1,0 +1,169 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "proto/patient-service/patient.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "PatientService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "patientserviceGetPatientDetailsResponse": {
+      "type": "object",
+      "properties": {
+        "patient": {
+          "$ref": "#/definitions/patientservicePatient"
+        }
+      },
+      "title": "Response for GetPatientDetails"
+    },
+    "patientserviceGetPatientMedicalHistoryResponse": {
+      "type": "object",
+      "properties": {
+        "medicalHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/patientserviceMedicalRecord"
+          }
+        }
+      },
+      "title": "Response for GetPatientMedicalHistory"
+    },
+    "patientserviceMedicalRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "UUID as string"
+        },
+        "patientId": {
+          "type": "string",
+          "title": "UUID as string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "staffId": {
+          "type": "string"
+        },
+        "diagnosis": {
+          "type": "string"
+        },
+        "treatment": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "patientservicePatient": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "UUID as string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "medicalHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/patientserviceMedicalRecord"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "patientserviceRegisterPatientResponse": {
+      "type": "object",
+      "properties": {
+        "patient": {
+          "$ref": "#/definitions/patientservicePatient"
+        }
+      },
+      "title": "Response for RegisterPatient (returns the created patient)"
+    },
+    "patientserviceUpdatePatientDetailsResponse": {
+      "type": "object",
+      "properties": {
+        "patient": {
+          "$ref": "#/definitions/patientservicePatient"
+        }
+      },
+      "title": "Response for UpdatePatientDetails"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package patientservice;
+
+option go_package = "golang-microservices-boilerplate/proto/patient-service";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// --- Messages representing Entities (subset of fields for gRPC) ---
+
+message Patient {
+    string id = 1; // UUID as string
+    string first_name = 2;
+    string last_name = 3;
+    google.protobuf.Timestamp date_of_birth = 4;
+    string gender = 5;
+    string phone_number = 6;
+    string address = 7;
+    repeated MedicalRecord medical_history = 8;
+    google.protobuf.Timestamp created_at = 9;
+    google.protobuf.Timestamp updated_at = 10;
+}
+
+message MedicalRecord {
+    string id = 1; // UUID as string
+    string patient_id = 2; // UUID as string
+    google.protobuf.Timestamp date = 3;
+    string staff_id = 4;
+    string diagnosis = 5;
+    string treatment = 6;
+    string notes = 7;
+    google.protobuf.Timestamp created_at = 8;
+    google.protobuf.Timestamp updated_at = 9;
+}
+
+// --- Request/Response Messages for Service Methods ---
+
+// Request for RegisterPatient
+message RegisterPatientRequest {
+    string first_name = 1;
+    string last_name = 2;
+    string gender = 3;
+    string phone_number = 4;
+    string address = 5;
+    google.protobuf.Timestamp date_of_birth = 6;
+}
+
+// Response for RegisterPatient (returns the created patient)
+message RegisterPatientResponse {
+    Patient patient = 1;
+}
+
+// Request for GetPatientDetails
+message GetPatientDetailsRequest {
+    string patient_id = 1; // UUID as string
+}
+
+// Response for GetPatientDetails
+message GetPatientDetailsResponse {
+    Patient patient = 1;
+}
+
+// Request for UpdatePatientDetails
+message UpdatePatientDetailsRequest {
+    string patient_id = 1; // UUID as string
+    string first_name = 2; // Use optional or field masks for partial updates
+    string last_name = 3;
+    string gender = 4;
+    string phone_number = 5;
+    string address = 6;
+    google.protobuf.Timestamp date_of_birth = 7;
+}
+
+// Response for UpdatePatientDetails
+message UpdatePatientDetailsResponse {
+    Patient patient = 1;
+}
+
+// Request for AddMedicalRecord
+message AddMedicalRecordRequest {
+    string patient_id = 1; // UUID as string
+    // Pass the data needed to create a new medical record
+    google.protobuf.Timestamp date = 2;
+    string staff_id = 3;
+    string diagnosis = 4;
+    string treatment = 5;
+    string notes = 6;
+}
+
+// Response for AddMedicalRecord (could be Empty or return the created record)
+// Using Empty for simplicity for now.
+// message AddMedicalRecordResponse { MedicalRecord record = 1; }
+
+// Request for GetPatientMedicalHistory
+message GetPatientMedicalHistoryRequest {
+    string patient_id = 1; // UUID as string
+}
+
+// Response for GetPatientMedicalHistory
+message GetPatientMedicalHistoryResponse {
+    repeated MedicalRecord medical_history = 1;
+}
+
+// --- Service Definition ---
+
+service PatientService {
+    rpc RegisterPatient(RegisterPatientRequest) returns (RegisterPatientResponse);
+    rpc GetPatientDetails(GetPatientDetailsRequest) returns (GetPatientDetailsResponse);
+    rpc UpdatePatientDetails(UpdatePatientDetailsRequest) returns (UpdatePatientDetailsResponse);
+    rpc AddMedicalRecord(AddMedicalRecordRequest) returns (google.protobuf.Empty); // Using Empty response
+    rpc GetPatientMedicalHistory(GetPatientMedicalHistoryRequest) returns (GetPatientMedicalHistoryResponse);
+} 

@@ -1,0 +1,328 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "proto/staff-service/staff.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "StaffService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "GetDoctorAvailabilityResponseTimeSlot": {
+      "type": "object",
+      "properties": {
+        "startTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "How to define availability now? Free time slots derived from existing TaskProto start/end times?\nrepeated ScheduleEntryProto available_slots = 1; // Original, needs review"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "staffserviceAddStaffResponse": {
+      "type": "object",
+      "properties": {
+        "staff": {
+          "$ref": "#/definitions/staffserviceStaff"
+        }
+      }
+    },
+    "staffserviceAddStaffRoleResponse": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "$ref": "#/definitions/staffserviceStaffRoleProto"
+        }
+      }
+    },
+    "staffserviceAddStaffStatusResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/staffserviceStaffStatusProto"
+        }
+      }
+    },
+    "staffserviceAddTaskStatusResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/staffserviceTaskStatusProto"
+        }
+      }
+    },
+    "staffserviceGetDoctorAvailabilityResponse": {
+      "type": "object",
+      "properties": {
+        "availableSlots": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/GetDoctorAvailabilityResponseTimeSlot"
+          },
+          "title": "Alternative: return calculated free slots"
+        }
+      }
+    },
+    "staffserviceGetStaffDetailsResponse": {
+      "type": "object",
+      "properties": {
+        "staff": {
+          "$ref": "#/definitions/staffserviceStaff",
+          "title": "Includes schedule with tasks"
+        }
+      }
+    },
+    "staffserviceListStaffRolesResponse": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/staffserviceStaffRoleProto"
+          }
+        }
+      }
+    },
+    "staffserviceListStaffStatusesResponse": {
+      "type": "object",
+      "properties": {
+        "statuses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/staffserviceStaffStatusProto"
+          }
+        }
+      }
+    },
+    "staffserviceListTaskStatusesResponse": {
+      "type": "object",
+      "properties": {
+        "statuses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/staffserviceTaskStatusProto"
+          }
+        }
+      }
+    },
+    "staffserviceScheduleEntryProto": {
+      "type": "object",
+      "properties": {
+        "staffId": {
+          "type": "string",
+          "description": "UUID as string (part of composite key in DB)",
+          "title": "id, start_time, end_time, is_booked, created_at, updated_at removed"
+        },
+        "task": {
+          "$ref": "#/definitions/staffserviceTaskProto",
+          "description": "Contains the linked task details",
+          "title": "TaskID is implicit through the TaskProto message below"
+        }
+      },
+      "title": "Corresponds to entity.ScheduleEntry (Join Table)"
+    },
+    "staffserviceStaff": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "UUID as string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "roleId": {
+          "type": "string",
+          "title": "Foreign key to StaffRoleProto.name"
+        },
+        "statusId": {
+          "type": "string",
+          "title": "Foreign key to StaffStatusProto.name"
+        },
+        "specialization": {
+          "type": "string",
+          "title": "Kept for potential STI display"
+        },
+        "nurseType": {
+          "type": "string",
+          "title": "Kept for potential STI display"
+        },
+        "schedule": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/staffserviceScheduleEntryProto"
+          },
+          "description": "Contains ScheduleEntryProto with nested TaskProto",
+          "title": "staff_type, contact_info, is_available removed"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "workload removed"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "Corresponds to entity.Staff"
+    },
+    "staffserviceStaffRoleProto": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Primary Key"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "staffserviceStaffStatusProto": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Primary Key"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "staffserviceTaskProto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "UUID as string"
+        },
+        "title": {
+          "type": "string",
+          "title": "staff_id removed, linked via ScheduleEntryProto"
+        },
+        "description": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "statusId": {
+          "type": "string",
+          "title": "Foreign key to TaskStatusProto.name"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "assigned_at, due_at, status (string) removed"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "Corresponds to entity.Task"
+    },
+    "staffserviceTaskStatusProto": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Primary Key"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "staffserviceTrackWorkloadResponse": {
+      "type": "object",
+      "properties": {
+        "workload": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/staffserviceTaskProto"
+          },
+          "title": "Can be derived from Staff.schedule[].task"
+        }
+      }
+    },
+    "staffserviceUpdateStaffDetailsResponse": {
+      "type": "object",
+      "properties": {
+        "staff": {
+          "$ref": "#/definitions/staffserviceStaff"
+        }
+      }
+    }
+  }
+}

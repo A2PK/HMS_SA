@@ -1,0 +1,128 @@
+syntax = "proto3";
+
+package appointmentservice;
+
+option go_package = "golang-microservices-boilerplate/proto/appointment-service";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/empty.proto";
+// Potentially import staff types if needed, but prefer opaque IDs
+// import "staff-service/staff.proto";
+
+// --- Enums ---
+
+enum AppointmentStatus {
+    APPOINTMENT_STATUS_UNSPECIFIED = 0;
+    SCHEDULED = 1;
+    CONFIRMED = 2;
+    CANCELLED = 3;
+    COMPLETED = 4;
+    NO_SHOW = 5;
+}
+
+// --- Messages representing Entities ---
+
+message Appointment {
+    string id = 1; // UUID as string
+    string patient_id = 2; // UUID as string
+    string doctor_id = 3; // UUID as string
+    google.protobuf.Timestamp appointment_time = 4;
+    google.protobuf.Duration duration = 5;
+    string reason = 6;
+    AppointmentStatus status = 7;
+    string notes = 8;
+    google.protobuf.Timestamp created_at = 9;
+    google.protobuf.Timestamp updated_at = 10;
+    string place = 11; // Added: Location/Place of the appointment
+    // Optional: Include patient/doctor details if needed, but often avoided in list views
+    // patientservice.Patient patient = 11;
+    // staffservice.Staff doctor = 12;
+}
+
+// --- Request/Response Messages for Service Methods ---
+
+message ScheduleAppointmentRequest {
+    string patient_id = 1; // UUID as string
+    string doctor_id = 2; // UUID as string
+    string reason = 3;
+    google.protobuf.Timestamp appointment_time = 4;
+    google.protobuf.Duration duration = 5;
+    string place = 6; // Added: Location/Place for the new appointment
+}
+
+message ScheduleAppointmentResponse {
+    Appointment appointment = 1;
+}
+
+message GetAppointmentDetailsRequest {
+    string appointment_id = 1; // UUID as string
+}
+
+message GetAppointmentDetailsResponse {
+    Appointment appointment = 1;
+}
+
+message UpdateAppointmentStatusRequest {
+    string appointment_id = 1; // UUID as string
+    AppointmentStatus status = 2;
+}
+
+message UpdateAppointmentStatusResponse {
+    Appointment appointment = 1;
+}
+
+message RescheduleAppointmentRequest {
+    string appointment_id = 1; // UUID as string
+    google.protobuf.Timestamp new_time = 2;
+    google.protobuf.Duration new_duration = 3; // Optional, use field mask or presence check
+    string place = 4; // Optional: New Location/Place for the rescheduled appointment
+}
+
+message RescheduleAppointmentResponse {
+    Appointment appointment = 1;
+}
+
+message CancelAppointmentRequest {
+    string appointment_id = 1; // UUID as string
+}
+
+// CancelAppointmentResponse is Empty
+
+message GetAppointmentsForPatientRequest {
+    string patient_id = 1; // UUID as string
+    // Optional: Add time range filters?
+}
+
+message GetAppointmentsForPatientResponse {
+    repeated Appointment appointments = 1;
+}
+
+message GetAppointmentsForDoctorRequest {
+    string doctor_id = 1; // UUID as string
+    google.protobuf.Timestamp start_time = 2;
+    google.protobuf.Timestamp end_time = 3;
+}
+
+message GetAppointmentsForDoctorResponse {
+    repeated Appointment appointments = 1;
+}
+
+// Note: CheckDoctorAvailability is primarily an internal concern for Schedule/Reschedule
+// It might not need a dedicated gRPC endpoint unless external clients need to check.
+// If needed, add request/response like:
+// message CheckDoctorAvailabilityRequest { ... }
+// message CheckDoctorAvailabilityResponse { bool is_available = 1; }
+
+// --- Service Definition ---
+
+service AppointmentService {
+    rpc ScheduleAppointment(ScheduleAppointmentRequest) returns (ScheduleAppointmentResponse);
+    rpc GetAppointmentDetails(GetAppointmentDetailsRequest) returns (GetAppointmentDetailsResponse);
+    rpc UpdateAppointmentStatus(UpdateAppointmentStatusRequest) returns (UpdateAppointmentStatusResponse);
+    rpc RescheduleAppointment(RescheduleAppointmentRequest) returns (RescheduleAppointmentResponse);
+    rpc CancelAppointment(CancelAppointmentRequest) returns (google.protobuf.Empty);
+    rpc GetAppointmentsForPatient(GetAppointmentsForPatientRequest) returns (GetAppointmentsForPatientResponse);
+    rpc GetAppointmentsForDoctor(GetAppointmentsForDoctorRequest) returns (GetAppointmentsForDoctorResponse);
+    // rpc CheckDoctorAvailability(CheckDoctorAvailabilityRequest) returns (CheckDoctorAvailabilityResponse); // Optional
+} 

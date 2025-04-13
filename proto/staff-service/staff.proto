@@ -1,0 +1,259 @@
+syntax = "proto3";
+
+package staffservice;
+
+option go_package = "golang-microservices-boilerplate/proto/staff-service";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// --- Enums ---
+// StaffType enum removed, using role_id string instead.
+
+// --- Messages representing Lookup Entities ---
+
+message StaffRoleProto {
+    string name = 1;        // Primary Key
+    string description = 2;
+}
+
+message StaffStatusProto {
+    string name = 1;        // Primary Key
+    string description = 2;
+}
+
+message TaskStatusProto {
+    string name = 1;        // Primary Key
+    string description = 2;
+}
+
+
+// --- Messages representing Core Entities ---
+
+// Corresponds to entity.Task
+message TaskProto {
+    string id = 1; // UUID as string
+    // staff_id removed, linked via ScheduleEntryProto
+    string title = 2;
+    string description = 3;
+    int32 priority = 4;
+    google.protobuf.Timestamp start_time = 5;
+    google.protobuf.Timestamp end_time = 6;
+    string status_id = 7; // Foreign key to TaskStatusProto.name
+    // assigned_at, due_at, status (string) removed
+    google.protobuf.Timestamp created_at = 8;
+    google.protobuf.Timestamp updated_at = 9;
+}
+
+// Corresponds to entity.ScheduleEntry (Join Table)
+message ScheduleEntryProto {
+    // id, start_time, end_time, is_booked, created_at, updated_at removed
+    string staff_id = 1; // UUID as string (part of composite key in DB)
+    // TaskID is implicit through the TaskProto message below
+    TaskProto task = 2; // Contains the linked task details
+}
+
+// Corresponds to entity.Staff
+message Staff {
+    string id = 1; // UUID as string
+    string first_name = 2;
+    string last_name = 3;
+    google.protobuf.Timestamp date_of_birth = 4;
+    string phone_number = 5;
+    string address = 6;
+    string role_id = 7;    // Foreign key to StaffRoleProto.name
+    string status_id = 8;  // Foreign key to StaffStatusProto.name
+    string specialization = 9; // Kept for potential STI display
+    string nurse_type = 10;    // Kept for potential STI display
+    // staff_type, contact_info, is_available removed
+    repeated ScheduleEntryProto schedule = 11; // Contains ScheduleEntryProto with nested TaskProto
+    // workload removed
+    google.protobuf.Timestamp created_at = 12;
+    google.protobuf.Timestamp updated_at = 13;
+}
+
+
+// --- Request/Response Messages for Service Methods ---
+
+// Staff Operations
+message AddStaffRequest {
+    string first_name = 1;
+    string last_name = 2;
+    google.protobuf.Timestamp date_of_birth = 3;
+    string phone_number = 4;
+    string address = 5;
+    string role_id = 6;    // FK to StaffRoleProto.name
+    string status_id = 7;  // FK to StaffStatusProto.name
+    string specialization = 8; // Optional: Relevant for Doctor role
+    string nurse_type = 9;     // Optional: Relevant for Nurse role
+}
+
+message AddStaffResponse {
+    Staff staff = 1;
+}
+
+message GetStaffDetailsRequest {
+    string staff_id = 1; // UUID as string
+}
+
+message GetStaffDetailsResponse {
+    Staff staff = 1; // Includes schedule with tasks
+}
+
+message UpdateStaffDetailsRequest {
+    string staff_id = 1; // UUID as string
+    string first_name = 2;
+    string last_name = 3;
+    google.protobuf.Timestamp date_of_birth = 4;
+    string phone_number = 5;
+    string address = 6;
+    // Role and Status are typically updated via specific RPCs if needed, not general details update
+    string specialization = 7; // Update specialization if applicable
+    string nurse_type = 8;     // Update nurse_type if applicable
+    // Note: Use field masks for partial updates in production
+}
+
+message UpdateStaffDetailsResponse {
+    Staff staff = 1;
+}
+
+// --- Messages for Restored APIs (Need Implementation Review) ---
+
+message UpdateStaffScheduleRequest {
+    string staff_id = 1; // UUID as string
+    // How to represent the schedule now? Maybe list of TaskProtos to schedule?
+    // repeated ScheduleEntryProto schedule = 2; // Original field, needs review
+    repeated TaskProto tasks_to_schedule = 2; // Alternative: provide tasks to be scheduled
+}
+
+// UpdateStaffScheduleResponse is google.protobuf.Empty
+
+message SetStaffAvailabilityRequest {
+    string staff_id = 1; // UUID as string
+    // How does this map now? To StatusID? Or a different concept?
+    // bool is_available = 2; // Original field
+    string status_id = 2; // Alternative: Map to setting the staff status?
+}
+
+// SetStaffAvailabilityResponse is google.protobuf.Empty
+
+message GetDoctorAvailabilityRequest {
+    string doctor_id = 1; // UUID as string (Optional: If empty, check all with 'Doctor' role_id)
+    google.protobuf.Timestamp start_time = 2;
+    google.protobuf.Timestamp end_time = 3;
+}
+
+message GetDoctorAvailabilityResponse {
+    // How to define availability now? Free time slots derived from existing TaskProto start/end times?
+    // repeated ScheduleEntryProto available_slots = 1; // Original, needs review
+    message TimeSlot {
+        google.protobuf.Timestamp start_time = 1;
+        google.protobuf.Timestamp end_time = 2;
+    }
+    repeated TimeSlot available_slots = 1; // Alternative: return calculated free slots
+}
+
+message AssignTaskRequest {
+    string staff_id = 1; // UUID as string
+    // Task details to create and link via a ScheduleEntry
+    string title = 2;
+    string description = 3;
+    int32 priority = 4;
+    google.protobuf.Timestamp start_time = 5;
+    google.protobuf.Timestamp end_time = 6;
+    string status_id = 7; // Initial task status
+}
+
+// AssignTaskResponse is google.protobuf.Empty (or could return created TaskProto)
+
+message TrackWorkloadRequest {
+    string staff_id = 1; // UUID as string
+}
+
+message TrackWorkloadResponse {
+    // Can be derived from Staff.schedule[].task
+    repeated TaskProto workload = 1;
+}
+
+// --- Messages for Lookup Table Operations ---
+
+// Role Operations
+message AddStaffRoleRequest {
+    string name = 1;
+    string description = 2;
+}
+
+message AddStaffRoleResponse {
+    StaffRoleProto role = 1;
+}
+
+message ListStaffRolesRequest {
+    // Add pagination fields if needed
+}
+
+message ListStaffRolesResponse {
+    repeated StaffRoleProto roles = 1;
+}
+
+// Status Operations
+message AddStaffStatusRequest {
+    string name = 1;
+    string description = 2;
+}
+
+message AddStaffStatusResponse {
+    StaffStatusProto status = 1;
+}
+
+message ListStaffStatusesRequest {
+    // Add pagination fields if needed
+}
+
+message ListStaffStatusesResponse {
+    repeated StaffStatusProto statuses = 1;
+}
+
+// Task Status Operations
+message AddTaskStatusRequest {
+    string name = 1;
+    string description = 2;
+}
+
+message AddTaskStatusResponse {
+    TaskStatusProto status = 1;
+}
+
+message ListTaskStatusesRequest {
+    // Add pagination fields if needed
+}
+
+message ListTaskStatusesResponse {
+    repeated TaskStatusProto statuses = 1;
+}
+
+
+// --- Service Definition ---
+
+service StaffService {
+    // Staff Management
+    rpc AddStaff(AddStaffRequest) returns (AddStaffResponse);
+    rpc GetStaffDetails(GetStaffDetailsRequest) returns (GetStaffDetailsResponse);
+    rpc UpdateStaffDetails(UpdateStaffDetailsRequest) returns (UpdateStaffDetailsResponse);
+
+    // Restored APIs (Implementation needs careful review based on new entities)
+    rpc UpdateStaffSchedule(UpdateStaffScheduleRequest) returns (google.protobuf.Empty);
+    rpc SetStaffAvailability(SetStaffAvailabilityRequest) returns (google.protobuf.Empty);
+    rpc GetDoctorAvailability(GetDoctorAvailabilityRequest) returns (GetDoctorAvailabilityResponse);
+    rpc AssignTask(AssignTaskRequest) returns (google.protobuf.Empty); // Consider returning TaskProto
+    rpc TrackWorkload(TrackWorkloadRequest) returns (TrackWorkloadResponse);
+
+    // Lookup Table Management
+    rpc AddStaffRole(AddStaffRoleRequest) returns (AddStaffRoleResponse);
+    rpc ListStaffRoles(ListStaffRolesRequest) returns (ListStaffRolesResponse);
+
+    rpc AddStaffStatus(AddStaffStatusRequest) returns (AddStaffStatusResponse);
+    rpc ListStaffStatuses(ListStaffStatusesRequest) returns (ListStaffStatusesResponse);
+
+    rpc AddTaskStatus(AddTaskStatusRequest) returns (AddTaskStatusResponse);
+    rpc ListTaskStatuses(ListTaskStatusesRequest) returns (ListTaskStatusesResponse);
+} 
