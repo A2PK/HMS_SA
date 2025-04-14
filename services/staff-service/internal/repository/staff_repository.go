@@ -36,6 +36,12 @@ type StaffRepository interface {
 	// FindByID(ctx context.Context, id uuid.UUID) (*entity.Staff, error)
 }
 
+// Add TaskRepository interface definition
+type TaskRepository interface {
+	coreRepository.BaseRepository[entity.Task]
+	// Add any Task-specific methods here if needed beyond BaseRepository
+}
+
 // --- Interfaces for Lookup Tables --- //
 
 // StaffRoleRepository defines the interface for staff role data persistence.

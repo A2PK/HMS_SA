@@ -13,6 +13,7 @@ import (
 // Mapper defines the interface for mapping between gRPC proto messages and internal types.
 type Mapper interface {
 	EntityToProto(patient *entity.Patient) (*pb.Patient, error)
+	PatientsToProto(patients []*entity.Patient) ([]*pb.Patient, error)
 	MedicalRecordsToProto(records []entity.MedicalRecord) ([]*pb.MedicalRecord, error)
 	MedicalRecordToProto(record *entity.MedicalRecord) (*pb.MedicalRecord, error)
 }
@@ -82,5 +83,23 @@ func (m *PatientMapper) MedicalRecordsToProto(records []entity.MedicalRecord) ([
 		}
 		protos = append(protos, proto)
 	}
+	return protos, nil
+}
+
+// PatientsToProto converts a slice of *entity.Patient to a slice of *pb.Patient.
+func (m *PatientMapper) PatientsToProto(patients []*entity.Patient) ([]*pb.Patient, error) {
+	protos := make([]*pb.Patient, 0, len(patients))
+	for _, patientEntity := range patients {
+		proto, err := m.EntityToProto(patientEntity) // Reuse single entity mapping
+		if err != nil {
+			// Log or handle individual mapping errors? For now, skip.
+			// You might want to return an error here or collect errors.
+			fmt.Printf("Warning: skipping patient mapping due to error: %v\n", err) // Simple logging
+			continue
+		}
+		protos = append(protos, proto)
+	}
+	// Currently, errors during individual mapping are only logged/skipped.
+	// Return nil error unless a different strategy is needed.
 	return protos, nil
 }

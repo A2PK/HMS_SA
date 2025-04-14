@@ -73,6 +73,44 @@
       }
     },
     "/api/v1/staff": {
+      "get": {
+        "summary": "List Staff",
+        "description": "Retrieves a list of staff members, optionally filtered by role or status.",
+        "operationId": "StaffService_ListStaff",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/staffserviceListStaffResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "roleId",
+            "description": "Optional filtering parameters\n\nOptional: Filter by role ID (e.g., \"Doctor\").",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "statusId",
+            "description": "Add pagination fields like page_size, page_token if needed\n\nOptional: Filter by status ID (e.g., \"Active\").",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Staff"
+        ]
+      },
       "post": {
         "summary": "Add Staff Member",
         "description": "Adds a new staff member to the system.",
@@ -514,6 +552,39 @@
           "Task Statuses"
         ]
       }
+    },
+    "/api/v1/tasks": {
+      "get": {
+        "summary": "List All Tasks",
+        "description": "Retrieves a list of all tasks in the system, optionally filtered.",
+        "operationId": "StaffService_ListTasks",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/staffserviceListTasksResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "statusId",
+            "description": "Optional filtering parameters (examples)\n\nOptional: Filter by task status ID (e.g., \"Pending\").",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Tasks"
+        ]
+      }
     }
   },
   "definitions": {
@@ -874,6 +945,21 @@
       "description": "Contains the details of the requested staff member, including their schedule/tasks.",
       "title": "Get Staff Details Response"
     },
+    "staffserviceListStaffResponse": {
+      "type": "object",
+      "properties": {
+        "staffMembers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/staffserviceStaff"
+          },
+          "title": "Renamed from 'staff' to avoid conflict"
+        }
+      },
+      "description": "Contains a list of staff members matching the criteria.",
+      "title": "List Staff Response"
+    },
     "staffserviceListStaffRolesResponse": {
       "type": "object",
       "properties": {
@@ -915,6 +1001,21 @@
       },
       "description": "A list of all available task statuses.",
       "title": "List Task Statuses Response"
+    },
+    "staffserviceListTasksResponse": {
+      "type": "object",
+      "properties": {
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/staffserviceTaskProto"
+          },
+          "title": "Add pagination fields like next_page_token if needed"
+        }
+      },
+      "description": "Contains a list of tasks matching the criteria.",
+      "title": "List Tasks Response"
     },
     "staffserviceScheduleEntryProto": {
       "type": "object",

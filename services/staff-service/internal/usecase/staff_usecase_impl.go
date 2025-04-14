@@ -9,6 +9,7 @@ import (
 	pb "golang-microservices-boilerplate/proto/staff-service"
 
 	coreLogger "golang-microservices-boilerplate/pkg/core/logger"
+	coreTypes "golang-microservices-boilerplate/pkg/core/types"
 	coreUseCase "golang-microservices-boilerplate/pkg/core/usecase"
 
 	// coreDTO "golang-microservices-boilerplate/pkg/core/dto"
@@ -25,8 +26,8 @@ var _ StaffUseCase = (*staffUseCaseImpl)(nil)
 
 // staffUseCaseImpl implements the StaffUseCase interface.
 type staffUseCaseImpl struct {
-	// Remove BaseUseCaseImpl embedding as we handle methods specifically
-	staffRepo       repository.StaffRepository // Specific repository interface for Staff
+	staffRepo       repository.StaffRepository
+	taskRepo        repository.TaskRepository
 	staffRoleRepo   repository.StaffRoleRepository
 	staffStatusRepo repository.StaffStatusRepository
 	taskStatusRepo  repository.TaskStatusRepository
@@ -36,6 +37,7 @@ type staffUseCaseImpl struct {
 // NewStaffUseCase creates a new instance of staffUseCaseImpl.
 func NewStaffUseCase(
 	staffRepo repository.StaffRepository,
+	taskRepo repository.TaskRepository,
 	staffRoleRepo repository.StaffRoleRepository,
 	staffStatusRepo repository.StaffStatusRepository,
 	taskStatusRepo repository.TaskStatusRepository,
@@ -43,6 +45,7 @@ func NewStaffUseCase(
 ) StaffUseCase {
 	return &staffUseCaseImpl{
 		staffRepo:       staffRepo,
+		taskRepo:        taskRepo,
 		staffRoleRepo:   staffRoleRepo,
 		staffStatusRepo: staffStatusRepo,
 		taskStatusRepo:  taskStatusRepo,
@@ -321,6 +324,73 @@ func (uc *staffUseCaseImpl) TrackWorkload(ctx context.Context, staffID uuid.UUID
 		return nil, coreUseCase.NewUseCaseError(coreUseCase.ErrInternal, "failed to track workload")
 	}
 	return tasks, nil
+}
+
+// ListStaff retrieves a list of staff members, optionally filtered.
+func (uc *staffUseCaseImpl) ListStaff(ctx context.Context, req *pb.ListStaffRequest) ([]*entity.Staff, error) {
+	logFields := []interface{}{}
+	filter := make(map[string]interface{})
+
+	if req.RoleId != "" {
+		filter["role_id"] = req.RoleId
+		logFields = append(logFields, "filter_role_id", req.RoleId)
+	}
+	if req.StatusId != "" {
+		filter["status_id"] = req.StatusId
+		logFields = append(logFields, "filter_status_id", req.StatusId)
+	}
+
+	uc.logger.Info("Listing staff", logFields...)
+
+	// Assuming coreTypes and FilterOptions are available in scope.
+	// Import "golang-microservices-boilerplate/pkg/core/types" if needed.
+	// Assuming staffRepo embeds coreRepository.BaseRepository[entity.Staff]
+	// which has FindWithFilter(ctx, filter, opts).
+	filterOpts := coreTypes.FilterOptions{} // Use default pagination/sorting for now
+
+	paginationResult, err := uc.staffRepo.FindWithFilter(ctx, filter, filterOpts)
+	if err != nil {
+		uc.logger.Error("Failed to list staff from repository", "error", err)
+		return nil, coreUseCase.NewUseCaseError(coreUseCase.ErrInternal, "failed to retrieve staff list")
+	}
+
+	// Assuming paginationResult has an 'Items' field containing []*entity.Staff.
+	if paginationResult == nil || paginationResult.Items == nil {
+		return []*entity.Staff{}, nil // Return empty slice, not nil
+	}
+
+	return paginationResult.Items, nil
+}
+
+// ListTasks retrieves a list of all tasks, optionally filtered, ordered by creation time.
+func (uc *staffUseCaseImpl) ListTasks(ctx context.Context, req *pb.ListTasksRequest) ([]*entity.Task, error) {
+	logFields := []interface{}{}
+	filter := make(map[string]interface{})
+
+	if req.StatusId != "" {
+		filter["status_id"] = req.StatusId
+		logFields = append(logFields, "filter_status_id", req.StatusId)
+	}
+
+	uc.logger.Info("Listing tasks", logFields...)
+
+	// Set sorting options for FindWithFilter
+	filterOpts := coreTypes.DefaultFilterOptions()
+
+	filterOpts.SortBy = "created_at"
+	filterOpts.SortDesc = true
+
+	paginationResult, err := uc.taskRepo.FindWithFilter(ctx, filter, filterOpts)
+	if err != nil {
+		uc.logger.Error("Failed to list tasks from repository", "error", err)
+		return nil, coreUseCase.NewUseCaseError(coreUseCase.ErrInternal, "failed to retrieve task list")
+	}
+
+	if paginationResult == nil || paginationResult.Items == nil {
+		return []*entity.Task{}, nil
+	}
+
+	return paginationResult.Items, nil
 }
 
 // --- Lookup Table Management Implementations ---

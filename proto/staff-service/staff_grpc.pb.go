@@ -22,12 +22,14 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	StaffService_AddStaff_FullMethodName              = "/staffservice.StaffService/AddStaff"
 	StaffService_GetStaffDetails_FullMethodName       = "/staffservice.StaffService/GetStaffDetails"
+	StaffService_ListStaff_FullMethodName             = "/staffservice.StaffService/ListStaff"
 	StaffService_UpdateStaffDetails_FullMethodName    = "/staffservice.StaffService/UpdateStaffDetails"
 	StaffService_UpdateStaffSchedule_FullMethodName   = "/staffservice.StaffService/UpdateStaffSchedule"
 	StaffService_SetStaffAvailability_FullMethodName  = "/staffservice.StaffService/SetStaffAvailability"
 	StaffService_GetDoctorAvailability_FullMethodName = "/staffservice.StaffService/GetDoctorAvailability"
 	StaffService_AssignTask_FullMethodName            = "/staffservice.StaffService/AssignTask"
 	StaffService_TrackWorkload_FullMethodName         = "/staffservice.StaffService/TrackWorkload"
+	StaffService_ListTasks_FullMethodName             = "/staffservice.StaffService/ListTasks"
 	StaffService_AddStaffRole_FullMethodName          = "/staffservice.StaffService/AddStaffRole"
 	StaffService_ListStaffRoles_FullMethodName        = "/staffservice.StaffService/ListStaffRoles"
 	StaffService_AddStaffStatus_FullMethodName        = "/staffservice.StaffService/AddStaffStatus"
@@ -43,6 +45,7 @@ type StaffServiceClient interface {
 	// Staff Management
 	AddStaff(ctx context.Context, in *AddStaffRequest, opts ...grpc.CallOption) (*AddStaffResponse, error)
 	GetStaffDetails(ctx context.Context, in *GetStaffDetailsRequest, opts ...grpc.CallOption) (*GetStaffDetailsResponse, error)
+	ListStaff(ctx context.Context, in *ListStaffRequest, opts ...grpc.CallOption) (*ListStaffResponse, error)
 	UpdateStaffDetails(ctx context.Context, in *UpdateStaffDetailsRequest, opts ...grpc.CallOption) (*UpdateStaffDetailsResponse, error)
 	// Restored APIs (Implementation needs careful review based on new entities)
 	UpdateStaffSchedule(ctx context.Context, in *UpdateStaffScheduleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -50,6 +53,8 @@ type StaffServiceClient interface {
 	GetDoctorAvailability(ctx context.Context, in *GetDoctorAvailabilityRequest, opts ...grpc.CallOption) (*GetDoctorAvailabilityResponse, error)
 	AssignTask(ctx context.Context, in *AssignTaskRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	TrackWorkload(ctx context.Context, in *TrackWorkloadRequest, opts ...grpc.CallOption) (*TrackWorkloadResponse, error)
+	// Add ListTasks RPC
+	ListTasks(ctx context.Context, in *ListTasksRequest, opts ...grpc.CallOption) (*ListTasksResponse, error)
 	// Lookup Table Management
 	AddStaffRole(ctx context.Context, in *AddStaffRoleRequest, opts ...grpc.CallOption) (*AddStaffRoleResponse, error)
 	ListStaffRoles(ctx context.Context, in *ListStaffRolesRequest, opts ...grpc.CallOption) (*ListStaffRolesResponse, error)
@@ -81,6 +86,16 @@ func (c *staffServiceClient) GetStaffDetails(ctx context.Context, in *GetStaffDe
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetStaffDetailsResponse)
 	err := c.cc.Invoke(ctx, StaffService_GetStaffDetails_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *staffServiceClient) ListStaff(ctx context.Context, in *ListStaffRequest, opts ...grpc.CallOption) (*ListStaffResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListStaffResponse)
+	err := c.cc.Invoke(ctx, StaffService_ListStaff_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -141,6 +156,16 @@ func (c *staffServiceClient) TrackWorkload(ctx context.Context, in *TrackWorkloa
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TrackWorkloadResponse)
 	err := c.cc.Invoke(ctx, StaffService_TrackWorkload_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *staffServiceClient) ListTasks(ctx context.Context, in *ListTasksRequest, opts ...grpc.CallOption) (*ListTasksResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListTasksResponse)
+	err := c.cc.Invoke(ctx, StaffService_ListTasks_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -214,6 +239,7 @@ type StaffServiceServer interface {
 	// Staff Management
 	AddStaff(context.Context, *AddStaffRequest) (*AddStaffResponse, error)
 	GetStaffDetails(context.Context, *GetStaffDetailsRequest) (*GetStaffDetailsResponse, error)
+	ListStaff(context.Context, *ListStaffRequest) (*ListStaffResponse, error)
 	UpdateStaffDetails(context.Context, *UpdateStaffDetailsRequest) (*UpdateStaffDetailsResponse, error)
 	// Restored APIs (Implementation needs careful review based on new entities)
 	UpdateStaffSchedule(context.Context, *UpdateStaffScheduleRequest) (*emptypb.Empty, error)
@@ -221,6 +247,8 @@ type StaffServiceServer interface {
 	GetDoctorAvailability(context.Context, *GetDoctorAvailabilityRequest) (*GetDoctorAvailabilityResponse, error)
 	AssignTask(context.Context, *AssignTaskRequest) (*emptypb.Empty, error)
 	TrackWorkload(context.Context, *TrackWorkloadRequest) (*TrackWorkloadResponse, error)
+	// Add ListTasks RPC
+	ListTasks(context.Context, *ListTasksRequest) (*ListTasksResponse, error)
 	// Lookup Table Management
 	AddStaffRole(context.Context, *AddStaffRoleRequest) (*AddStaffRoleResponse, error)
 	ListStaffRoles(context.Context, *ListStaffRolesRequest) (*ListStaffRolesResponse, error)
@@ -244,6 +272,9 @@ func (UnimplementedStaffServiceServer) AddStaff(context.Context, *AddStaffReques
 func (UnimplementedStaffServiceServer) GetStaffDetails(context.Context, *GetStaffDetailsRequest) (*GetStaffDetailsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStaffDetails not implemented")
 }
+func (UnimplementedStaffServiceServer) ListStaff(context.Context, *ListStaffRequest) (*ListStaffResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListStaff not implemented")
+}
 func (UnimplementedStaffServiceServer) UpdateStaffDetails(context.Context, *UpdateStaffDetailsRequest) (*UpdateStaffDetailsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateStaffDetails not implemented")
 }
@@ -261,6 +292,9 @@ func (UnimplementedStaffServiceServer) AssignTask(context.Context, *AssignTaskRe
 }
 func (UnimplementedStaffServiceServer) TrackWorkload(context.Context, *TrackWorkloadRequest) (*TrackWorkloadResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TrackWorkload not implemented")
+}
+func (UnimplementedStaffServiceServer) ListTasks(context.Context, *ListTasksRequest) (*ListTasksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListTasks not implemented")
 }
 func (UnimplementedStaffServiceServer) AddStaffRole(context.Context, *AddStaffRoleRequest) (*AddStaffRoleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddStaffRole not implemented")
@@ -333,6 +367,24 @@ func _StaffService_GetStaffDetails_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(StaffServiceServer).GetStaffDetails(ctx, req.(*GetStaffDetailsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StaffService_ListStaff_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListStaffRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StaffServiceServer).ListStaff(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: StaffService_ListStaff_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StaffServiceServer).ListStaff(ctx, req.(*ListStaffRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -441,6 +493,24 @@ func _StaffService_TrackWorkload_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(StaffServiceServer).TrackWorkload(ctx, req.(*TrackWorkloadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StaffService_ListTasks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListTasksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StaffServiceServer).ListTasks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: StaffService_ListTasks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StaffServiceServer).ListTasks(ctx, req.(*ListTasksRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -569,6 +639,10 @@ var StaffService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _StaffService_GetStaffDetails_Handler,
 		},
 		{
+			MethodName: "ListStaff",
+			Handler:    _StaffService_ListStaff_Handler,
+		},
+		{
 			MethodName: "UpdateStaffDetails",
 			Handler:    _StaffService_UpdateStaffDetails_Handler,
 		},
@@ -591,6 +665,10 @@ var StaffService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TrackWorkload",
 			Handler:    _StaffService_TrackWorkload_Handler,
+		},
+		{
+			MethodName: "ListTasks",
+			Handler:    _StaffService_ListTasks_Handler,
 		},
 		{
 			MethodName: "AddStaffRole",

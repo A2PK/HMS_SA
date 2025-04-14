@@ -54,12 +54,12 @@ func setupDatabase(logger coreLogger.Logger) *coreDatabase.DatabaseConnection {
 func setupDependencies(db *coreDatabase.DatabaseConnection, logger coreLogger.Logger) (staffUseCase.StaffUseCase, controller.Mapper) {
 	// Instantiate all repositories
 	staffRepo := staffRepoGorm.NewGormStaffRepository(db.DB)
+	taskRepo := staffRepoGorm.NewGormTaskRepository(db.DB)
 	staffRoleRepo := staffRepoGorm.NewGormStaffRoleRepository(db.DB)
 	staffStatusRepo := staffRepoGorm.NewGormStaffStatusRepository(db.DB)
 	taskStatusRepo := staffRepoGorm.NewGormTaskStatusRepository(db.DB)
-
 	// Inject repositories into the use case
-	uc := staffUseCase.NewStaffUseCase(staffRepo, staffRoleRepo, staffStatusRepo, taskStatusRepo, logger)
+	uc := staffUseCase.NewStaffUseCase(staffRepo, taskRepo, staffRoleRepo, staffStatusRepo, taskStatusRepo, logger)
 	mapper := controller.NewStaffMapper()
 	return uc, mapper
 }

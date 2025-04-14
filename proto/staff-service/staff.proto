@@ -347,6 +347,38 @@ message UpdateStaffDetailsResponse {
     Staff staff = 1;
 }
 
+// Request for ListStaff
+message ListStaffRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "List Staff Request";
+      description: "Request to list all staff members (add pagination/filtering parameters if needed).";
+    }
+  };
+  // Optional filtering parameters
+  string role_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Optional: Filter by role ID (e.g., \"Doctor\").";
+    example: "\"Doctor\"";
+  }];
+  string status_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Optional: Filter by status ID (e.g., \"Active\").";
+    example: "\"Active\"";
+  }];
+  // Add pagination fields like page_size, page_token if needed
+}
+
+// Response for ListStaff
+message ListStaffResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "List Staff Response";
+      description: "Contains a list of staff members matching the criteria.";
+    }
+  };
+  repeated Staff staff_members = 1; // Renamed from 'staff' to avoid conflict
+  // Add pagination fields like next_page_token if needed
+}
+
 // --- Messages for Restored APIs (Need Implementation Review) ---
 
 message UpdateStaffScheduleRequest {
@@ -501,6 +533,35 @@ message TrackWorkloadResponse {
     repeated TaskProto workload = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "List of tasks assigned to the staff member.";
     }];
+}
+
+// Request for ListTasks
+message ListTasksRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "List Tasks Request";
+      description: "Request to list all tasks (add pagination/filtering parameters if needed).";
+    }
+  };
+  // Optional filtering parameters (examples)
+  string status_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Optional: Filter by task status ID (e.g., \"Pending\").";
+    example: "\"Pending\"";
+  }];
+  // Add filters for date range, priority etc. if needed
+  // Add pagination fields like page_size, page_token if needed
+}
+
+// Response for ListTasks
+message ListTasksResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "List Tasks Response";
+      description: "Contains a list of tasks matching the criteria.";
+    }
+  };
+  repeated TaskProto tasks = 1;
+  // Add pagination fields like next_page_token if needed
 }
 
 // --- Messages for Lookup Table Operations ---
@@ -682,6 +743,16 @@ service StaffService {
         tags: ["Staff"];
       };
     }
+    rpc ListStaff(ListStaffRequest) returns (ListStaffResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/staff";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "List Staff";
+        description: "Retrieves a list of staff members, optionally filtered by role or status.";
+        tags: ["Staff"];
+      };
+    }
     rpc UpdateStaffDetails(UpdateStaffDetailsRequest) returns (UpdateStaffDetailsResponse) {
       option (google.api.http) = {
         patch: "/api/v1/staff/{staff_id}";
@@ -747,6 +818,18 @@ service StaffService {
         summary: "Track Staff Workload";
         description: "Retrieves the list of tasks assigned to a specific staff member.";
         tags: ["Staff Tasks"];
+      };
+    }
+
+    // Add ListTasks RPC
+    rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/tasks"; // Define endpoint for all tasks
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "List All Tasks";
+        description: "Retrieves a list of all tasks in the system, optionally filtered.";
+        tags: ["Tasks"]; // New tag for general tasks
       };
     }
 

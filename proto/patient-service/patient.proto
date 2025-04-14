@@ -196,6 +196,29 @@ message GetPatientDetailsResponse {
     Patient patient = 1;
 }
 
+// Request for ListPatients
+message ListPatientsRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "List Patients Request";
+      description: "Request to list all patients (add pagination parameters if needed).";
+    }
+  };
+  // Add pagination fields like page_size, page_token if needed
+}
+
+// Response for ListPatients
+message ListPatientsResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "List Patients Response";
+      description: "Contains a list of patients.";
+    }
+  };
+  repeated Patient patients = 1;
+  // Add pagination fields like next_page_token if needed
+}
+
 // Request for UpdatePatientDetails
 message UpdatePatientDetailsRequest {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
@@ -334,6 +357,16 @@ service PatientService {
       option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
         summary: "Get Patient Details";
         description: "Retrieves details for a specific patient by their ID.";
+        tags: ["Patients"];
+      };
+    }
+    rpc ListPatients(ListPatientsRequest) returns (ListPatientsResponse) {
+      option (google.api.http) = {
+        get: "/api/v1/patients";
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "List Patients";
+        description: "Retrieves a list of all registered patients.";
         tags: ["Patients"];
       };
     }

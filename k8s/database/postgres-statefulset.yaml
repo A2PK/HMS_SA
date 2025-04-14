@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: ride-sharing
+spec:
+  serviceName: "postgres-service" # Must match the Service name
+  replicas: 1 # Start with a single instance
+  selector:
+    matchLabels:
+      app: postgres # Label used by the Service selector
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15 # Use a specific version for stability
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_DB
+        - name: PGDATA # Define the data directory within the container
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - name: postgres_volume
+          mountPath: /var/lib/postgresql/data
+        # Optional but recommended: Liveness and Readiness Probes
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres # Use the user defined in the secret
+            - -d
+            - hms_db # Use the db name defined in the secret
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+            - -d
+            - hms_db
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres_volume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi # Should match or be compatible with the PVC if not using volumeClaimTemplates directly
+      # Optional: Specify storageClassName if needed
+      # storageClassName: standard 

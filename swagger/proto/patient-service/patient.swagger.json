@@ -23,6 +23,28 @@
   ],
   "paths": {
     "/api/v1/patients": {
+      "get": {
+        "summary": "List Patients",
+        "description": "Retrieves a list of all registered patients.",
+        "operationId": "PatientService_ListPatients",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/patientserviceListPatientsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Patients"
+        ]
+      },
       "post": {
         "summary": "Register Patient",
         "description": "Registers a new patient in the system.",
@@ -307,6 +329,21 @@
       },
       "description": "Contains a list of medical records for the requested patient.",
       "title": "Get Patient Medical History Response"
+    },
+    "patientserviceListPatientsResponse": {
+      "type": "object",
+      "properties": {
+        "patients": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/patientservicePatient"
+          },
+          "title": "Add pagination fields like next_page_token if needed"
+        }
+      },
+      "description": "Contains a list of patients.",
+      "title": "List Patients Response"
     },
     "patientserviceMedicalRecord": {
       "type": "object",

@@ -9,6 +9,7 @@ import (
 
 	coreLogger "golang-microservices-boilerplate/pkg/core/logger"
 	coreRepository "golang-microservices-boilerplate/pkg/core/repository" // Added alias for core repo
+	coreTypes "golang-microservices-boilerplate/pkg/core/types"           // Import coreTypes
 	coreUseCase "golang-microservices-boilerplate/pkg/core/usecase"
 
 	// coreDTO "golang-microservices-boilerplate/pkg/core/dto" // Not used currently
@@ -199,4 +200,28 @@ func (uc *patientUseCase) GetPatientMedicalHistory(ctx context.Context, patientI
 		return []entity.MedicalRecord{}, nil // Return empty slice, not nil
 	}
 	return patient.MedicalHistory, nil
+}
+
+// ListPatients retrieves a list of all patients.
+// Returns a slice of pointers to patients.
+func (uc *patientUseCase) ListPatients(ctx context.Context) ([]*entity.Patient, error) {
+	uc.logger.Info("Listing all patients")
+
+	// Call the embedded repository's FindAll method.
+	// Use coreTypes.FilterOptions.
+	filterOpts := coreTypes.FilterOptions{} // Use coreTypes
+	paginationResult, err := uc.patientRepo.FindAll(ctx, filterOpts)
+
+	if err != nil {
+		uc.logger.Error("Failed to list patients", "error", err)
+		return nil, coreUseCase.NewUseCaseError(coreUseCase.ErrInternal, "failed to retrieve patients")
+	}
+
+	// Check if the result or Items field is nil.
+	if paginationResult == nil || paginationResult.Items == nil {
+		return []*entity.Patient{}, nil // Return empty slice of pointers
+	}
+
+	// Return the slice of pointers directly.
+	return paginationResult.Items, nil
 }

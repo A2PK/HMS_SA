@@ -120,6 +120,26 @@ func (s *staffServer) UpdateStaffDetails(ctx context.Context, req *pb.UpdateStaf
 	return &pb.UpdateStaffDetailsResponse{Staff: staffProto}, nil
 }
 
+// ListStaff implements the corresponding gRPC method.
+func (s *staffServer) ListStaff(ctx context.Context, req *pb.ListStaffRequest) (*pb.ListStaffResponse, error) {
+	// Call the use case method, passing the request which contains filters.
+	staffEntities, err := s.uc.ListStaff(ctx, req)
+	if err != nil {
+		// Map use case errors to gRPC status codes.
+		return nil, mapUseCaseErrorToGrpcStatus(err) // Assuming helper exists
+	}
+
+	// Map the slice of entity pointers to a slice of proto messages.
+	staffProtos, err := s.mapper.StaffListToProto(staffEntities)
+	if err != nil {
+		// This error comes from the mapping function itself.
+		return nil, status.Errorf(codes.Internal, "failed to map staff list to proto: %v", err)
+	}
+
+	// Return the response containing the list of staff protos.
+	return &pb.ListStaffResponse{StaffMembers: staffProtos}, nil
+}
+
 // --- Restored RPC Implementations (Needing Review) ---
 
 // UpdateStaffSchedule implements the corresponding gRPC method.
@@ -233,6 +253,27 @@ func (s *staffServer) TrackWorkload(ctx context.Context, req *pb.TrackWorkloadRe
 	}
 
 	return &pb.TrackWorkloadResponse{Workload: workloadProto}, nil
+}
+
+// ListTasks implements the corresponding gRPC method.
+func (s *staffServer) ListTasks(ctx context.Context, req *pb.ListTasksRequest) (*pb.ListTasksResponse, error) {
+	// Call the use case method, passing the request which contains filters.
+	taskEntities, err := s.uc.ListTasks(ctx, req)
+	if err != nil {
+		// Map use case errors to gRPC status codes.
+		return nil, mapUseCaseErrorToGrpcStatus(err)
+	}
+
+	// Map the slice of entity pointers to a slice of proto messages.
+	// Use the existing TasksToProto mapper function.
+	taskProtos, err := s.mapper.TasksToProto(taskEntities)
+	if err != nil {
+		// This error comes from the mapping function itself.
+		return nil, status.Errorf(codes.Internal, "failed to map task list to proto: %v", err)
+	}
+
+	// Return the response containing the list of task protos.
+	return &pb.ListTasksResponse{Tasks: taskProtos}, nil
 }
 
 // --- Lookup Table RPCs ---

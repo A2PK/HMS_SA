@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	PatientService_RegisterPatient_FullMethodName          = "/patientservice.PatientService/RegisterPatient"
 	PatientService_GetPatientDetails_FullMethodName        = "/patientservice.PatientService/GetPatientDetails"
+	PatientService_ListPatients_FullMethodName             = "/patientservice.PatientService/ListPatients"
 	PatientService_UpdatePatientDetails_FullMethodName     = "/patientservice.PatientService/UpdatePatientDetails"
 	PatientService_AddMedicalRecord_FullMethodName         = "/patientservice.PatientService/AddMedicalRecord"
 	PatientService_GetPatientMedicalHistory_FullMethodName = "/patientservice.PatientService/GetPatientMedicalHistory"
@@ -33,6 +34,7 @@ const (
 type PatientServiceClient interface {
 	RegisterPatient(ctx context.Context, in *RegisterPatientRequest, opts ...grpc.CallOption) (*RegisterPatientResponse, error)
 	GetPatientDetails(ctx context.Context, in *GetPatientDetailsRequest, opts ...grpc.CallOption) (*GetPatientDetailsResponse, error)
+	ListPatients(ctx context.Context, in *ListPatientsRequest, opts ...grpc.CallOption) (*ListPatientsResponse, error)
 	UpdatePatientDetails(ctx context.Context, in *UpdatePatientDetailsRequest, opts ...grpc.CallOption) (*UpdatePatientDetailsResponse, error)
 	AddMedicalRecord(ctx context.Context, in *AddMedicalRecordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetPatientMedicalHistory(ctx context.Context, in *GetPatientMedicalHistoryRequest, opts ...grpc.CallOption) (*GetPatientMedicalHistoryResponse, error)
@@ -60,6 +62,16 @@ func (c *patientServiceClient) GetPatientDetails(ctx context.Context, in *GetPat
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetPatientDetailsResponse)
 	err := c.cc.Invoke(ctx, PatientService_GetPatientDetails_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *patientServiceClient) ListPatients(ctx context.Context, in *ListPatientsRequest, opts ...grpc.CallOption) (*ListPatientsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListPatientsResponse)
+	err := c.cc.Invoke(ctx, PatientService_ListPatients_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,6 +114,7 @@ func (c *patientServiceClient) GetPatientMedicalHistory(ctx context.Context, in 
 type PatientServiceServer interface {
 	RegisterPatient(context.Context, *RegisterPatientRequest) (*RegisterPatientResponse, error)
 	GetPatientDetails(context.Context, *GetPatientDetailsRequest) (*GetPatientDetailsResponse, error)
+	ListPatients(context.Context, *ListPatientsRequest) (*ListPatientsResponse, error)
 	UpdatePatientDetails(context.Context, *UpdatePatientDetailsRequest) (*UpdatePatientDetailsResponse, error)
 	AddMedicalRecord(context.Context, *AddMedicalRecordRequest) (*emptypb.Empty, error)
 	GetPatientMedicalHistory(context.Context, *GetPatientMedicalHistoryRequest) (*GetPatientMedicalHistoryResponse, error)
@@ -120,6 +133,9 @@ func (UnimplementedPatientServiceServer) RegisterPatient(context.Context, *Regis
 }
 func (UnimplementedPatientServiceServer) GetPatientDetails(context.Context, *GetPatientDetailsRequest) (*GetPatientDetailsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPatientDetails not implemented")
+}
+func (UnimplementedPatientServiceServer) ListPatients(context.Context, *ListPatientsRequest) (*ListPatientsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListPatients not implemented")
 }
 func (UnimplementedPatientServiceServer) UpdatePatientDetails(context.Context, *UpdatePatientDetailsRequest) (*UpdatePatientDetailsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePatientDetails not implemented")
@@ -183,6 +199,24 @@ func _PatientService_GetPatientDetails_Handler(srv interface{}, ctx context.Cont
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PatientServiceServer).GetPatientDetails(ctx, req.(*GetPatientDetailsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PatientService_ListPatients_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPatientsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PatientServiceServer).ListPatients(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PatientService_ListPatients_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PatientServiceServer).ListPatients(ctx, req.(*ListPatientsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -255,6 +289,10 @@ var PatientService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPatientDetails",
 			Handler:    _PatientService_GetPatientDetails_Handler,
+		},
+		{
+			MethodName: "ListPatients",
+			Handler:    _PatientService_ListPatients_Handler,
 		},
 		{
 			MethodName: "UpdatePatientDetails",

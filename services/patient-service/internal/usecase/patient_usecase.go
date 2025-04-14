@@ -25,4 +25,8 @@ type PatientUseCase interface {
 
 	// GetPatientMedicalHistory retrieves the medical history for a specific patient.
 	GetPatientMedicalHistory(ctx context.Context, patientID uuid.UUID) ([]entity.MedicalRecord, error)
+
+	// ListPatients retrieves a list of all patients.
+	// Returns a slice of pointers to patients.
+	ListPatients(ctx context.Context) ([]*entity.Patient, error)
 }

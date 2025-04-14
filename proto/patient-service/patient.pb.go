@@ -469,6 +469,88 @@ func (x *GetPatientDetailsResponse) GetPatient() *Patient {
 	return nil
 }
 
+// Request for ListPatients
+type ListPatientsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPatientsRequest) Reset() {
+	*x = ListPatientsRequest{}
+	mi := &file_proto_patient_service_patient_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPatientsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPatientsRequest) ProtoMessage() {}
+
+func (x *ListPatientsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_patient_service_patient_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPatientsRequest.ProtoReflect.Descriptor instead.
+func (*ListPatientsRequest) Descriptor() ([]byte, []int) {
+	return file_proto_patient_service_patient_proto_rawDescGZIP(), []int{6}
+}
+
+// Response for ListPatients
+type ListPatientsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Patients      []*Patient             `protobuf:"bytes,1,rep,name=patients,proto3" json:"patients,omitempty"` // Add pagination fields like next_page_token if needed
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPatientsResponse) Reset() {
+	*x = ListPatientsResponse{}
+	mi := &file_proto_patient_service_patient_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPatientsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPatientsResponse) ProtoMessage() {}
+
+func (x *ListPatientsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_patient_service_patient_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPatientsResponse.ProtoReflect.Descriptor instead.
+func (*ListPatientsResponse) Descriptor() ([]byte, []int) {
+	return file_proto_patient_service_patient_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ListPatientsResponse) GetPatients() []*Patient {
+	if x != nil {
+		return x.Patients
+	}
+	return nil
+}
+
 // Request for UpdatePatientDetails
 type UpdatePatientDetailsRequest struct {
 	state     protoimpl.MessageState `protogen:"open.v1"`
@@ -486,7 +568,7 @@ type UpdatePatientDetailsRequest struct {
 
 func (x *UpdatePatientDetailsRequest) Reset() {
 	*x = UpdatePatientDetailsRequest{}
-	mi := &file_proto_patient_service_patient_proto_msgTypes[6]
+	mi := &file_proto_patient_service_patient_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -498,7 +580,7 @@ func (x *UpdatePatientDetailsRequest) String() string {
 func (*UpdatePatientDetailsRequest) ProtoMessage() {}
 
 func (x *UpdatePatientDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_patient_service_patient_proto_msgTypes[6]
+	mi := &file_proto_patient_service_patient_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -511,7 +593,7 @@ func (x *UpdatePatientDetailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePatientDetailsRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePatientDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_proto_patient_service_patient_proto_rawDescGZIP(), []int{6}
+	return file_proto_patient_service_patient_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *UpdatePatientDetailsRequest) GetPatientId() string {
@@ -573,7 +655,7 @@ type UpdatePatientDetailsResponse struct {
 
 func (x *UpdatePatientDetailsResponse) Reset() {
 	*x = UpdatePatientDetailsResponse{}
-	mi := &file_proto_patient_service_patient_proto_msgTypes[7]
+	mi := &file_proto_patient_service_patient_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -585,7 +667,7 @@ func (x *UpdatePatientDetailsResponse) String() string {
 func (*UpdatePatientDetailsResponse) ProtoMessage() {}
 
 func (x *UpdatePatientDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_patient_service_patient_proto_msgTypes[7]
+	mi := &file_proto_patient_service_patient_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -598,7 +680,7 @@ func (x *UpdatePatientDetailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePatientDetailsResponse.ProtoReflect.Descriptor instead.
 func (*UpdatePatientDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_proto_patient_service_patient_proto_rawDescGZIP(), []int{7}
+	return file_proto_patient_service_patient_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *UpdatePatientDetailsResponse) GetPatient() *Patient {
@@ -623,7 +705,7 @@ type AddMedicalRecordRequest struct {
 
 func (x *AddMedicalRecordRequest) Reset() {
 	*x = AddMedicalRecordRequest{}
-	mi := &file_proto_patient_service_patient_proto_msgTypes[8]
+	mi := &file_proto_patient_service_patient_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -635,7 +717,7 @@ func (x *AddMedicalRecordRequest) String() string {
 func (*AddMedicalRecordRequest) ProtoMessage() {}
 
 func (x *AddMedicalRecordRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_patient_service_patient_proto_msgTypes[8]
+	mi := &file_proto_patient_service_patient_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -648,7 +730,7 @@ func (x *AddMedicalRecordRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddMedicalRecordRequest.ProtoReflect.Descriptor instead.
 func (*AddMedicalRecordRequest) Descriptor() ([]byte, []int) {
-	return file_proto_patient_service_patient_proto_rawDescGZIP(), []int{8}
+	return file_proto_patient_service_patient_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *AddMedicalRecordRequest) GetPatientId() string {
@@ -703,7 +785,7 @@ type GetPatientMedicalHistoryRequest struct {
 
 func (x *GetPatientMedicalHistoryRequest) Reset() {
 	*x = GetPatientMedicalHistoryRequest{}
-	mi := &file_proto_patient_service_patient_proto_msgTypes[9]
+	mi := &file_proto_patient_service_patient_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -715,7 +797,7 @@ func (x *GetPatientMedicalHistoryRequest) String() string {
 func (*GetPatientMedicalHistoryRequest) ProtoMessage() {}
 
 func (x *GetPatientMedicalHistoryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_patient_service_patient_proto_msgTypes[9]
+	mi := &file_proto_patient_service_patient_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -728,7 +810,7 @@ func (x *GetPatientMedicalHistoryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPatientMedicalHistoryRequest.ProtoReflect.Descriptor instead.
 func (*GetPatientMedicalHistoryRequest) Descriptor() ([]byte, []int) {
-	return file_proto_patient_service_patient_proto_rawDescGZIP(), []int{9}
+	return file_proto_patient_service_patient_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *GetPatientMedicalHistoryRequest) GetPatientId() string {
@@ -748,7 +830,7 @@ type GetPatientMedicalHistoryResponse struct {
 
 func (x *GetPatientMedicalHistoryResponse) Reset() {
 	*x = GetPatientMedicalHistoryResponse{}
-	mi := &file_proto_patient_service_patient_proto_msgTypes[10]
+	mi := &file_proto_patient_service_patient_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -760,7 +842,7 @@ func (x *GetPatientMedicalHistoryResponse) String() string {
 func (*GetPatientMedicalHistoryResponse) ProtoMessage() {}
 
 func (x *GetPatientMedicalHistoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_patient_service_patient_proto_msgTypes[10]
+	mi := &file_proto_patient_service_patient_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -773,7 +855,7 @@ func (x *GetPatientMedicalHistoryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPatientMedicalHistoryResponse.ProtoReflect.Descriptor instead.
 func (*GetPatientMedicalHistoryResponse) Descriptor() ([]byte, []int) {
-	return file_proto_patient_service_patient_proto_rawDescGZIP(), []int{10}
+	return file_proto_patient_service_patient_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *GetPatientMedicalHistoryResponse) GetMedicalHistory() []*MedicalRecord {
@@ -844,7 +926,12 @@ const file_proto_patient_service_patient_proto_rawDesc = "" +
 	"K*\x1bGet Patient Details Request2,Specifies the ID of the patient to retrieve.\"\xa3\x01\n" +
 	"\x19GetPatientDetailsResponse\x121\n" +
 	"\apatient\x18\x01 \x01(\v2\x17.patientservice.PatientR\apatient:S\x92AP\n" +
-	"N*\x1cGet Patient Details Response2.Contains the details of the requested patient.\"\xb7\x06\n" +
+	"N*\x1cGet Patient Details Response2.Contains the details of the requested patient.\"x\n" +
+	"\x13ListPatientsRequest:a\x92A^\n" +
+	"\\*\x15List Patients Request2CRequest to list all patients (add pagination parameters if needed).\"\x88\x01\n" +
+	"\x14ListPatientsResponse\x123\n" +
+	"\bpatients\x18\x01 \x03(\v2\x17.patientservice.PatientR\bpatients:;\x92A8\n" +
+	"6*\x16List Patients Response2\x1cContains a list of patients.\"\xb7\x06\n" +
 	"\x1bUpdatePatientDetailsRequest\x12n\n" +
 	"\n" +
 	"patient_id\x18\x01 \x01(\tBO\x92AL2\"The UUID of the patient to update.J&\"p1a2b3c4-e5f6-7890-1234-567890abcdef\"R\tpatientId\x12H\n" +
@@ -877,12 +964,14 @@ const file_proto_patient_service_patient_proto_rawDesc = "" +
 	"g*#Get Patient Medical History Request2@Specifies the ID of the patient whose medical history is needed.\"\xd6\x01\n" +
 	" GetPatientMedicalHistoryResponse\x12F\n" +
 	"\x0fmedical_history\x18\x01 \x03(\v2\x1d.patientservice.MedicalRecordR\x0emedicalHistory:j\x92Ag\n" +
-	"e*$Get Patient Medical History Response2=Contains a list of medical records for the requested patient.2\xfc\t\n" +
+	"e*$Get Patient Medical History Response2=Contains a list of medical records for the requested patient.2\xbc\v\n" +
 	"\x0ePatientService\x12\xc6\x01\n" +
 	"\x0fRegisterPatient\x12&.patientservice.RegisterPatientRequest\x1a'.patientservice.RegisterPatientResponse\"b\x92AD\n" +
 	"\bPatients\x12\x10Register Patient\x1a&Registers a new patient in the system.\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/patients\x12\xe8\x01\n" +
 	"\x11GetPatientDetails\x12(.patientservice.GetPatientDetailsRequest\x1a).patientservice.GetPatientDetailsResponse\"~\x92AV\n" +
-	"\bPatients\x12\x13Get Patient Details\x1a5Retrieves details for a specific patient by their ID.\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/patients/{patient_id}\x12\xf4\x01\n" +
+	"\bPatients\x12\x13Get Patient Details\x1a5Retrieves details for a specific patient by their ID.\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/patients/{patient_id}\x12\xbd\x01\n" +
+	"\fListPatients\x12#.patientservice.ListPatientsRequest\x1a$.patientservice.ListPatientsResponse\"b\x92AG\n" +
+	"\bPatients\x12\rList Patients\x1a,Retrieves a list of all registered patients.\x82\xd3\xe4\x93\x02\x12\x12\x10/api/v1/patients\x12\xf4\x01\n" +
 	"\x14UpdatePatientDetails\x12+.patientservice.UpdatePatientDetailsRequest\x1a,.patientservice.UpdatePatientDetailsResponse\"\x80\x01\x92AU\n" +
 	"\bPatients\x12\x16Update Patient Details\x1a1Updates specific details for an existing patient.\x82\xd3\xe4\x93\x02\":\x01*2\x1d/api/v1/patients/{patient_id}\x12\xe9\x01\n" +
 	"\x10AddMedicalRecord\x12'.patientservice.AddMedicalRecordRequest\x1a\x16.google.protobuf.Empty\"\x93\x01\x92AX\n" +
@@ -903,7 +992,7 @@ func file_proto_patient_service_patient_proto_rawDescGZIP() []byte {
 	return file_proto_patient_service_patient_proto_rawDescData
 }
 
-var file_proto_patient_service_patient_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_proto_patient_service_patient_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_proto_patient_service_patient_proto_goTypes = []any{
 	(*Patient)(nil),                          // 0: patientservice.Patient
 	(*MedicalRecord)(nil),                    // 1: patientservice.MedicalRecord
@@ -911,44 +1000,49 @@ var file_proto_patient_service_patient_proto_goTypes = []any{
 	(*RegisterPatientResponse)(nil),          // 3: patientservice.RegisterPatientResponse
 	(*GetPatientDetailsRequest)(nil),         // 4: patientservice.GetPatientDetailsRequest
 	(*GetPatientDetailsResponse)(nil),        // 5: patientservice.GetPatientDetailsResponse
-	(*UpdatePatientDetailsRequest)(nil),      // 6: patientservice.UpdatePatientDetailsRequest
-	(*UpdatePatientDetailsResponse)(nil),     // 7: patientservice.UpdatePatientDetailsResponse
-	(*AddMedicalRecordRequest)(nil),          // 8: patientservice.AddMedicalRecordRequest
-	(*GetPatientMedicalHistoryRequest)(nil),  // 9: patientservice.GetPatientMedicalHistoryRequest
-	(*GetPatientMedicalHistoryResponse)(nil), // 10: patientservice.GetPatientMedicalHistoryResponse
-	(*timestamppb.Timestamp)(nil),            // 11: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),                    // 12: google.protobuf.Empty
+	(*ListPatientsRequest)(nil),              // 6: patientservice.ListPatientsRequest
+	(*ListPatientsResponse)(nil),             // 7: patientservice.ListPatientsResponse
+	(*UpdatePatientDetailsRequest)(nil),      // 8: patientservice.UpdatePatientDetailsRequest
+	(*UpdatePatientDetailsResponse)(nil),     // 9: patientservice.UpdatePatientDetailsResponse
+	(*AddMedicalRecordRequest)(nil),          // 10: patientservice.AddMedicalRecordRequest
+	(*GetPatientMedicalHistoryRequest)(nil),  // 11: patientservice.GetPatientMedicalHistoryRequest
+	(*GetPatientMedicalHistoryResponse)(nil), // 12: patientservice.GetPatientMedicalHistoryResponse
+	(*timestamppb.Timestamp)(nil),            // 13: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),                    // 14: google.protobuf.Empty
 }
 var file_proto_patient_service_patient_proto_depIdxs = []int32{
-	11, // 0: patientservice.Patient.date_of_birth:type_name -> google.protobuf.Timestamp
+	13, // 0: patientservice.Patient.date_of_birth:type_name -> google.protobuf.Timestamp
 	1,  // 1: patientservice.Patient.medical_history:type_name -> patientservice.MedicalRecord
-	11, // 2: patientservice.Patient.created_at:type_name -> google.protobuf.Timestamp
-	11, // 3: patientservice.Patient.updated_at:type_name -> google.protobuf.Timestamp
-	11, // 4: patientservice.MedicalRecord.date:type_name -> google.protobuf.Timestamp
-	11, // 5: patientservice.MedicalRecord.created_at:type_name -> google.protobuf.Timestamp
-	11, // 6: patientservice.MedicalRecord.updated_at:type_name -> google.protobuf.Timestamp
-	11, // 7: patientservice.RegisterPatientRequest.date_of_birth:type_name -> google.protobuf.Timestamp
+	13, // 2: patientservice.Patient.created_at:type_name -> google.protobuf.Timestamp
+	13, // 3: patientservice.Patient.updated_at:type_name -> google.protobuf.Timestamp
+	13, // 4: patientservice.MedicalRecord.date:type_name -> google.protobuf.Timestamp
+	13, // 5: patientservice.MedicalRecord.created_at:type_name -> google.protobuf.Timestamp
+	13, // 6: patientservice.MedicalRecord.updated_at:type_name -> google.protobuf.Timestamp
+	13, // 7: patientservice.RegisterPatientRequest.date_of_birth:type_name -> google.protobuf.Timestamp
 	0,  // 8: patientservice.RegisterPatientResponse.patient:type_name -> patientservice.Patient
 	0,  // 9: patientservice.GetPatientDetailsResponse.patient:type_name -> patientservice.Patient
-	11, // 10: patientservice.UpdatePatientDetailsRequest.date_of_birth:type_name -> google.protobuf.Timestamp
-	0,  // 11: patientservice.UpdatePatientDetailsResponse.patient:type_name -> patientservice.Patient
-	11, // 12: patientservice.AddMedicalRecordRequest.date:type_name -> google.protobuf.Timestamp
-	1,  // 13: patientservice.GetPatientMedicalHistoryResponse.medical_history:type_name -> patientservice.MedicalRecord
-	2,  // 14: patientservice.PatientService.RegisterPatient:input_type -> patientservice.RegisterPatientRequest
-	4,  // 15: patientservice.PatientService.GetPatientDetails:input_type -> patientservice.GetPatientDetailsRequest
-	6,  // 16: patientservice.PatientService.UpdatePatientDetails:input_type -> patientservice.UpdatePatientDetailsRequest
-	8,  // 17: patientservice.PatientService.AddMedicalRecord:input_type -> patientservice.AddMedicalRecordRequest
-	9,  // 18: patientservice.PatientService.GetPatientMedicalHistory:input_type -> patientservice.GetPatientMedicalHistoryRequest
-	3,  // 19: patientservice.PatientService.RegisterPatient:output_type -> patientservice.RegisterPatientResponse
-	5,  // 20: patientservice.PatientService.GetPatientDetails:output_type -> patientservice.GetPatientDetailsResponse
-	7,  // 21: patientservice.PatientService.UpdatePatientDetails:output_type -> patientservice.UpdatePatientDetailsResponse
-	12, // 22: patientservice.PatientService.AddMedicalRecord:output_type -> google.protobuf.Empty
-	10, // 23: patientservice.PatientService.GetPatientMedicalHistory:output_type -> patientservice.GetPatientMedicalHistoryResponse
-	19, // [19:24] is the sub-list for method output_type
-	14, // [14:19] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	0,  // 10: patientservice.ListPatientsResponse.patients:type_name -> patientservice.Patient
+	13, // 11: patientservice.UpdatePatientDetailsRequest.date_of_birth:type_name -> google.protobuf.Timestamp
+	0,  // 12: patientservice.UpdatePatientDetailsResponse.patient:type_name -> patientservice.Patient
+	13, // 13: patientservice.AddMedicalRecordRequest.date:type_name -> google.protobuf.Timestamp
+	1,  // 14: patientservice.GetPatientMedicalHistoryResponse.medical_history:type_name -> patientservice.MedicalRecord
+	2,  // 15: patientservice.PatientService.RegisterPatient:input_type -> patientservice.RegisterPatientRequest
+	4,  // 16: patientservice.PatientService.GetPatientDetails:input_type -> patientservice.GetPatientDetailsRequest
+	6,  // 17: patientservice.PatientService.ListPatients:input_type -> patientservice.ListPatientsRequest
+	8,  // 18: patientservice.PatientService.UpdatePatientDetails:input_type -> patientservice.UpdatePatientDetailsRequest
+	10, // 19: patientservice.PatientService.AddMedicalRecord:input_type -> patientservice.AddMedicalRecordRequest
+	11, // 20: patientservice.PatientService.GetPatientMedicalHistory:input_type -> patientservice.GetPatientMedicalHistoryRequest
+	3,  // 21: patientservice.PatientService.RegisterPatient:output_type -> patientservice.RegisterPatientResponse
+	5,  // 22: patientservice.PatientService.GetPatientDetails:output_type -> patientservice.GetPatientDetailsResponse
+	7,  // 23: patientservice.PatientService.ListPatients:output_type -> patientservice.ListPatientsResponse
+	9,  // 24: patientservice.PatientService.UpdatePatientDetails:output_type -> patientservice.UpdatePatientDetailsResponse
+	14, // 25: patientservice.PatientService.AddMedicalRecord:output_type -> google.protobuf.Empty
+	12, // 26: patientservice.PatientService.GetPatientMedicalHistory:output_type -> patientservice.GetPatientMedicalHistoryResponse
+	21, // [21:27] is the sub-list for method output_type
+	15, // [15:21] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_proto_patient_service_patient_proto_init() }
@@ -962,7 +1056,7 @@ func file_proto_patient_service_patient_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_patient_service_patient_proto_rawDesc), len(file_proto_patient_service_patient_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

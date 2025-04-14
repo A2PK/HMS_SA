@@ -44,6 +44,12 @@ type StaffUseCase interface {
 	// TrackWorkload retrieves the current workload (tasks) for a staff member.
 	TrackWorkload(ctx context.Context, staffID uuid.UUID) ([]*entity.Task, error)
 
+	// ListStaff retrieves a list of staff members, optionally filtering by role and/or status.
+	ListStaff(ctx context.Context, req *pb.ListStaffRequest) ([]*entity.Staff, error)
+
+	// ListTasks retrieves a list of all tasks, optionally filtered, ordered by creation time descending.
+	ListTasks(ctx context.Context, req *pb.ListTasksRequest) ([]*entity.Task, error)
+
 	// === Lookup Table Management ===
 
 	// Staff Roles

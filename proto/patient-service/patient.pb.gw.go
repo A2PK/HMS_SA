@@ -96,6 +96,25 @@ func local_request_PatientService_GetPatientDetails_0(ctx context.Context, marsh
 	return msg, metadata, err
 }
 
+func request_PatientService_ListPatients_0(ctx context.Context, marshaler runtime.Marshaler, client PatientServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListPatientsRequest
+		metadata runtime.ServerMetadata
+	)
+	io.Copy(io.Discard, req.Body)
+	msg, err := client.ListPatients(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_PatientService_ListPatients_0(ctx context.Context, marshaler runtime.Marshaler, server PatientServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListPatientsRequest
+		metadata runtime.ServerMetadata
+	)
+	msg, err := server.ListPatients(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 func request_PatientService_UpdatePatientDetails_0(ctx context.Context, marshaler runtime.Marshaler, client PatientServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq UpdatePatientDetailsRequest
@@ -263,6 +282,26 @@ func RegisterPatientServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		}
 		forward_PatientService_GetPatientDetails_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_PatientService_ListPatients_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/patientservice.PatientService/ListPatients", runtime.WithHTTPPathPattern("/api/v1/patients"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_PatientService_ListPatients_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_PatientService_ListPatients_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodPatch, pattern_PatientService_UpdatePatientDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -397,6 +436,23 @@ func RegisterPatientServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		}
 		forward_PatientService_GetPatientDetails_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_PatientService_ListPatients_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/patientservice.PatientService/ListPatients", runtime.WithHTTPPathPattern("/api/v1/patients"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_PatientService_ListPatients_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_PatientService_ListPatients_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodPatch, pattern_PatientService_UpdatePatientDetails_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -454,6 +510,7 @@ func RegisterPatientServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 var (
 	pattern_PatientService_RegisterPatient_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "patients"}, ""))
 	pattern_PatientService_GetPatientDetails_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "patients", "patient_id"}, ""))
+	pattern_PatientService_ListPatients_0             = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "patients"}, ""))
 	pattern_PatientService_UpdatePatientDetails_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "patients", "patient_id"}, ""))
 	pattern_PatientService_AddMedicalRecord_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "patients", "patient_id", "medical-records"}, ""))
 	pattern_PatientService_GetPatientMedicalHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "patients", "patient_id", "medical-history"}, ""))
@@ -462,6 +519,7 @@ var (
 var (
 	forward_PatientService_RegisterPatient_0          = runtime.ForwardResponseMessage
 	forward_PatientService_GetPatientDetails_0        = runtime.ForwardResponseMessage
+	forward_PatientService_ListPatients_0             = runtime.ForwardResponseMessage
 	forward_PatientService_UpdatePatientDetails_0     = runtime.ForwardResponseMessage
 	forward_PatientService_AddMedicalRecord_0         = runtime.ForwardResponseMessage
 	forward_PatientService_GetPatientMedicalHistory_0 = runtime.ForwardResponseMessage

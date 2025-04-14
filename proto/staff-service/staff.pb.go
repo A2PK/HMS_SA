@@ -870,6 +870,105 @@ func (x *UpdateStaffDetailsResponse) GetStaff() *Staff {
 	return nil
 }
 
+// Request for ListStaff
+type ListStaffRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Optional filtering parameters
+	RoleId        string `protobuf:"bytes,1,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	StatusId      string `protobuf:"bytes,2,opt,name=status_id,json=statusId,proto3" json:"status_id,omitempty"` // Add pagination fields like page_size, page_token if needed
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListStaffRequest) Reset() {
+	*x = ListStaffRequest{}
+	mi := &file_proto_staff_service_staff_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListStaffRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListStaffRequest) ProtoMessage() {}
+
+func (x *ListStaffRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_staff_service_staff_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListStaffRequest.ProtoReflect.Descriptor instead.
+func (*ListStaffRequest) Descriptor() ([]byte, []int) {
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ListStaffRequest) GetRoleId() string {
+	if x != nil {
+		return x.RoleId
+	}
+	return ""
+}
+
+func (x *ListStaffRequest) GetStatusId() string {
+	if x != nil {
+		return x.StatusId
+	}
+	return ""
+}
+
+// Response for ListStaff
+type ListStaffResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	StaffMembers  []*Staff               `protobuf:"bytes,1,rep,name=staff_members,json=staffMembers,proto3" json:"staff_members,omitempty"` // Renamed from 'staff' to avoid conflict
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListStaffResponse) Reset() {
+	*x = ListStaffResponse{}
+	mi := &file_proto_staff_service_staff_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListStaffResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListStaffResponse) ProtoMessage() {}
+
+func (x *ListStaffResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_staff_service_staff_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListStaffResponse.ProtoReflect.Descriptor instead.
+func (*ListStaffResponse) Descriptor() ([]byte, []int) {
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *ListStaffResponse) GetStaffMembers() []*Staff {
+	if x != nil {
+		return x.StaffMembers
+	}
+	return nil
+}
+
 type UpdateStaffScheduleRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	StaffId         string                 `protobuf:"bytes,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"`
@@ -880,7 +979,7 @@ type UpdateStaffScheduleRequest struct {
 
 func (x *UpdateStaffScheduleRequest) Reset() {
 	*x = UpdateStaffScheduleRequest{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[12]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -892,7 +991,7 @@ func (x *UpdateStaffScheduleRequest) String() string {
 func (*UpdateStaffScheduleRequest) ProtoMessage() {}
 
 func (x *UpdateStaffScheduleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[12]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -905,7 +1004,7 @@ func (x *UpdateStaffScheduleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateStaffScheduleRequest.ProtoReflect.Descriptor instead.
 func (*UpdateStaffScheduleRequest) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{12}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *UpdateStaffScheduleRequest) GetStaffId() string {
@@ -932,7 +1031,7 @@ type SetStaffAvailabilityRequest struct {
 
 func (x *SetStaffAvailabilityRequest) Reset() {
 	*x = SetStaffAvailabilityRequest{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[13]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -944,7 +1043,7 @@ func (x *SetStaffAvailabilityRequest) String() string {
 func (*SetStaffAvailabilityRequest) ProtoMessage() {}
 
 func (x *SetStaffAvailabilityRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[13]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -957,7 +1056,7 @@ func (x *SetStaffAvailabilityRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetStaffAvailabilityRequest.ProtoReflect.Descriptor instead.
 func (*SetStaffAvailabilityRequest) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{13}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *SetStaffAvailabilityRequest) GetStaffId() string {
@@ -985,7 +1084,7 @@ type GetDoctorAvailabilityRequest struct {
 
 func (x *GetDoctorAvailabilityRequest) Reset() {
 	*x = GetDoctorAvailabilityRequest{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[14]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -997,7 +1096,7 @@ func (x *GetDoctorAvailabilityRequest) String() string {
 func (*GetDoctorAvailabilityRequest) ProtoMessage() {}
 
 func (x *GetDoctorAvailabilityRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[14]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1010,7 +1109,7 @@ func (x *GetDoctorAvailabilityRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDoctorAvailabilityRequest.ProtoReflect.Descriptor instead.
 func (*GetDoctorAvailabilityRequest) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{14}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *GetDoctorAvailabilityRequest) GetDoctorId() string {
@@ -1043,7 +1142,7 @@ type GetDoctorAvailabilityResponse struct {
 
 func (x *GetDoctorAvailabilityResponse) Reset() {
 	*x = GetDoctorAvailabilityResponse{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[15]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1055,7 +1154,7 @@ func (x *GetDoctorAvailabilityResponse) String() string {
 func (*GetDoctorAvailabilityResponse) ProtoMessage() {}
 
 func (x *GetDoctorAvailabilityResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[15]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1068,7 +1167,7 @@ func (x *GetDoctorAvailabilityResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDoctorAvailabilityResponse.ProtoReflect.Descriptor instead.
 func (*GetDoctorAvailabilityResponse) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{15}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *GetDoctorAvailabilityResponse) GetAvailableSlots() []*GetDoctorAvailabilityResponse_TimeSlot {
@@ -1093,7 +1192,7 @@ type AssignTaskRequest struct {
 
 func (x *AssignTaskRequest) Reset() {
 	*x = AssignTaskRequest{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[16]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1105,7 +1204,7 @@ func (x *AssignTaskRequest) String() string {
 func (*AssignTaskRequest) ProtoMessage() {}
 
 func (x *AssignTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[16]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1118,7 +1217,7 @@ func (x *AssignTaskRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssignTaskRequest.ProtoReflect.Descriptor instead.
 func (*AssignTaskRequest) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{16}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *AssignTaskRequest) GetStaffId() string {
@@ -1179,7 +1278,7 @@ type TrackWorkloadRequest struct {
 
 func (x *TrackWorkloadRequest) Reset() {
 	*x = TrackWorkloadRequest{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[17]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1191,7 +1290,7 @@ func (x *TrackWorkloadRequest) String() string {
 func (*TrackWorkloadRequest) ProtoMessage() {}
 
 func (x *TrackWorkloadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[17]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1204,7 +1303,7 @@ func (x *TrackWorkloadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TrackWorkloadRequest.ProtoReflect.Descriptor instead.
 func (*TrackWorkloadRequest) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{17}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *TrackWorkloadRequest) GetStaffId() string {
@@ -1223,7 +1322,7 @@ type TrackWorkloadResponse struct {
 
 func (x *TrackWorkloadResponse) Reset() {
 	*x = TrackWorkloadResponse{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[18]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1235,7 +1334,7 @@ func (x *TrackWorkloadResponse) String() string {
 func (*TrackWorkloadResponse) ProtoMessage() {}
 
 func (x *TrackWorkloadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[18]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1248,12 +1347,103 @@ func (x *TrackWorkloadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TrackWorkloadResponse.ProtoReflect.Descriptor instead.
 func (*TrackWorkloadResponse) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{18}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *TrackWorkloadResponse) GetWorkload() []*TaskProto {
 	if x != nil {
 		return x.Workload
+	}
+	return nil
+}
+
+// Request for ListTasks
+type ListTasksRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Optional filtering parameters (examples)
+	StatusId      string `protobuf:"bytes,1,opt,name=status_id,json=statusId,proto3" json:"status_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListTasksRequest) Reset() {
+	*x = ListTasksRequest{}
+	mi := &file_proto_staff_service_staff_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListTasksRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListTasksRequest) ProtoMessage() {}
+
+func (x *ListTasksRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_staff_service_staff_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListTasksRequest.ProtoReflect.Descriptor instead.
+func (*ListTasksRequest) Descriptor() ([]byte, []int) {
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *ListTasksRequest) GetStatusId() string {
+	if x != nil {
+		return x.StatusId
+	}
+	return ""
+}
+
+// Response for ListTasks
+type ListTasksResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Tasks         []*TaskProto           `protobuf:"bytes,1,rep,name=tasks,proto3" json:"tasks,omitempty"` // Add pagination fields like next_page_token if needed
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListTasksResponse) Reset() {
+	*x = ListTasksResponse{}
+	mi := &file_proto_staff_service_staff_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListTasksResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListTasksResponse) ProtoMessage() {}
+
+func (x *ListTasksResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_staff_service_staff_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListTasksResponse.ProtoReflect.Descriptor instead.
+func (*ListTasksResponse) Descriptor() ([]byte, []int) {
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *ListTasksResponse) GetTasks() []*TaskProto {
+	if x != nil {
+		return x.Tasks
 	}
 	return nil
 }
@@ -1269,7 +1459,7 @@ type AddStaffRoleRequest struct {
 
 func (x *AddStaffRoleRequest) Reset() {
 	*x = AddStaffRoleRequest{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[19]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1281,7 +1471,7 @@ func (x *AddStaffRoleRequest) String() string {
 func (*AddStaffRoleRequest) ProtoMessage() {}
 
 func (x *AddStaffRoleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[19]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1294,7 +1484,7 @@ func (x *AddStaffRoleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddStaffRoleRequest.ProtoReflect.Descriptor instead.
 func (*AddStaffRoleRequest) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{19}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *AddStaffRoleRequest) GetName() string {
@@ -1320,7 +1510,7 @@ type AddStaffRoleResponse struct {
 
 func (x *AddStaffRoleResponse) Reset() {
 	*x = AddStaffRoleResponse{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[20]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1332,7 +1522,7 @@ func (x *AddStaffRoleResponse) String() string {
 func (*AddStaffRoleResponse) ProtoMessage() {}
 
 func (x *AddStaffRoleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[20]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1345,7 +1535,7 @@ func (x *AddStaffRoleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddStaffRoleResponse.ProtoReflect.Descriptor instead.
 func (*AddStaffRoleResponse) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{20}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *AddStaffRoleResponse) GetRole() *StaffRoleProto {
@@ -1363,7 +1553,7 @@ type ListStaffRolesRequest struct {
 
 func (x *ListStaffRolesRequest) Reset() {
 	*x = ListStaffRolesRequest{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[21]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1375,7 +1565,7 @@ func (x *ListStaffRolesRequest) String() string {
 func (*ListStaffRolesRequest) ProtoMessage() {}
 
 func (x *ListStaffRolesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[21]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1388,7 +1578,7 @@ func (x *ListStaffRolesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListStaffRolesRequest.ProtoReflect.Descriptor instead.
 func (*ListStaffRolesRequest) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{21}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{25}
 }
 
 type ListStaffRolesResponse struct {
@@ -1400,7 +1590,7 @@ type ListStaffRolesResponse struct {
 
 func (x *ListStaffRolesResponse) Reset() {
 	*x = ListStaffRolesResponse{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[22]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1412,7 +1602,7 @@ func (x *ListStaffRolesResponse) String() string {
 func (*ListStaffRolesResponse) ProtoMessage() {}
 
 func (x *ListStaffRolesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[22]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1425,7 +1615,7 @@ func (x *ListStaffRolesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListStaffRolesResponse.ProtoReflect.Descriptor instead.
 func (*ListStaffRolesResponse) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{22}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *ListStaffRolesResponse) GetRoles() []*StaffRoleProto {
@@ -1446,7 +1636,7 @@ type AddStaffStatusRequest struct {
 
 func (x *AddStaffStatusRequest) Reset() {
 	*x = AddStaffStatusRequest{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[23]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1458,7 +1648,7 @@ func (x *AddStaffStatusRequest) String() string {
 func (*AddStaffStatusRequest) ProtoMessage() {}
 
 func (x *AddStaffStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[23]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1471,7 +1661,7 @@ func (x *AddStaffStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddStaffStatusRequest.ProtoReflect.Descriptor instead.
 func (*AddStaffStatusRequest) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{23}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *AddStaffStatusRequest) GetName() string {
@@ -1497,7 +1687,7 @@ type AddStaffStatusResponse struct {
 
 func (x *AddStaffStatusResponse) Reset() {
 	*x = AddStaffStatusResponse{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[24]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1509,7 +1699,7 @@ func (x *AddStaffStatusResponse) String() string {
 func (*AddStaffStatusResponse) ProtoMessage() {}
 
 func (x *AddStaffStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[24]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1522,7 +1712,7 @@ func (x *AddStaffStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddStaffStatusResponse.ProtoReflect.Descriptor instead.
 func (*AddStaffStatusResponse) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{24}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *AddStaffStatusResponse) GetStatus() *StaffStatusProto {
@@ -1540,7 +1730,7 @@ type ListStaffStatusesRequest struct {
 
 func (x *ListStaffStatusesRequest) Reset() {
 	*x = ListStaffStatusesRequest{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[25]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1552,7 +1742,7 @@ func (x *ListStaffStatusesRequest) String() string {
 func (*ListStaffStatusesRequest) ProtoMessage() {}
 
 func (x *ListStaffStatusesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[25]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1565,7 +1755,7 @@ func (x *ListStaffStatusesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListStaffStatusesRequest.ProtoReflect.Descriptor instead.
 func (*ListStaffStatusesRequest) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{25}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{29}
 }
 
 type ListStaffStatusesResponse struct {
@@ -1577,7 +1767,7 @@ type ListStaffStatusesResponse struct {
 
 func (x *ListStaffStatusesResponse) Reset() {
 	*x = ListStaffStatusesResponse{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[26]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1589,7 +1779,7 @@ func (x *ListStaffStatusesResponse) String() string {
 func (*ListStaffStatusesResponse) ProtoMessage() {}
 
 func (x *ListStaffStatusesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[26]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1602,7 +1792,7 @@ func (x *ListStaffStatusesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListStaffStatusesResponse.ProtoReflect.Descriptor instead.
 func (*ListStaffStatusesResponse) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{26}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ListStaffStatusesResponse) GetStatuses() []*StaffStatusProto {
@@ -1623,7 +1813,7 @@ type AddTaskStatusRequest struct {
 
 func (x *AddTaskStatusRequest) Reset() {
 	*x = AddTaskStatusRequest{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[27]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1635,7 +1825,7 @@ func (x *AddTaskStatusRequest) String() string {
 func (*AddTaskStatusRequest) ProtoMessage() {}
 
 func (x *AddTaskStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[27]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1648,7 +1838,7 @@ func (x *AddTaskStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddTaskStatusRequest.ProtoReflect.Descriptor instead.
 func (*AddTaskStatusRequest) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{27}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *AddTaskStatusRequest) GetName() string {
@@ -1674,7 +1864,7 @@ type AddTaskStatusResponse struct {
 
 func (x *AddTaskStatusResponse) Reset() {
 	*x = AddTaskStatusResponse{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[28]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1686,7 +1876,7 @@ func (x *AddTaskStatusResponse) String() string {
 func (*AddTaskStatusResponse) ProtoMessage() {}
 
 func (x *AddTaskStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[28]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1699,7 +1889,7 @@ func (x *AddTaskStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddTaskStatusResponse.ProtoReflect.Descriptor instead.
 func (*AddTaskStatusResponse) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{28}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *AddTaskStatusResponse) GetStatus() *TaskStatusProto {
@@ -1717,7 +1907,7 @@ type ListTaskStatusesRequest struct {
 
 func (x *ListTaskStatusesRequest) Reset() {
 	*x = ListTaskStatusesRequest{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[29]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1729,7 +1919,7 @@ func (x *ListTaskStatusesRequest) String() string {
 func (*ListTaskStatusesRequest) ProtoMessage() {}
 
 func (x *ListTaskStatusesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[29]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1742,7 +1932,7 @@ func (x *ListTaskStatusesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTaskStatusesRequest.ProtoReflect.Descriptor instead.
 func (*ListTaskStatusesRequest) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{29}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{33}
 }
 
 type ListTaskStatusesResponse struct {
@@ -1754,7 +1944,7 @@ type ListTaskStatusesResponse struct {
 
 func (x *ListTaskStatusesResponse) Reset() {
 	*x = ListTaskStatusesResponse{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[30]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1766,7 +1956,7 @@ func (x *ListTaskStatusesResponse) String() string {
 func (*ListTaskStatusesResponse) ProtoMessage() {}
 
 func (x *ListTaskStatusesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[30]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1779,7 +1969,7 @@ func (x *ListTaskStatusesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTaskStatusesResponse.ProtoReflect.Descriptor instead.
 func (*ListTaskStatusesResponse) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{30}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *ListTaskStatusesResponse) GetStatuses() []*TaskStatusProto {
@@ -1799,7 +1989,7 @@ type GetDoctorAvailabilityResponse_TimeSlot struct {
 
 func (x *GetDoctorAvailabilityResponse_TimeSlot) Reset() {
 	*x = GetDoctorAvailabilityResponse_TimeSlot{}
-	mi := &file_proto_staff_service_staff_proto_msgTypes[31]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1811,7 +2001,7 @@ func (x *GetDoctorAvailabilityResponse_TimeSlot) String() string {
 func (*GetDoctorAvailabilityResponse_TimeSlot) ProtoMessage() {}
 
 func (x *GetDoctorAvailabilityResponse_TimeSlot) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_staff_service_staff_proto_msgTypes[31]
+	mi := &file_proto_staff_service_staff_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1824,7 +2014,7 @@ func (x *GetDoctorAvailabilityResponse_TimeSlot) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use GetDoctorAvailabilityResponse_TimeSlot.ProtoReflect.Descriptor instead.
 func (*GetDoctorAvailabilityResponse_TimeSlot) Descriptor() ([]byte, []int) {
-	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{15, 0}
+	return file_proto_staff_service_staff_proto_rawDescGZIP(), []int{17, 0}
 }
 
 func (x *GetDoctorAvailabilityResponse_TimeSlot) GetStartTime() *timestamppb.Timestamp {
@@ -1942,7 +2132,14 @@ const file_proto_staff_service_staff_proto_rawDesc = "" +
 	"\x87\x01*\x1cUpdate Staff Details Request2\\Data for updating an existing staff member. Only include fields to change (PATCH semantics).\xd2\x01\bstaff_id\"\x99\x01\n" +
 	"\x1aUpdateStaffDetailsResponse\x12)\n" +
 	"\x05staff\x18\x01 \x01(\v2\x13.staffservice.StaffR\x05staff:P\x92AM\n" +
-	"K*\x1dUpdate Staff Details Response2*Contains the updated staff member details.\"\xa0\x03\n" +
+	"K*\x1dUpdate Staff Details Response2*Contains the updated staff member details.\"\xb5\x02\n" +
+	"\x10ListStaffRequest\x12U\n" +
+	"\arole_id\x18\x01 \x01(\tB<\x92A92-Optional: Filter by role ID (e.g., \"Doctor\").J\b\"Doctor\"R\x06roleId\x12[\n" +
+	"\tstatus_id\x18\x02 \x01(\tB>\x92A;2/Optional: Filter by status ID (e.g., \"Active\").J\b\"Active\"R\bstatusId:m\x92Aj\n" +
+	"h*\x12List Staff Request2RRequest to list all staff members (add pagination/filtering parameters if needed).\"\xa2\x01\n" +
+	"\x11ListStaffResponse\x128\n" +
+	"\rstaff_members\x18\x01 \x03(\v2\x13.staffservice.StaffR\fstaffMembers:S\x92AP\n" +
+	"N*\x13List Staff Response27Contains a list of staff members matching the criteria.\"\xa0\x03\n" +
 	"\x1aUpdateStaffScheduleRequest\x12\x85\x01\n" +
 	"\bstaff_id\x18\x01 \x01(\tBj\x92Ag2=The UUID of the staff member whose schedule is being updated.J&\"s1a2b3c4-e5f6-7890-1234-567890abcdef\"R\astaffId\x12\x86\x01\n" +
 	"\x11tasks_to_schedule\x18\x02 \x03(\v2\x17.staffservice.TaskProtoBA\x92A>2<A list of new tasks to be created and added to the schedule.R\x0ftasksToSchedule:q\x92An\n" +
@@ -1982,7 +2179,13 @@ const file_proto_staff_service_staff_proto_rawDesc = "" +
 	"[*\x16Track Workload Request2ASpecifies the ID of the staff member whose workload is requested.\"\xe0\x01\n" +
 	"\x15TrackWorkloadResponse\x12e\n" +
 	"\bworkload\x18\x01 \x03(\v2\x17.staffservice.TaskProtoB0\x92A-2+List of tasks assigned to the staff member.R\bworkload:`\x92A]\n" +
-	"[*\x17Track Workload Response2@Contains a list of tasks assigned to the specified staff member.\"\xfe\x01\n" +
+	"[*\x17Track Workload Response2@Contains a list of tasks assigned to the specified staff member.\"\xdd\x01\n" +
+	"\x10ListTasksRequest\x12b\n" +
+	"\tstatus_id\x18\x01 \x01(\tBE\x92AB25Optional: Filter by task status ID (e.g., \"Pending\").J\t\"Pending\"R\bstatusId:e\x92Ab\n" +
+	"`*\x12List Tasks Request2JRequest to list all tasks (add pagination/filtering parameters if needed).\"\x8f\x01\n" +
+	"\x11ListTasksResponse\x12-\n" +
+	"\x05tasks\x18\x01 \x03(\v2\x17.staffservice.TaskProtoR\x05tasks:K\x92AH\n" +
+	"F*\x13List Tasks Response2/Contains a list of tasks matching the criteria.\"\xfe\x01\n" +
 	"\x13AddStaffRoleRequest\x12D\n" +
 	"\x04name\x18\x01 \x01(\tB0\x92A-2\x1dUnique name for the new role.J\f\"Pharmacist\"R\x04name\x12V\n" +
 	"\vdescription\x18\x02 \x01(\tB4\x92A12\x15Optional description.J\x18\"Dispenses medications.\"R\vdescription:I\x92AF\n" +
@@ -2018,12 +2221,15 @@ const file_proto_staff_service_staff_proto_rawDesc = "" +
 	"d*\x1aList Task Statuses Request2FRequest to list all available task statuses (no parameters currently).\"\xa1\x01\n" +
 	"\x18ListTaskStatusesResponse\x129\n" +
 	"\bstatuses\x18\x01 \x03(\v2\x1d.staffservice.TaskStatusProtoR\bstatuses:J\x92AG\n" +
-	"E*\x1bList Task Statuses Response2&A list of all available task statuses.2\x98\x19\n" +
+	"E*\x1bList Task Statuses Response2&A list of all available task statuses.2\xa2\x1c\n" +
 	"\fStaffService\x12\xa7\x01\n" +
 	"\bAddStaff\x12\x1d.staffservice.AddStaffRequest\x1a\x1e.staffservice.AddStaffResponse\"\\\x92AA\n" +
 	"\x05Staff\x12\x10Add Staff Member\x1a&Adds a new staff member to the system.\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/v1/staff\x12\xf4\x01\n" +
 	"\x0fGetStaffDetails\x12$.staffservice.GetStaffDetailsRequest\x1a%.staffservice.GetStaffDetailsResponse\"\x93\x01\x92Ap\n" +
-	"\x05Staff\x12\x11Get Staff Details\x1aTRetrieves details for a specific staff member by their ID, including schedule/tasks.\x82\xd3\xe4\x93\x02\x1a\x12\x18/api/v1/staff/{staff_id}\x12\xe4\x01\n" +
+	"\x05Staff\x12\x11Get Staff Details\x1aTRetrieves details for a specific staff member by their ID, including schedule/tasks.\x82\xd3\xe4\x93\x02\x1a\x12\x18/api/v1/staff/{staff_id}\x12\xc4\x01\n" +
+	"\tListStaff\x12\x1e.staffservice.ListStaffRequest\x1a\x1f.staffservice.ListStaffResponse\"v\x92A^\n" +
+	"\x05Staff\x12\n" +
+	"List Staff\x1aIRetrieves a list of staff members, optionally filtered by role or status.\x82\xd3\xe4\x93\x02\x0f\x12\r/api/v1/staff\x12\xe4\x01\n" +
 	"\x12UpdateStaffDetails\x12'.staffservice.UpdateStaffDetailsRequest\x1a(.staffservice.UpdateStaffDetailsResponse\"{\x92AU\n" +
 	"\x05Staff\x12\x14Update Staff Details\x1a6Updates specific details for an existing staff member.\x82\xd3\xe4\x93\x02\x1d:\x01*2\x18/api/v1/staff/{staff_id}\x12\xe8\x01\n" +
 	"\x13UpdateStaffSchedule\x12(.staffservice.UpdateStaffScheduleRequest\x1a\x16.google.protobuf.Empty\"\x8e\x01\x92A_\n" +
@@ -2037,7 +2243,9 @@ const file_proto_staff_service_staff_proto_rawDesc = "" +
 	"AssignTask\x12\x1f.staffservice.AssignTaskRequest\x1a\x16.google.protobuf.Empty\"\x82\x01\x92AV\n" +
 	"\vStaff Tasks\x12\vAssign Task\x1a:Creates and assigns a new task to a specific staff member.\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/api/v1/staff/{staff_id}/tasks\x12\xec\x01\n" +
 	"\rTrackWorkload\x12\".staffservice.TrackWorkloadRequest\x1a#.staffservice.TrackWorkloadResponse\"\x91\x01\x92Ae\n" +
-	"\vStaff Tasks\x12\x14Track Staff Workload\x1a@Retrieves the list of tasks assigned to a specific staff member.\x82\xd3\xe4\x93\x02#\x12!/api/v1/staff/{staff_id}/workload\x12\xc4\x01\n" +
+	"\vStaff Tasks\x12\x14Track Staff Workload\x1a@Retrieves the list of tasks assigned to a specific staff member.\x82\xd3\xe4\x93\x02#\x12!/api/v1/staff/{staff_id}/workload\x12\xc0\x01\n" +
+	"\tListTasks\x12\x1e.staffservice.ListTasksRequest\x1a\x1f.staffservice.ListTasksResponse\"r\x92AZ\n" +
+	"\x05Tasks\x12\x0eList All Tasks\x1aARetrieves a list of all tasks in the system, optionally filtered.\x82\xd3\xe4\x93\x02\x0f\x12\r/api/v1/tasks\x12\xc4\x01\n" +
 	"\fAddStaffRole\x12!.staffservice.AddStaffRoleRequest\x1a\".staffservice.AddStaffRoleResponse\"m\x92AL\n" +
 	"\aLookups\n" +
 	"\vStaff Roles\x12\x0eAdd Staff Role\x1a$Creates a new staff role definition.\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/v1/staff-roles\x12\xd3\x01\n" +
@@ -2070,7 +2278,7 @@ func file_proto_staff_service_staff_proto_rawDescGZIP() []byte {
 	return file_proto_staff_service_staff_proto_rawDescData
 }
 
-var file_proto_staff_service_staff_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
+var file_proto_staff_service_staff_proto_msgTypes = make([]protoimpl.MessageInfo, 36)
 var file_proto_staff_service_staff_proto_goTypes = []any{
 	(*StaffRoleProto)(nil),                         // 0: staffservice.StaffRoleProto
 	(*StaffStatusProto)(nil),                       // 1: staffservice.StaffStatusProto
@@ -2084,92 +2292,102 @@ var file_proto_staff_service_staff_proto_goTypes = []any{
 	(*GetStaffDetailsResponse)(nil),                // 9: staffservice.GetStaffDetailsResponse
 	(*UpdateStaffDetailsRequest)(nil),              // 10: staffservice.UpdateStaffDetailsRequest
 	(*UpdateStaffDetailsResponse)(nil),             // 11: staffservice.UpdateStaffDetailsResponse
-	(*UpdateStaffScheduleRequest)(nil),             // 12: staffservice.UpdateStaffScheduleRequest
-	(*SetStaffAvailabilityRequest)(nil),            // 13: staffservice.SetStaffAvailabilityRequest
-	(*GetDoctorAvailabilityRequest)(nil),           // 14: staffservice.GetDoctorAvailabilityRequest
-	(*GetDoctorAvailabilityResponse)(nil),          // 15: staffservice.GetDoctorAvailabilityResponse
-	(*AssignTaskRequest)(nil),                      // 16: staffservice.AssignTaskRequest
-	(*TrackWorkloadRequest)(nil),                   // 17: staffservice.TrackWorkloadRequest
-	(*TrackWorkloadResponse)(nil),                  // 18: staffservice.TrackWorkloadResponse
-	(*AddStaffRoleRequest)(nil),                    // 19: staffservice.AddStaffRoleRequest
-	(*AddStaffRoleResponse)(nil),                   // 20: staffservice.AddStaffRoleResponse
-	(*ListStaffRolesRequest)(nil),                  // 21: staffservice.ListStaffRolesRequest
-	(*ListStaffRolesResponse)(nil),                 // 22: staffservice.ListStaffRolesResponse
-	(*AddStaffStatusRequest)(nil),                  // 23: staffservice.AddStaffStatusRequest
-	(*AddStaffStatusResponse)(nil),                 // 24: staffservice.AddStaffStatusResponse
-	(*ListStaffStatusesRequest)(nil),               // 25: staffservice.ListStaffStatusesRequest
-	(*ListStaffStatusesResponse)(nil),              // 26: staffservice.ListStaffStatusesResponse
-	(*AddTaskStatusRequest)(nil),                   // 27: staffservice.AddTaskStatusRequest
-	(*AddTaskStatusResponse)(nil),                  // 28: staffservice.AddTaskStatusResponse
-	(*ListTaskStatusesRequest)(nil),                // 29: staffservice.ListTaskStatusesRequest
-	(*ListTaskStatusesResponse)(nil),               // 30: staffservice.ListTaskStatusesResponse
-	(*GetDoctorAvailabilityResponse_TimeSlot)(nil), // 31: staffservice.GetDoctorAvailabilityResponse.TimeSlot
-	(*timestamppb.Timestamp)(nil),                  // 32: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),                          // 33: google.protobuf.Empty
+	(*ListStaffRequest)(nil),                       // 12: staffservice.ListStaffRequest
+	(*ListStaffResponse)(nil),                      // 13: staffservice.ListStaffResponse
+	(*UpdateStaffScheduleRequest)(nil),             // 14: staffservice.UpdateStaffScheduleRequest
+	(*SetStaffAvailabilityRequest)(nil),            // 15: staffservice.SetStaffAvailabilityRequest
+	(*GetDoctorAvailabilityRequest)(nil),           // 16: staffservice.GetDoctorAvailabilityRequest
+	(*GetDoctorAvailabilityResponse)(nil),          // 17: staffservice.GetDoctorAvailabilityResponse
+	(*AssignTaskRequest)(nil),                      // 18: staffservice.AssignTaskRequest
+	(*TrackWorkloadRequest)(nil),                   // 19: staffservice.TrackWorkloadRequest
+	(*TrackWorkloadResponse)(nil),                  // 20: staffservice.TrackWorkloadResponse
+	(*ListTasksRequest)(nil),                       // 21: staffservice.ListTasksRequest
+	(*ListTasksResponse)(nil),                      // 22: staffservice.ListTasksResponse
+	(*AddStaffRoleRequest)(nil),                    // 23: staffservice.AddStaffRoleRequest
+	(*AddStaffRoleResponse)(nil),                   // 24: staffservice.AddStaffRoleResponse
+	(*ListStaffRolesRequest)(nil),                  // 25: staffservice.ListStaffRolesRequest
+	(*ListStaffRolesResponse)(nil),                 // 26: staffservice.ListStaffRolesResponse
+	(*AddStaffStatusRequest)(nil),                  // 27: staffservice.AddStaffStatusRequest
+	(*AddStaffStatusResponse)(nil),                 // 28: staffservice.AddStaffStatusResponse
+	(*ListStaffStatusesRequest)(nil),               // 29: staffservice.ListStaffStatusesRequest
+	(*ListStaffStatusesResponse)(nil),              // 30: staffservice.ListStaffStatusesResponse
+	(*AddTaskStatusRequest)(nil),                   // 31: staffservice.AddTaskStatusRequest
+	(*AddTaskStatusResponse)(nil),                  // 32: staffservice.AddTaskStatusResponse
+	(*ListTaskStatusesRequest)(nil),                // 33: staffservice.ListTaskStatusesRequest
+	(*ListTaskStatusesResponse)(nil),               // 34: staffservice.ListTaskStatusesResponse
+	(*GetDoctorAvailabilityResponse_TimeSlot)(nil), // 35: staffservice.GetDoctorAvailabilityResponse.TimeSlot
+	(*timestamppb.Timestamp)(nil),                  // 36: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),                          // 37: google.protobuf.Empty
 }
 var file_proto_staff_service_staff_proto_depIdxs = []int32{
-	32, // 0: staffservice.TaskProto.start_time:type_name -> google.protobuf.Timestamp
-	32, // 1: staffservice.TaskProto.end_time:type_name -> google.protobuf.Timestamp
-	32, // 2: staffservice.TaskProto.created_at:type_name -> google.protobuf.Timestamp
-	32, // 3: staffservice.TaskProto.updated_at:type_name -> google.protobuf.Timestamp
+	36, // 0: staffservice.TaskProto.start_time:type_name -> google.protobuf.Timestamp
+	36, // 1: staffservice.TaskProto.end_time:type_name -> google.protobuf.Timestamp
+	36, // 2: staffservice.TaskProto.created_at:type_name -> google.protobuf.Timestamp
+	36, // 3: staffservice.TaskProto.updated_at:type_name -> google.protobuf.Timestamp
 	3,  // 4: staffservice.ScheduleEntryProto.task:type_name -> staffservice.TaskProto
-	32, // 5: staffservice.Staff.date_of_birth:type_name -> google.protobuf.Timestamp
+	36, // 5: staffservice.Staff.date_of_birth:type_name -> google.protobuf.Timestamp
 	4,  // 6: staffservice.Staff.schedule:type_name -> staffservice.ScheduleEntryProto
-	32, // 7: staffservice.Staff.created_at:type_name -> google.protobuf.Timestamp
-	32, // 8: staffservice.Staff.updated_at:type_name -> google.protobuf.Timestamp
-	32, // 9: staffservice.AddStaffRequest.date_of_birth:type_name -> google.protobuf.Timestamp
+	36, // 7: staffservice.Staff.created_at:type_name -> google.protobuf.Timestamp
+	36, // 8: staffservice.Staff.updated_at:type_name -> google.protobuf.Timestamp
+	36, // 9: staffservice.AddStaffRequest.date_of_birth:type_name -> google.protobuf.Timestamp
 	5,  // 10: staffservice.AddStaffResponse.staff:type_name -> staffservice.Staff
 	5,  // 11: staffservice.GetStaffDetailsResponse.staff:type_name -> staffservice.Staff
-	32, // 12: staffservice.UpdateStaffDetailsRequest.date_of_birth:type_name -> google.protobuf.Timestamp
+	36, // 12: staffservice.UpdateStaffDetailsRequest.date_of_birth:type_name -> google.protobuf.Timestamp
 	5,  // 13: staffservice.UpdateStaffDetailsResponse.staff:type_name -> staffservice.Staff
-	3,  // 14: staffservice.UpdateStaffScheduleRequest.tasks_to_schedule:type_name -> staffservice.TaskProto
-	32, // 15: staffservice.GetDoctorAvailabilityRequest.start_time:type_name -> google.protobuf.Timestamp
-	32, // 16: staffservice.GetDoctorAvailabilityRequest.end_time:type_name -> google.protobuf.Timestamp
-	31, // 17: staffservice.GetDoctorAvailabilityResponse.available_slots:type_name -> staffservice.GetDoctorAvailabilityResponse.TimeSlot
-	32, // 18: staffservice.AssignTaskRequest.start_time:type_name -> google.protobuf.Timestamp
-	32, // 19: staffservice.AssignTaskRequest.end_time:type_name -> google.protobuf.Timestamp
-	3,  // 20: staffservice.TrackWorkloadResponse.workload:type_name -> staffservice.TaskProto
-	0,  // 21: staffservice.AddStaffRoleResponse.role:type_name -> staffservice.StaffRoleProto
-	0,  // 22: staffservice.ListStaffRolesResponse.roles:type_name -> staffservice.StaffRoleProto
-	1,  // 23: staffservice.AddStaffStatusResponse.status:type_name -> staffservice.StaffStatusProto
-	1,  // 24: staffservice.ListStaffStatusesResponse.statuses:type_name -> staffservice.StaffStatusProto
-	2,  // 25: staffservice.AddTaskStatusResponse.status:type_name -> staffservice.TaskStatusProto
-	2,  // 26: staffservice.ListTaskStatusesResponse.statuses:type_name -> staffservice.TaskStatusProto
-	32, // 27: staffservice.GetDoctorAvailabilityResponse.TimeSlot.start_time:type_name -> google.protobuf.Timestamp
-	32, // 28: staffservice.GetDoctorAvailabilityResponse.TimeSlot.end_time:type_name -> google.protobuf.Timestamp
-	6,  // 29: staffservice.StaffService.AddStaff:input_type -> staffservice.AddStaffRequest
-	8,  // 30: staffservice.StaffService.GetStaffDetails:input_type -> staffservice.GetStaffDetailsRequest
-	10, // 31: staffservice.StaffService.UpdateStaffDetails:input_type -> staffservice.UpdateStaffDetailsRequest
-	12, // 32: staffservice.StaffService.UpdateStaffSchedule:input_type -> staffservice.UpdateStaffScheduleRequest
-	13, // 33: staffservice.StaffService.SetStaffAvailability:input_type -> staffservice.SetStaffAvailabilityRequest
-	14, // 34: staffservice.StaffService.GetDoctorAvailability:input_type -> staffservice.GetDoctorAvailabilityRequest
-	16, // 35: staffservice.StaffService.AssignTask:input_type -> staffservice.AssignTaskRequest
-	17, // 36: staffservice.StaffService.TrackWorkload:input_type -> staffservice.TrackWorkloadRequest
-	19, // 37: staffservice.StaffService.AddStaffRole:input_type -> staffservice.AddStaffRoleRequest
-	21, // 38: staffservice.StaffService.ListStaffRoles:input_type -> staffservice.ListStaffRolesRequest
-	23, // 39: staffservice.StaffService.AddStaffStatus:input_type -> staffservice.AddStaffStatusRequest
-	25, // 40: staffservice.StaffService.ListStaffStatuses:input_type -> staffservice.ListStaffStatusesRequest
-	27, // 41: staffservice.StaffService.AddTaskStatus:input_type -> staffservice.AddTaskStatusRequest
-	29, // 42: staffservice.StaffService.ListTaskStatuses:input_type -> staffservice.ListTaskStatusesRequest
-	7,  // 43: staffservice.StaffService.AddStaff:output_type -> staffservice.AddStaffResponse
-	9,  // 44: staffservice.StaffService.GetStaffDetails:output_type -> staffservice.GetStaffDetailsResponse
-	11, // 45: staffservice.StaffService.UpdateStaffDetails:output_type -> staffservice.UpdateStaffDetailsResponse
-	33, // 46: staffservice.StaffService.UpdateStaffSchedule:output_type -> google.protobuf.Empty
-	33, // 47: staffservice.StaffService.SetStaffAvailability:output_type -> google.protobuf.Empty
-	15, // 48: staffservice.StaffService.GetDoctorAvailability:output_type -> staffservice.GetDoctorAvailabilityResponse
-	33, // 49: staffservice.StaffService.AssignTask:output_type -> google.protobuf.Empty
-	18, // 50: staffservice.StaffService.TrackWorkload:output_type -> staffservice.TrackWorkloadResponse
-	20, // 51: staffservice.StaffService.AddStaffRole:output_type -> staffservice.AddStaffRoleResponse
-	22, // 52: staffservice.StaffService.ListStaffRoles:output_type -> staffservice.ListStaffRolesResponse
-	24, // 53: staffservice.StaffService.AddStaffStatus:output_type -> staffservice.AddStaffStatusResponse
-	26, // 54: staffservice.StaffService.ListStaffStatuses:output_type -> staffservice.ListStaffStatusesResponse
-	28, // 55: staffservice.StaffService.AddTaskStatus:output_type -> staffservice.AddTaskStatusResponse
-	30, // 56: staffservice.StaffService.ListTaskStatuses:output_type -> staffservice.ListTaskStatusesResponse
-	43, // [43:57] is the sub-list for method output_type
-	29, // [29:43] is the sub-list for method input_type
-	29, // [29:29] is the sub-list for extension type_name
-	29, // [29:29] is the sub-list for extension extendee
-	0,  // [0:29] is the sub-list for field type_name
+	5,  // 14: staffservice.ListStaffResponse.staff_members:type_name -> staffservice.Staff
+	3,  // 15: staffservice.UpdateStaffScheduleRequest.tasks_to_schedule:type_name -> staffservice.TaskProto
+	36, // 16: staffservice.GetDoctorAvailabilityRequest.start_time:type_name -> google.protobuf.Timestamp
+	36, // 17: staffservice.GetDoctorAvailabilityRequest.end_time:type_name -> google.protobuf.Timestamp
+	35, // 18: staffservice.GetDoctorAvailabilityResponse.available_slots:type_name -> staffservice.GetDoctorAvailabilityResponse.TimeSlot
+	36, // 19: staffservice.AssignTaskRequest.start_time:type_name -> google.protobuf.Timestamp
+	36, // 20: staffservice.AssignTaskRequest.end_time:type_name -> google.protobuf.Timestamp
+	3,  // 21: staffservice.TrackWorkloadResponse.workload:type_name -> staffservice.TaskProto
+	3,  // 22: staffservice.ListTasksResponse.tasks:type_name -> staffservice.TaskProto
+	0,  // 23: staffservice.AddStaffRoleResponse.role:type_name -> staffservice.StaffRoleProto
+	0,  // 24: staffservice.ListStaffRolesResponse.roles:type_name -> staffservice.StaffRoleProto
+	1,  // 25: staffservice.AddStaffStatusResponse.status:type_name -> staffservice.StaffStatusProto
+	1,  // 26: staffservice.ListStaffStatusesResponse.statuses:type_name -> staffservice.StaffStatusProto
+	2,  // 27: staffservice.AddTaskStatusResponse.status:type_name -> staffservice.TaskStatusProto
+	2,  // 28: staffservice.ListTaskStatusesResponse.statuses:type_name -> staffservice.TaskStatusProto
+	36, // 29: staffservice.GetDoctorAvailabilityResponse.TimeSlot.start_time:type_name -> google.protobuf.Timestamp
+	36, // 30: staffservice.GetDoctorAvailabilityResponse.TimeSlot.end_time:type_name -> google.protobuf.Timestamp
+	6,  // 31: staffservice.StaffService.AddStaff:input_type -> staffservice.AddStaffRequest
+	8,  // 32: staffservice.StaffService.GetStaffDetails:input_type -> staffservice.GetStaffDetailsRequest
+	12, // 33: staffservice.StaffService.ListStaff:input_type -> staffservice.ListStaffRequest
+	10, // 34: staffservice.StaffService.UpdateStaffDetails:input_type -> staffservice.UpdateStaffDetailsRequest
+	14, // 35: staffservice.StaffService.UpdateStaffSchedule:input_type -> staffservice.UpdateStaffScheduleRequest
+	15, // 36: staffservice.StaffService.SetStaffAvailability:input_type -> staffservice.SetStaffAvailabilityRequest
+	16, // 37: staffservice.StaffService.GetDoctorAvailability:input_type -> staffservice.GetDoctorAvailabilityRequest
+	18, // 38: staffservice.StaffService.AssignTask:input_type -> staffservice.AssignTaskRequest
+	19, // 39: staffservice.StaffService.TrackWorkload:input_type -> staffservice.TrackWorkloadRequest
+	21, // 40: staffservice.StaffService.ListTasks:input_type -> staffservice.ListTasksRequest
+	23, // 41: staffservice.StaffService.AddStaffRole:input_type -> staffservice.AddStaffRoleRequest
+	25, // 42: staffservice.StaffService.ListStaffRoles:input_type -> staffservice.ListStaffRolesRequest
+	27, // 43: staffservice.StaffService.AddStaffStatus:input_type -> staffservice.AddStaffStatusRequest
+	29, // 44: staffservice.StaffService.ListStaffStatuses:input_type -> staffservice.ListStaffStatusesRequest
+	31, // 45: staffservice.StaffService.AddTaskStatus:input_type -> staffservice.AddTaskStatusRequest
+	33, // 46: staffservice.StaffService.ListTaskStatuses:input_type -> staffservice.ListTaskStatusesRequest
+	7,  // 47: staffservice.StaffService.AddStaff:output_type -> staffservice.AddStaffResponse
+	9,  // 48: staffservice.StaffService.GetStaffDetails:output_type -> staffservice.GetStaffDetailsResponse
+	13, // 49: staffservice.StaffService.ListStaff:output_type -> staffservice.ListStaffResponse
+	11, // 50: staffservice.StaffService.UpdateStaffDetails:output_type -> staffservice.UpdateStaffDetailsResponse
+	37, // 51: staffservice.StaffService.UpdateStaffSchedule:output_type -> google.protobuf.Empty
+	37, // 52: staffservice.StaffService.SetStaffAvailability:output_type -> google.protobuf.Empty
+	17, // 53: staffservice.StaffService.GetDoctorAvailability:output_type -> staffservice.GetDoctorAvailabilityResponse
+	37, // 54: staffservice.StaffService.AssignTask:output_type -> google.protobuf.Empty
+	20, // 55: staffservice.StaffService.TrackWorkload:output_type -> staffservice.TrackWorkloadResponse
+	22, // 56: staffservice.StaffService.ListTasks:output_type -> staffservice.ListTasksResponse
+	24, // 57: staffservice.StaffService.AddStaffRole:output_type -> staffservice.AddStaffRoleResponse
+	26, // 58: staffservice.StaffService.ListStaffRoles:output_type -> staffservice.ListStaffRolesResponse
+	28, // 59: staffservice.StaffService.AddStaffStatus:output_type -> staffservice.AddStaffStatusResponse
+	30, // 60: staffservice.StaffService.ListStaffStatuses:output_type -> staffservice.ListStaffStatusesResponse
+	32, // 61: staffservice.StaffService.AddTaskStatus:output_type -> staffservice.AddTaskStatusResponse
+	34, // 62: staffservice.StaffService.ListTaskStatuses:output_type -> staffservice.ListTaskStatusesResponse
+	47, // [47:63] is the sub-list for method output_type
+	31, // [31:47] is the sub-list for method input_type
+	31, // [31:31] is the sub-list for extension type_name
+	31, // [31:31] is the sub-list for extension extendee
+	0,  // [0:31] is the sub-list for field type_name
 }
 
 func init() { file_proto_staff_service_staff_proto_init() }
@@ -2183,7 +2401,7 @@ func file_proto_staff_service_staff_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_staff_service_staff_proto_rawDesc), len(file_proto_staff_service_staff_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   32,
+			NumMessages:   36,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

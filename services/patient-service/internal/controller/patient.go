@@ -143,6 +143,26 @@ func (s *patientServer) GetPatientMedicalHistory(ctx context.Context, req *pb.Ge
 	return &pb.GetPatientMedicalHistoryResponse{MedicalHistory: medicalHistoryProto}, nil
 }
 
+// ListPatients implements the corresponding gRPC method.
+func (s *patientServer) ListPatients(ctx context.Context, req *pb.ListPatientsRequest) (*pb.ListPatientsResponse, error) {
+	// Call the use case method to get the list of patient entities (pointers).
+	patientEntities, err := s.uc.ListPatients(ctx)
+	if err != nil {
+		// Map use case errors (e.g., internal DB error) to gRPC status codes.
+		return nil, mapUseCaseErrorToGrpcStatus(err)
+	}
+
+	// Map the slice of entity pointers to a slice of proto messages.
+	patientProtos, err := s.mapper.PatientsToProto(patientEntities)
+	if err != nil {
+		// This error comes from the mapping function itself (e.g., if it decided to return an error).
+		return nil, status.Errorf(codes.Internal, "failed to map patient list to proto: %v", err)
+	}
+
+	// Return the response containing the list of patient protos.
+	return &pb.ListPatientsResponse{Patients: patientProtos}, nil
+}
+
 // mapUseCaseErrorToGrpcStatus converts use case errors to gRPC status errors.
 // (This is the same helper function as in appointment controller)
 func mapUseCaseErrorToGrpcStatus(err error) error {

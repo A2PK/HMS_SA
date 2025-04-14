@@ -277,3 +277,18 @@ func (r *GormTaskStatusRepository) ListAll(ctx context.Context) ([]*entity.TaskS
 	}
 	return statuses, nil
 }
+
+// --- Task Repository ---
+
+// Ensure GormTaskRepository implements TaskRepository
+var _ TaskRepository = (*GormTaskRepository)(nil)
+
+type GormTaskRepository struct {
+	*coreRepository.GormBaseRepository[entity.Task] // Embed the generic GORM repository
+}
+
+func NewGormTaskRepository(db *gorm.DB) *GormTaskRepository {
+	return &GormTaskRepository{
+		GormBaseRepository: coreRepository.NewGormBaseRepository[entity.Task](db),
+	}
+}

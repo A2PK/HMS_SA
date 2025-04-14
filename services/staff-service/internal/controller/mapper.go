@@ -15,6 +15,7 @@ import (
 type Mapper interface {
 	// Staff Mappings
 	EntityToProto(staff *entity.Staff) (*pb.Staff, error)
+	StaffListToProto(staffList []*entity.Staff) ([]*pb.Staff, error)
 
 	// Schedule & Task Mappings
 	ScheduleEntryToProto(entry *entity.ScheduleEntry) (*pb.ScheduleEntryProto, error)
@@ -79,6 +80,23 @@ func (m *StaffMapper) EntityToProto(staff *entity.Staff) (*pb.Staff, error) {
 		CreatedAt:      timestamppb.New(staff.CreatedAt),
 		UpdatedAt:      timestamppb.New(staff.UpdatedAt),
 	}, nil
+}
+
+// StaffListToProto converts a slice of *entity.Staff to a slice of *pb.Staff.
+func (m *StaffMapper) StaffListToProto(staffList []*entity.Staff) ([]*pb.Staff, error) {
+	protos := make([]*pb.Staff, 0, len(staffList))
+	for _, staffEntity := range staffList {
+		proto, err := m.EntityToProto(staffEntity) // Reuse single entity mapping
+		if err != nil {
+			// Log or handle individual mapping errors? For now, skip.
+			fmt.Printf("Warning: skipping staff mapping for ID %s due to error: %v\n", staffEntity.ID, err)
+			continue
+		}
+		protos = append(protos, proto)
+	}
+	// Currently, errors during individual mapping are only logged/skipped.
+	// Return nil error unless a different strategy is needed.
+	return protos, nil
 }
 
 // --- Schedule & Task Mappings ---
